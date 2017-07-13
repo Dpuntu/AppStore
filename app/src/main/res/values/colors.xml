@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="home_text_color">#ff333333</color>
+    <color name="home_background">#fff7f9ff</color>
+    <color name="list_item_unfocused">#ffffffff</color>
+    <color name="list_item_white">#cccccccc</color>
+    <color name="light_white">#fffcfcfc</color>
+    <color name="list_item_pressed">#fff22fff</color>
+    <color name="list_item_selected">#fff33fff</color>
+    <color name="list_item_focused">#ffff44ff</color>
+    <color name="white">#ffffffff</color>
+    <color name="black">#ff000000</color>
+    <color name="steelwhite">#fffffafa</color> <!--fff5f5f5 -->
+    <color name="gainsboro">#ffdcdcdc</color>
+    <color name="lightgrey">#ffd3d3d3</color>
+    <color name="darkgray">#ffa9a9a9</color>
+    <color name="dimgrey">#ff696969</color>
+    <color name="gray">#ff606060</color>
+    <color name="textblack">#ff222222</color>
+    <color name="steelblue">#ff26b8f4</color>
+    <color name="steelgray">#ff797979</color>
+    <color name="red">#ffff0000</color>
+    <color name="blue">#ff004676</color>
+    <color name="deep_sky_blue">#ff00bfff</color>
+    <color name="dodger_blue">#ff1e90ff</color>
+    <color name="orange">#ffff7800</color>
+    <color name="light_gray">#ffd3d3d3</color>
+    <color name="transparent">#00000000</color>
+    <color name="viewfinder_mask">#55000000</color>
+    <color name="result_view">#55000000</color>
+    <color name="viewfinder_frame">#ff00bfff</color>
+    <color name="viewfinder_laser">#ff00ff00</color>
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="deep_blue">#ff024677</color>
+    <color name="dark_red">#ffc55359</color>
+    <color name="qrpos_paid">#ff4883b4</color>
+    <color name="qrpos_wait_topay">#fff38e0a</color>
+    <color name="qrpos_expired">#ffb3b3b3</color>
+    <color name="bj_water">#fff98700</color>
+    <color name="black_payment_result">#ff373737</color>
+    <color name="dark_green">#006552</color>
+    <color name="yellow">#FFee00</color><!--黄色 -->
+    <color name="abcgreen">#42bead</color>
+    <color name="abcgray">#fff6f6f6</color>
+    <color name="aliceblue">#ffF0F8FF</color><!--艾利斯兰 -->
+    <color name="darkseagreen">#8FBC8F</color><!--暗海兰色 -->
+    <color name="infoblue">#ff82BFF5</color>
+    <color name="bgcolor">#ff49bef4</color>
+    <color name="barTextColor">#FFFFFFFF</color>
+</resources>
