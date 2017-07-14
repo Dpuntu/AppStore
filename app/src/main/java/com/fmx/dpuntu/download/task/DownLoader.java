@@ -89,10 +89,18 @@ public class DownLoader {
         DownLoadListener listener = info.getDownLoadListener();
         switch (info.getDownloadState()) {
             case STATE_DOWNLOADING:
-                listener.onProgress(info);
+                if (info.getDownloadSize() == info.getAppSize()) {
+                    info.setDownloadState(DownloadState.STATE_FINISH);
+                    notifyDownloadUpdate(info);
+                } else if (info.getDownloadSize() >= info.getAppSize()) {
+                    info.setDownloadState(DownloadState.STATE_ERROR);
+                    notifyDownloadUpdate(info);
+                } else {
+                    listener.onProgress(info);
+                }
                 break;
             case STATE_FINISH:
-                listener.onStop(info);
+                listener.onFinish(info);
                 break;
             case STATE_START:
                 listener.onStart(info);

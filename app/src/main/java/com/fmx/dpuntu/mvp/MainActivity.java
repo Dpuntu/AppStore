@@ -1,5 +1,6 @@
 package com.fmx.dpuntu.mvp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 
@@ -60,5 +61,11 @@ public class MainActivity extends BaseActivity implements MainContact.View {
 
     public RecyclerView getRecyclerView() {
         return mRecyclerView;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        presenter.onActivityResult(requestCode, resultCode, data);
     }
 }

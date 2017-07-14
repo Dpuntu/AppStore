@@ -1,6 +1,6 @@
 package com.fmx.dpuntu.mvp;
 
-import android.os.Environment;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,16 +10,11 @@ import android.view.View;
 import com.fmx.dpuntu.api.Apimanager;
 import com.fmx.dpuntu.api.AppListResponse;
 import com.fmx.dpuntu.api.Response;
-import com.fmx.dpuntu.download.DownLoadInfo;
-import com.fmx.dpuntu.download.DownLoadListener;
-import com.fmx.dpuntu.download.DownloadState;
-import com.fmx.dpuntu.download.task.DownLoader;
-import com.fmx.dpuntu.utils.AndroidUtils;
+import com.fmx.dpuntu.ui.DialogActivity;
 import com.fmx.dpuntu.utils.AppInfo;
 import com.fmx.dpuntu.utils.AppRecyclerViewAdapter;
 import com.fmx.dpuntu.utils.Loger;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +24,9 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Predicate;
 import io.reactivex.schedulers.Schedulers;
+
+import static android.app.Activity.RESULT_CANCELED;
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created on 2017/7/13.
@@ -40,6 +38,8 @@ public class MainPresenter implements MainContact.Presenter {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
     private static final int DOWNLOAD = 2;
+
+    private static final int REQUEST_DOWNLOAD = 100;
 
     private MainActivity view;
     private ArrayList<AppInfo> appInfos;
@@ -73,6 +73,20 @@ public class MainPresenter implements MainContact.Presenter {
     @Override
     public ArrayList<AppInfo> getAppsList() {
         return view.getAppsList();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_DOWNLOAD) {
+            switch (resultCode) {
+                case RESULT_OK:
+
+                    break;
+                case RESULT_CANCELED:
+
+                    break;
+            }
+        }
     }
 
 
@@ -141,58 +155,13 @@ public class MainPresenter implements MainContact.Presenter {
                     break;
                 case DOWNLOAD:
                     AppListResponse.DownloadAppInfo info = (AppListResponse.DownloadAppInfo) msg.obj;
-                    String appUrl = AndroidUtils.decrypt(info.getAppUrl(), info.getAppHashCode().substring(0, 8));
-                    Loger.d("下载:" + info.getAppName() + ", 地址:" + appUrl);
-                    Loger.d("下載到:" + Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator);
-
-                    DownLoadInfo mDownLoadInfo = new DownLoadInfo.Build()
-                            .setAppName(info.getAppName())
-                            .setAppSize(AndroidUtils.exchangeSize(info.getAppSize()))
-                            .setAppVersion(info.getAppVersion())
-                            .setDownloadSize(0)
-                            .setDownLoadUrl(appUrl)
-                            .setDownloadState(DownloadState.STATE_DEFAULT)
-                            .setFilePath(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator)
-                            .setDownLoadListener(mListener)
-                            .build();
-
-                    DownLoader mDownLoader = new DownLoader();
-                    new DownLoader.Builder(mDownLoader)
-                            .setKeepAliveTime(10)
-                            .setMaxTaskSize(3)
-                            .setDownLoadBean(mDownLoadInfo)
-                            .build();
-                    mDownLoader.start();
+                    Intent intent = new Intent();
+                    intent.setClass(view, DialogActivity.class);
+                    intent.putExtra("appinfo", info);
+                    view.startActivityForResult(intent, REQUEST_DOWNLOAD);
                     break;
             }
         }
     };
 
-    public DownLoadListener mListener = new DownLoadListener() {
-        @Override
-        public void onProgress(DownLoadInfo info) {
-            Loger.i("onProgress , " + info.getDownloadSize() + "/" + info.getAppSize());
-            Loger.i("onProgress , " + info.getDownloadSize() * 100 / info.getAppSize() + "%");
-        }
-
-        @Override
-        public void onStart(DownLoadInfo info) {
-            Loger.i("onStart , " + info.getDownLoadUrl());
-        }
-
-        @Override
-        public void onPause(DownLoadInfo info) {
-            Loger.i("onPause , " + info.getDownloadSize());
-        }
-
-        @Override
-        public void onStop(DownLoadInfo info) {
-            Loger.i("onStop , " + info.getDownloadSize());
-        }
-
-        @Override
-        public void onError(DownLoadInfo info) {
-            Loger.i("onError , " + info.getDownloadSize());
-        }
-    };
 }

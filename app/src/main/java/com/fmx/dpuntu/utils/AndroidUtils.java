@@ -101,4 +101,8 @@ public class AndroidUtils {
         Loger.d("size = " + fileSize * 1024 * 1024);
         return (long) (fileSize * 1024 * 1024);
     }
+
+    public static String fileName(String appName, String appVersion) {
+        return appName + "_" + appVersion + ".apk";
+    }
 }

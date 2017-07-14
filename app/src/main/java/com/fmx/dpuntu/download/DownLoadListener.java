@@ -16,4 +16,6 @@ public interface DownLoadListener {
     void onStop(DownLoadInfo info);
 
     void onError(DownLoadInfo info);
+
+    void onFinish(DownLoadInfo info);
 }

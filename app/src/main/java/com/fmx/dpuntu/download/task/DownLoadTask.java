@@ -4,14 +4,14 @@ import android.util.Log;
 
 import com.fmx.dpuntu.download.DownLoadInfo;
 import com.fmx.dpuntu.download.DownloadState;
+import com.fmx.dpuntu.utils.AndroidUtils;
 import com.fmx.dpuntu.utils.Loger;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
@@ -42,7 +42,7 @@ public class DownLoadTask implements Runnable {
     @Override
     public void run() {
         info.setDownloadState(DownloadState.STATE_START);
-        String fileName = info.getAppName() + "_" + info.getAppVersion() + ".apk";
+        String fileName = AndroidUtils.fileName(info.getAppName(), info.getAppVersion());
         File file = new File(info.getFilePath() + fileName);
         if (file.exists() && file.length() != info.getAppSize()) {
             if (file.delete()) {
@@ -51,6 +51,8 @@ public class DownLoadTask implements Runnable {
             } else {
                 error(-1);
             }
+        } else {
+            downLoader.notifyDownloadUpdate(info);
         }
 
         File dic = new File(info.getFilePath());
@@ -75,6 +77,7 @@ public class DownLoadTask implements Runnable {
 
     private void download(final File file) {
         InputStream in = null;
+        long appSize = 0;
         if (mClient == null) {
             mClient = new OkHttpClient.Builder()
                     .connectTimeout(0, TimeUnit.SECONDS)
@@ -98,47 +101,46 @@ public class DownLoadTask implements Runnable {
             if (response.isSuccessful()) {
                 Loger.d("isSuccessful");
                 in = response.body().byteStream();
-                writeFile(in, file);
+                appSize = response.body().contentLength();
+                writeFile(in, file, appSize);
             }
         } catch (IOException e) {
             error(-3);
             e.printStackTrace();
-            return;
         }
     }
 
-    private void writeFile(InputStream in, File file) {
+    private void writeFile(InputStream in, File file, long appSize) {
         if (in != null) {
             Loger.d("!= null");
-            RandomAccessFile raf = null;
-            BufferedInputStream buffer;
+            FileOutputStream fos = null;
             byte[] buf = new byte[BUFFER_SIZE];
             try {
-                raf = new RandomAccessFile(file, "rw");
-                raf.seek(info.getDownloadSize());
-                buffer = new BufferedInputStream(in);
+                fos = new FileOutputStream(file, true);
                 int len;
                 long completed = info.getDownloadSize();
-                Loger.d("completed = " + completed);
+                if (appSize > 0 && info.getAppSize() != appSize) {
+                    info.setAppSize(appSize);
+                }
+                downLoader.notifyDownloadUpdate(info);
                 while (info.getDownloadSize() < info.getAppSize()
                         && info.getAppSize() > 0
-                        && (len = buffer.read(buf, 0, BUFFER_SIZE)) != -1) {
+                        && (len = in.read(buf)) != -1) {
                     if (info.getDownloadState() == DownloadState.STATE_DOWNLOADING) {
-                        Loger.d("len = " + len);
-                        raf.write(buf, 0, len);
+                        fos.write(buf, 0, len);
                         completed += len;
                         info.setDownloadSize(completed);
                         downLoader.notifyDownloadUpdate(info);
+                        fos.flush();
                     }
                 }
+                fos.close();
             } catch (FileNotFoundException e) {
                 error(-4);
                 e.printStackTrace();
-                return;
             } catch (IOException e) {
                 error(-5);
                 e.printStackTrace();
-                return;
             }
         } else {
             error(-6);
