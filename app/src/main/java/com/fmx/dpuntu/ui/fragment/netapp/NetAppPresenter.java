@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.fmx.dpuntu.api.Apimanager;
+import com.fmx.dpuntu.api.ApiManager;
 import com.fmx.dpuntu.api.AppListResponse;
 import com.fmx.dpuntu.api.Response;
 import com.fmx.dpuntu.ui.BaseActivity;
@@ -34,18 +34,18 @@ import static android.app.Activity.RESULT_OK;
  * @author dpuntu
  */
 
-public class NetAppPresenter implements NetAppContact.Presenter {
+public class NetAppPresenter implements NetAppContract.Presenter {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
     private static final int DOWNLOAD = 2;
 
     private static final int REQUEST_DOWNLOAD = 100;
 
-    private NetAppContact.View view;
+    private NetAppContract.View view;
     private BaseActivity context;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public NetAppPresenter(NetAppContact.View view, BaseActivity context) {
+    public NetAppPresenter(NetAppContract.View view, BaseActivity context) {
         this.view = view;
         this.context = context;
     }
@@ -78,7 +78,7 @@ public class NetAppPresenter implements NetAppContact.Presenter {
 
     @Override
     public void getDownLoadAppsList() {
-        Apimanager.getApiManager()
+        ApiManager.getApiManager()
                 .getApiService()
                 .appList("709BW_ZH_82", "866830020046093", "dj_w790", "1.6.4", "1", "20")
                 .subscribeOn(Schedulers.io())
@@ -147,5 +147,4 @@ public class NetAppPresenter implements NetAppContact.Presenter {
             }
         }
     };
-
 }

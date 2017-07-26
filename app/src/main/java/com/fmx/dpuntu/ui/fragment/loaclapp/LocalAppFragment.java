@@ -20,7 +20,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 @LAYOUT(contentView = R.layout.fragment_localapp)
-public class LocalAppFragment extends BaseFragment implements LocalAppContact.View {
+public class LocalAppFragment extends BaseFragment implements LocalAppContract.View {
     @BindView(R.id.localapplist)
     RecyclerView localAppListView;
 

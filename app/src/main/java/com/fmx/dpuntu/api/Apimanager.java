@@ -16,13 +16,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * @author dpuntu
  */
 
-public class Apimanager {
-    private static Apimanager mApimanager;
+public class ApiManager {
+    private static ApiManager mApimanager;
     private static final String url = "https://ota.seuic.info/api/";
 
-    public static Apimanager getApiManager() {
+    public static ApiManager getApiManager() {
         if (mApimanager == null) {
-            mApimanager = new Apimanager();
+            mApimanager = new ApiManager();
         }
         return mApimanager;
     }

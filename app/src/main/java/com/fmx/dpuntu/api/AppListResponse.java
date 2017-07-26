@@ -12,8 +12,6 @@ import java.util.List;
  */
 
 public class AppListResponse implements Serializable {
-
-
     @SerializedName("total")
     private String total;
 

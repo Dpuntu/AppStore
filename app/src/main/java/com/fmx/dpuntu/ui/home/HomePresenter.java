@@ -16,11 +16,11 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class HomePresenter implements HomeContact.Presenter {
-    private HomeContact.View view;
+public class HomePresenter implements HomeContract.Presenter {
+    private HomeContract.View view;
     private List<Fragment> fragmentList;
 
-    HomePresenter(HomeContact.View view) {
+    HomePresenter(HomeContract.View view) {
         this.view = view;
     }
 

@@ -10,6 +10,7 @@ import com.fmx.dpuntu.ui.fragment.help.HelpFragment;
 import com.fmx.dpuntu.ui.fragment.loaclapp.LocalAppFragment;
 import com.fmx.dpuntu.ui.fragment.netapp.NetAppFragment;
 import com.fmx.dpuntu.utils.LAYOUT;
+import com.fmx.dpuntu.utils.StatusBarCompat;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,7 +24,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 @LAYOUT(contentView = R.layout.activity_home)
-public class HomeActivity extends AbsActivity implements HomeContact.View {
+public class HomeActivity extends AbsActivity implements HomeContract.View {
     @BindView(R.id.home_viewpager)
     ViewPager mViewPager;
     @BindView(R.id.home_indicator)
@@ -34,6 +35,7 @@ public class HomeActivity extends AbsActivity implements HomeContact.View {
 
     @Override
     public void initDatas() {
+        StatusBarCompat.setWindowStatusBarColor(this, R.color.colorPrimary); // mRVPIndicator背景色
         mHomePresenter = new HomePresenter(HomeActivity.this);
         mViewPager.setAdapter(mHomePresenter.getViewPagerAdapter());
         mHomePresenter.initPageChangeListener(mRVPIndicator, mViewPager);

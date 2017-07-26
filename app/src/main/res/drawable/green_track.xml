@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <size android:height="22dp"/>
+    <corners android:radius="11dp"/>
+    <!-- 变化率 -->
+    <gradient
+        android:endColor="#33da33"
+        android:startColor="#33da33"/>
+
+</shape>
+    <!--打开状态下，绿色的底图-->

@@ -17,7 +17,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 @LAYOUT(contentView = R.layout.fragment_netapp)
-public class NetAppFragment extends BaseFragment implements NetAppContact.View {
+public class NetAppFragment extends BaseFragment implements NetAppContract.View {
     @BindView(R.id.netapplist)
     RecyclerView netAppListView;
 

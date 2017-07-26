@@ -21,7 +21,7 @@ import java.io.File;
  * @author dpuntu
  */
 
-public class DialogPresenter implements DialogContact.Presenter {
+public class DialogPresenter implements DialogContract.Presenter {
     public static final int DOWN_PROGRESS = 0;
     public static final int DOWN_START = 1;
     public static final int DOWN_PAUSE = 2;

@@ -1,5 +1,7 @@
 package com.fmx.dpuntu.ui.fragment.loaclapp;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -18,12 +20,12 @@ import java.util.ArrayList;
  * @author dpuntu
  */
 
-public class LoaclAppPresenter implements LocalAppContact.Presenter, AppRecyclerViewAdapter.LocalRecyclerViewClickListener {
-    private LocalAppContact.View view;
+public class LoaclAppPresenter implements LocalAppContract.Presenter, AppRecyclerViewAdapter.LocalRecyclerViewClickListener {
+    private LocalAppContract.View view;
     private BaseActivity context;
     private AppRecyclerViewAdapter mAppRecyclerViewAdapter = null;
 
-    public LoaclAppPresenter(LocalAppContact.View view, BaseActivity context) {
+    public LoaclAppPresenter(LocalAppContract.View view, BaseActivity context) {
         this.view = view;
         this.context = context;
     }
@@ -49,5 +51,9 @@ public class LoaclAppPresenter implements LocalAppContact.Presenter, AppRecycler
     @Override
     public void onClick(View v, AppInfo info) {
         Loger.e(info.getAppName());
+        Intent uninstall_intent = new Intent();
+        uninstall_intent.setAction(Intent.ACTION_DELETE);
+        uninstall_intent.setData(Uri.parse("package:" + info.getPackageName()));
+        context.startActivity(uninstall_intent);
     }
 }

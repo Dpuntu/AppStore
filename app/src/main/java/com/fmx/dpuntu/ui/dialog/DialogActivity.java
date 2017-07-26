@@ -24,7 +24,7 @@ import butterknife.ButterKnife;
  * @author dpuntu
  */
 @LAYOUT(contentView = R.layout.activity_dialog)
-public class DialogActivity extends BaseActivity implements DialogContact.View {
+public class DialogActivity extends BaseActivity implements DialogContract.View {
 
     @BindView(R.id.dialog_title)
     TextView dialogTitle;
