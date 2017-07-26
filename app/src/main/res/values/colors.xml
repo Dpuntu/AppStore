@@ -1,54 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!--标题栏的颜色-->
+    <color name="colorPrimary">#3B99DF</color>
+    <!--状态栏的颜色-->
+    <color name="colorPrimaryDark">#3B90DF</color>
+    <!--控件的选中颜色，即checked或selected状态的颜色。-->
+    <color name="colorAccent">#3B99DF</color>
 
-    <color name="home_text_color">#ff333333</color>
-    <color name="home_background">#fff7f9ff</color>
-    <color name="list_item_unfocused">#ffffffff</color>
-    <color name="list_item_white">#cccccccc</color>
-    <color name="light_white">#fffcfcfc</color>
-    <color name="list_item_pressed">#fff22fff</color>
-    <color name="list_item_selected">#fff33fff</color>
-    <color name="list_item_focused">#ffff44ff</color>
+    <color name="tip">#88303F9F</color>
+
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
-    <color name="steelwhite">#fffffafa</color> <!--fff5f5f5 -->
-    <color name="gainsboro">#ffdcdcdc</color>
-    <color name="lightgrey">#ffd3d3d3</color>
-    <color name="darkgray">#ffa9a9a9</color>
-    <color name="dimgrey">#ff696969</color>
-    <color name="gray">#ff606060</color>
-    <color name="textblack">#ff222222</color>
-    <color name="steelblue">#ff26b8f4</color>
-    <color name="steelgray">#ff797979</color>
-    <color name="red">#ffff0000</color>
-    <color name="blue">#ff004676</color>
-    <color name="deep_sky_blue">#ff00bfff</color>
-    <color name="dodger_blue">#ff1e90ff</color>
-    <color name="orange">#ffff7800</color>
-    <color name="light_gray">#ffd3d3d3</color>
+    <color name="red">#FF0000</color>
+    <color name="orange">#DE6014</color>
+    <color name="gray">#b8b8b8</color>
+    <color name="green">#5FB236</color>
     <color name="transparent">#00000000</color>
-    <color name="viewfinder_mask">#55000000</color>
-    <color name="result_view">#55000000</color>
-    <color name="viewfinder_frame">#ff00bfff</color>
-    <color name="viewfinder_laser">#ff00ff00</color>
-    <color name="possible_result_points">#c0ffff00</color>
-    <color name="deep_blue">#ff024677</color>
-    <color name="dark_red">#ffc55359</color>
-    <color name="qrpos_paid">#ff4883b4</color>
-    <color name="qrpos_wait_topay">#fff38e0a</color>
-    <color name="qrpos_expired">#ffb3b3b3</color>
-    <color name="bj_water">#fff98700</color>
-    <color name="black_payment_result">#ff373737</color>
-    <color name="dark_green">#006552</color>
-    <color name="yellow">#FFee00</color><!--黄色 -->
-    <color name="abcgreen">#42bead</color>
-    <color name="abcgray">#fff6f6f6</color>
-    <color name="aliceblue">#ffF0F8FF</color><!--艾利斯兰 -->
-    <color name="darkseagreen">#8FBC8F</color><!--暗海兰色 -->
-    <color name="infoblue">#ff82BFF5</color>
-    <color name="bgcolor">#ff49bef4</color>
-    <color name="barTextColor">#FFFFFFFF</color>
+
+    <color name="light_white">#EEEEEE</color>
+    <color name="light_black">#515151</color>
+    <color name="light_pink">#fb9090</color>
+    <color name="light_coffee">#A58D5E</color>
+    <color name="light_gray">#AAAAAA</color>
+    <color name="light_red">#EC4A48</color>
+    <color name="light_blue">#039BE5</color>
+    <color name="dark_red">#B93221</color>
+    <!--通用背景色-->
+    <color name="common_bg">@color/white</color>
+    <!--通用触摸背景色-->
+    <color name="common_touch_bg">#E3E3E3</color>
+    <!--通用背景色-->
+    <color name="common_gray_bg">#EEEEEE</color>
+    <!--通用一级标题的颜色-->
+    <color name="common_h1">#212121</color>
+    <!--通用二级标题的颜色-->
+    <color name="common_h2">#727272</color>
+    <!--通用三级标题的颜色-->
+    <color name="common_h3">#B2B2B2</color>
+    <!--通用分割线细-->
+    <color name="common_divider_narrow">#E3E3E3</color>
+    <!--通用分割线粗-->
+    <color name="common_divider_wide">@color/light_white</color>
+
+    <color name="reader_menu_bg_color">#191919</color>
+    <color name="read_theme_white">#ffffff</color>
+    <color name="read_theme_green">#bed0cf</color>
+    <color name="read_theme_yellow">#e6dbbf</color>
+    <color name="read_theme_gray">#AAAAAA</color>
+    <color name="read_theme_night">#000000</color>
+
+    <!--章节标题夜间颜色-->
+    <color name="chapter_title_night">#292929</color>
+    <!--章节内容夜间颜色-->
+    <color name="chapter_content_night">#444444</color>
+    <!--章节标题日间颜色-->
+    <color name="chapter_title_day">#837B63</color>
+    <!--章节内容夜间颜色-->
+    <color name="chapter_content_day">#3B3220</color>
+    <!--阅读页顶部字体颜色-->
+    <color name="book_read_top_text">#D1D1D1</color>
+    <!--阅读页底部字体颜色-->
+    <color name="book_read_bottom_text">#e6e6e6</color>
+
+    <!--性别选择颜色值-->
+    <color name="gender_select_male_normal">#B0E2FF</color>
+    <color name="gender_select_male_pressed">#B2DFEE</color>
+    <color name="gender_select_female_normal">#EEA9B8</color>
+    <color name="gender_select_female_pressed">#EEA2AD</color>
+
 </resources>

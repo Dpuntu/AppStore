@@ -46,15 +46,16 @@ public class AppRecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder mViewHolder = (ViewHolder) holder;
-        mViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mRecyclerViewClickListener != null) {
-                    mRecyclerViewClickListener.onClick(v, appDownLoadInfos.get(position));
-                }
-            }
-        });
+
         if (appDownLoadInfos != null) {
+            mViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mRecyclerViewClickListener != null) {
+                        mRecyclerViewClickListener.onClick(v, appDownLoadInfos.get(position));
+                    }
+                }
+            });
             AppListResponse.DownloadAppInfo info = appDownLoadInfos.get(position);
             if (holder != null) {
                 mViewHolder.appName.setText("应用名:" + info.getAppName() + "   安装包大小:" + info.getAppSize());
@@ -76,6 +77,14 @@ public class AppRecyclerViewAdapter extends RecyclerView.Adapter {
                         .into(mViewHolder.mImageView);
             }
         } else {
+            mViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mLocalRecyclerViewClickListener != null) {
+                        mLocalRecyclerViewClickListener.onClick(v, appInfos.get(position));
+                    }
+                }
+            });
             AppInfo info = appInfos.get(position);
             if (holder != null) {
                 mViewHolder.appName.setText(info.getAppName());
@@ -115,5 +124,15 @@ public class AppRecyclerViewAdapter extends RecyclerView.Adapter {
 
     public interface RecyclerViewClickListener {
         void onClick(View v, AppListResponse.DownloadAppInfo info);
+    }
+
+    private LocalRecyclerViewClickListener mLocalRecyclerViewClickListener;
+
+    public void setLocalRecyclerViewClickListener(LocalRecyclerViewClickListener mLocalRecyclerViewClickListener) {
+        this.mLocalRecyclerViewClickListener = mLocalRecyclerViewClickListener;
+    }
+
+    public interface LocalRecyclerViewClickListener {
+        void onClick(View v, AppInfo info);
     }
 }

@@ -1,4 +1,4 @@
-package com.fmx.dpuntu.ui;
+package com.fmx.dpuntu.ui.dialog;
 
 import com.fmx.dpuntu.download.DownLoadInfo;
 

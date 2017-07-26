@@ -1,4 +1,4 @@
-package com.fmx.dpuntu.ui;
+package com.fmx.dpuntu.ui.dialog;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.fmx.dpuntu.api.AppListResponse;
 import com.fmx.dpuntu.download.DownLoadInfo;
-import com.fmx.dpuntu.mvp.BaseActivity;
+import com.fmx.dpuntu.ui.BaseActivity;
 import com.fmx.dpuntu.mvp.R;
 import com.fmx.dpuntu.utils.LAYOUT;
 
@@ -84,6 +84,7 @@ public class DialogActivity extends BaseActivity implements DialogContact.View {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        setFinishOnTouchOutside(false);
         mDialogPresenter = new DialogPresenter(DialogActivity.this, mHandler);
         if (getIntent() != null) {
             info = (AppListResponse.DownloadAppInfo) getIntent().getSerializableExtra("appinfo");

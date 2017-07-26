@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">AppStore</string>
+    <string name="app_name">应用市场</string>
+
+    <string name="add_tag">tag</string>
 </resources>

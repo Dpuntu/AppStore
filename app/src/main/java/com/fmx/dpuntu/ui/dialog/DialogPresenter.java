@@ -1,4 +1,4 @@
-package com.fmx.dpuntu.ui;
+package com.fmx.dpuntu.ui.dialog;
 
 import android.content.Intent;
 import android.net.Uri;

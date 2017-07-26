@@ -1,4 +1,4 @@
-package com.fmx.dpuntu.mvp;
+package com.fmx.dpuntu.ui;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

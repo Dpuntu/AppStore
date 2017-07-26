@@ -1,4 +1,4 @@
-package com.fmx.dpuntu.mvp;
+package com.fmx.dpuntu.ui.fragment.netapp;
 
 import android.content.Intent;
 import android.os.Handler;
@@ -10,12 +10,12 @@ import android.view.View;
 import com.fmx.dpuntu.api.Apimanager;
 import com.fmx.dpuntu.api.AppListResponse;
 import com.fmx.dpuntu.api.Response;
-import com.fmx.dpuntu.ui.DialogActivity;
-import com.fmx.dpuntu.utils.AppInfo;
+import com.fmx.dpuntu.ui.BaseActivity;
+import com.fmx.dpuntu.ui.RecyclerViewDecoration;
+import com.fmx.dpuntu.ui.dialog.DialogActivity;
 import com.fmx.dpuntu.utils.AppRecyclerViewAdapter;
 import com.fmx.dpuntu.utils.Loger;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observer;
@@ -29,34 +29,25 @@ import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Created on 2017/7/13.
+ * Created on 2017/7/26.
  *
  * @author dpuntu
  */
 
-public class MainPresenter implements MainContact.Presenter {
+public class NetAppPresenter implements NetAppContact.Presenter {
     private static final int SUCCESS = 0;
     private static final int FAIL = 1;
     private static final int DOWNLOAD = 2;
 
     private static final int REQUEST_DOWNLOAD = 100;
 
-    private MainActivity view;
-    private ArrayList<AppInfo> appInfos;
+    private NetAppContact.View view;
+    private BaseActivity context;
     private RecyclerView.LayoutManager mLayoutManager;
 
-    public MainPresenter(MainContact.View view) {
-        this.view = (MainActivity) view;
-    }
-
-    public void initView() {
-        appInfos = getAppsList();
-        if (appInfos.size() > 0) {
-            mLayoutManager = new LinearLayoutManager(view);
-            view.getRecyclerView().setLayoutManager(mLayoutManager);
-            AppRecyclerViewAdapter mAppRecyclerViewAdapter = new AppRecyclerViewAdapter(view, appInfos);
-            view.getRecyclerView().setAdapter(mAppRecyclerViewAdapter);
-        }
+    public NetAppPresenter(NetAppContact.View view, BaseActivity context) {
+        this.view = view;
+        this.context = context;
     }
 
     private AppRecyclerViewAdapter.RecyclerViewClickListener mRecyclerViewClickListener = new AppRecyclerViewAdapter.RecyclerViewClickListener() {
@@ -68,11 +59,6 @@ public class MainPresenter implements MainContact.Presenter {
 
     public void fromNetToList() {
         view.getDownLoadAppsList();
-    }
-
-    @Override
-    public ArrayList<AppInfo> getAppsList() {
-        return view.getAppsList();
     }
 
     @Override
@@ -92,7 +78,6 @@ public class MainPresenter implements MainContact.Presenter {
 
     @Override
     public void getDownLoadAppsList() {
-        Loger.i("--- getDownLoadAppsList ---");
         Apimanager.getApiManager()
                 .getApiService()
                 .appList("709BW_ZH_82", "866830020046093", "dj_w790", "1.6.4", "1", "20")
@@ -122,7 +107,6 @@ public class MainPresenter implements MainContact.Presenter {
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Loger.i("--- onError ---");
                         mHandler.obtainMessage(FAIL, e).sendToTarget();
                     }
 
@@ -141,12 +125,12 @@ public class MainPresenter implements MainContact.Presenter {
                 case SUCCESS:
                     List<AppListResponse.DownloadAppInfo> appInfos = (List<AppListResponse.DownloadAppInfo>) msg.obj;
                     if (appInfos.size() > 0) {
-                        mLayoutManager = new LinearLayoutManager(view);
-                        view.getRecyclerView().setLayoutManager(mLayoutManager);
-                        view.getRecyclerView().addItemDecoration(new RecyclerViewDecoration(view, RecyclerViewDecoration.VERTICAL_LIST));
-                        AppRecyclerViewAdapter mAppRecyclerViewAdapter = new AppRecyclerViewAdapter(view, appInfos);
+                        mLayoutManager = new LinearLayoutManager(context);
+                        ((NetAppFragment) view).getRecyclerView().setLayoutManager(mLayoutManager);
+                        ((NetAppFragment) view).getRecyclerView().addItemDecoration(new RecyclerViewDecoration(context, RecyclerViewDecoration.VERTICAL_LIST));
+                        AppRecyclerViewAdapter mAppRecyclerViewAdapter = new AppRecyclerViewAdapter(context, appInfos);
                         mAppRecyclerViewAdapter.serRecyclerViewClickListener(mRecyclerViewClickListener);
-                        view.getRecyclerView().setAdapter(mAppRecyclerViewAdapter);
+                        ((NetAppFragment) view).getRecyclerView().setAdapter(mAppRecyclerViewAdapter);
                     }
                     break;
                 case FAIL:
@@ -156,9 +140,9 @@ public class MainPresenter implements MainContact.Presenter {
                 case DOWNLOAD:
                     AppListResponse.DownloadAppInfo info = (AppListResponse.DownloadAppInfo) msg.obj;
                     Intent intent = new Intent();
-                    intent.setClass(view, DialogActivity.class);
+                    intent.setClass(context, DialogActivity.class);
                     intent.putExtra("appinfo", info);
-                    view.startActivityForResult(intent, REQUEST_DOWNLOAD);
+                    ((NetAppFragment) view).startActivityForResult(intent, REQUEST_DOWNLOAD);
                     break;
             }
         }

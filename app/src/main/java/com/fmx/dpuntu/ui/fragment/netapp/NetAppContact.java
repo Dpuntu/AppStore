@@ -1,29 +1,21 @@
-package com.fmx.dpuntu.mvp;
+package com.fmx.dpuntu.ui.fragment.netapp;
 
 import android.content.Intent;
 
-import com.fmx.dpuntu.utils.AppInfo;
-
-import java.util.ArrayList;
-
 /**
- * Created on 2017/7/13.
+ * Created on 2017/7/26.
  *
  * @author dpuntu
  */
 
-public class MainContact {
+public class NetAppContact {
     public interface Presenter {
-        ArrayList<AppInfo> getAppsList();
-
         void onActivityResult(int requestCode, int resultCode, Intent data);
 
         void getDownLoadAppsList();
     }
 
     public interface View {
-        ArrayList<AppInfo> getAppsList();
-
         void getDownLoadAppsList();
     }
 }

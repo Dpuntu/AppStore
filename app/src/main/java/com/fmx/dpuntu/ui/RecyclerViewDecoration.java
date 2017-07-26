@@ -1,4 +1,4 @@
-package com.fmx.dpuntu.mvp;
+package com.fmx.dpuntu.ui;
 
 import android.content.Context;
 import android.content.res.TypedArray;
