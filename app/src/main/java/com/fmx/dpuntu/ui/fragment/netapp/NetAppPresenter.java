@@ -7,7 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-import com.fmx.dpuntu.api.ApiManager;
+import com.fmx.dpuntu.AppStoreApp;
 import com.fmx.dpuntu.api.AppListResponse;
 import com.fmx.dpuntu.api.Response;
 import com.fmx.dpuntu.ui.BaseActivity;
@@ -78,7 +78,9 @@ public class NetAppPresenter implements NetAppContract.Presenter {
 
     @Override
     public void getDownLoadAppsList() {
-        ApiManager.getApiManager()
+//        ApiManager.getApiManager()
+//                .getApiService()
+        AppStoreApp.getAppComponent()
                 .getApiService()
                 .appList("709BW_ZH_82", "866830020046093", "dj_w790", "1.6.4", "1", "20")
                 .subscribeOn(Schedulers.io())

@@ -15,3 +15,5 @@
 [butterknife-compiler:8.7.0](https://github.com/JakeWharton/butterknife)
 
 [okhttp:3.8.1](https://github.com/square/okhttp)
+
+[dagger2](https://github.com/square/dagger)
