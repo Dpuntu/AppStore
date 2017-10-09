@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="70dip">
+
+    <include
+        android:id="@+id/home_appstore"
+        layout="@layout/actionbar_appstore_home"/>
+
+    <include
+        android:id="@+id/normal_appstore"
+        layout="@layout/actionbar_appstore_normal"
+        android:visibility="gone"/>
+</RelativeLayout>

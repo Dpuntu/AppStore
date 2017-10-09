@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.seuic.app.store.view.ScrollHorizontallyTextView
+        android:id="@+id/actionbar_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:lines="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxWidth="@dimen/head_max_width"
+        android:scrollHorizontally="true"
+        android:textColor="@color/titleColor"
+        android:textSize="@dimen/activity_text_big"
+        tools:text="@string/app_name" />
+
+    <RelativeLayout
+        android:id="@+id/actionbar_left"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/actionbar_title">
+
+        <ImageView
+            android:id="@+id/actionbar_left_image"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
+            android:layout_centerVertical="true"
+            android:padding="8dip"
+            android:src="@mipmap/appstore_back" />
+
+        <TextView
+            android:id="@+id/actionbar_left_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="1dip"
+            android:layout_toRightOf="@id/actionbar_left_image"
+            android:gravity="center_vertical"
+            android:lines="1"
+            android:textColor="@color/titleColor"
+            android:textSize="@dimen/activity_text_small"
+            tools:text="@string/app_name" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/actionbar_right_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="10dip"
+        android:layout_toRightOf="@id/actionbar_title"
+        android:gravity="right|center_vertical"
+        android:lines="1"
+        android:textColor="@color/titleColor"
+        android:textSize="@dimen/activity_text_small"
+        tools:text="@string/app_name" />
+</RelativeLayout>

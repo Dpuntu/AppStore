@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/recycler_click"
+                android:paddingBottom="5dip"
+                android:paddingLeft="15dip"
+                android:paddingRight="20dip"
+                android:paddingTop="5dip">
+
+    <ImageView
+        android:id="@+id/search_history_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@mipmap/delete"/>
+
+    <TextView
+        android:id="@+id/search_history_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/search_history_delete"
+        android:gravity="center_vertical"
+        android:textColor="@color/summaryColor"
+        android:textSize="@dimen/recycle_summary"/>
+</RelativeLayout>

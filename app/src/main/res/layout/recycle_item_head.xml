@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="35dip"
+                android:background="@color/recycleHeadColor">
+
+    <TextView
+        android:id="@+id/recycle_item_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dip"
+        android:textColor="@color/summaryColor"
+        android:textSize="@dimen/recycle_title"/>
+
+    <LinearLayout
+        android:id="@+id/recycle_item_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingRight="10dip">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:text="@string/recycle_more"
+            android:textColor="@color/summaryColor"
+            android:textSize="@dimen/recycle_more"/>
+
+        <ImageView
+            android:layout_width="15dip"
+            android:layout_height="15dip"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:padding="2dip"
+            android:src="@mipmap/item_next"/>
+    </LinearLayout>
+
+
+</RelativeLayout>
