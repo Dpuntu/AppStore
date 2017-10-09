@@ -1,39 +1,104 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.fmx.dpuntu.mvp">
+          package="com.seuic.app.store">
 
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
-    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
-        android:name="com.fmx.dpuntu.AppStoreApp"
+        android:name=".AppStoreApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/app_store"
+        android:icon="@mipmap/app_store_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="com.fmx.dpuntu.ui.home.HomeActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar.FullScreen">
+
+        <service android:name=".ui.service.CacheCheckService"/>
+
+        <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.fmx.dpuntu.ui.dialog.DialogActivity"
-            android:theme="@style/Dialog"
-            />
-        <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-            App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
-    </application>
 
+        <activity android:name=".ui.activity.HomeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.HomeActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.DownLoadActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.DownLoadActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.SearchActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.UpdateActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.UpdateActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.activity.InstallActivity"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.InstallActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.AppTypeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.AppTypeActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.AppDetailActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.AppDetailActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.WebViewActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.WebViewActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <receiver android:name=".ui.receiver.NetChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".ui.receiver.AppInstalledReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED"/>
+                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
+
+                <data android:scheme="package"/>
+            </intent-filter>
+        </receiver>
+    </application>
 </manifest>

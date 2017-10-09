@@ -1,5 +1,23 @@
 <resources>
     <string name="app_name">应用市场</string>
-
-    <string name="add_tag">tag</string>
+    <string name="app_show">智慧终端&#160;&#160;智联你我</string>
+    <string name="app_ver_desc">版本说明</string>
+    <string name="app_license">江苏东大集成</string>
+    <string name="app_skip">跳过</string>
+    <string name="app_version">版本 %1$s</string>
+    <string name="app_size_version">%1$sM&#160;&#160;版本 %2$s</string>
+    <string name="app_version_size">版本 %1$s&#160;&#160;%2$sM</string>
+    <string name="act_back">返回</string>
+    <string name="act_update_title">应用更新</string>
+    <string name="act_update_all">全部更新</string>
+    <string name="act_install_set">安装管理</string>
+    <string name="act_download_set">下载管理</string>
+    <string name="act_app_detail">应用详情</string>
+    <string name="recycle_more">更多</string>
+    <string name="detail_screen_title">屏幕快照</string>
+    <string name="detail_desc_title">应用简介</string>
+    <string name="detail_version_desc_title">版本说明</string>
+    <string name="refresh_text"><u>加载失败 , 点我重试</u></string>
+    <string name="download_count">正在下载(%1$d)</string>
+    <string name="install">已安装的应用</string>
 </resources>

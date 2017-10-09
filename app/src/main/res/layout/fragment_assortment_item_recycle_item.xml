@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="90dip"
+                android:layout_height="wrap_content"
+                android:background="@drawable/recycler_click">
+    <!-- 父控件的 layout_width 需要根据屏幕适配，我们的机器是720宽，所以90正好 -->
+    <ImageView
+        android:id="@+id/assortment_item_image"
+        android:layout_width="55dip"
+        android:layout_height="55dip"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dip"
+        android:padding="5dip"
+        android:scaleType="fitXY"/>
+
+    <TextView
+        android:id="@+id/assortment_item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/assortment_item_image"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dip"
+        android:layout_marginTop="2dip"
+        android:gravity="center"
+        android:lines="1"
+        android:textColor="@color/titleColor"
+        android:textSize="@dimen/recycle_more"/>
+</RelativeLayout>
