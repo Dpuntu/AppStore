@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/common_bg">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/help_prefer_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dip"
+            android:background="@color/common_bg"
+            android:padding="5dip"
+            android:text="缓存设置"
+            android:textColor="@color/orange"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/common_touch_bg"/>
+
+        <RelativeLayout
+            android:id="@+id/help_prefer_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="10dip">
+
+            <Switch
+                android:id="@+id/help_prefer_1_switch"
+                android:layout_width="120dip"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:thumb="@drawable/thumb"
+                android:track="@drawable/track"/>
+
+            <TextView
+                android:id="@+id/help_prefer_1_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
+                android:layout_toLeftOf="@id/help_prefer_1_switch"
+                android:gravity="center_vertical"
+                android:text="自动清除缓存"
+                android:textSize="18sp"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/common_touch_bg"/>
+
+        <TextView
+            android:id="@+id/help_prefer_2_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center_vertical"
+            android:text="清除缓存"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/help_about_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/common_bg"
+            android:padding="5dip"
+            android:text="关于"
+            android:textColor="@color/orange"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/common_touch_bg"/>
+
+        <TextView
+            android:id="@+id/help_about_1_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center_vertical"
+            android:text="帮助和反馈"
+            android:textSize="18sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/common_touch_bg"/>
+
+        <TextView
+            android:id="@+id/help_about_2_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dip"
+            android:layout_marginLeft="15dip"
+            android:layout_marginRight="15dip"
+            android:layout_marginTop="10dip"
+            android:gravity="center_vertical"
+            android:text="关于应用市场"
+            android:textSize="18sp"/>
+    </LinearLayout>
+</ScrollView>

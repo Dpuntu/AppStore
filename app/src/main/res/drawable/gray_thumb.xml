@@ -3,18 +3,18 @@
        android:shape="rectangle">
 
     <size
-        android:width="16dip"
-        android:height="16dip"/>
-    <corners android:radius="8dip"/>
+        android:width="22dp"
+        android:height="22dp"/>
+    <corners android:radius="11dp"/>
 
 
     <!-- 变化率 -->
     <gradient
-        android:endColor="@color/appStoreColor"
-        android:startColor="@color/appStoreColor"/>
+        android:endColor="#eeeeee"
+        android:startColor="#eeeeee"/>
 
     <stroke
-        android:width="0.5dip"
+        android:width="1dp"
         android:color="#666666"/>
 
 </shape>

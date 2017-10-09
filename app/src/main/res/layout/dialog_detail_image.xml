@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<com.seuic.app.store.view.BannerView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="197dip"
-    android:layout_height="342dip"/>
