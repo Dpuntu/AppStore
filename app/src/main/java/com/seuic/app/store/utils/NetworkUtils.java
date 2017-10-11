@@ -324,8 +324,17 @@ public class NetworkUtils {
     }
 
     public enum NETTYPE {
+        /**
+         * 无线网络
+         */
         WIFI_NET,
+        /**
+         * 数据网络
+         */
         DATA_NET,
+        /**
+         * 未知或无网络
+         */
         NONE_NET
     }
 }

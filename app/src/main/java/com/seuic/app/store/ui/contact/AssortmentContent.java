@@ -7,7 +7,7 @@ package com.seuic.app.store.ui.contact;
  * @author dpuntu
  */
 
-public interface AssortmentContent extends FragmentBaseContent {
+public interface AssortmentContent {
     interface View extends FragmentBaseContent.View {
     }
 

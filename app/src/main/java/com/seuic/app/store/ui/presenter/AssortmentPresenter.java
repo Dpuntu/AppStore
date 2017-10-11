@@ -22,12 +22,11 @@ import io.reactivex.schedulers.Schedulers;
  * @author dpuntu
  */
 
-public class AssortmentPresenter implements AssortmentContent.Presenter {
-    private AssortmentContent.View mView;
+public class AssortmentPresenter extends BaseFragmentPresenter<AssortmentContent.View> implements AssortmentContent.Presenter {
     private boolean isRefresh = false;
 
     public AssortmentPresenter(AssortmentContent.View view) {
-        mView = view;
+        super(view);
     }
 
     @Override
@@ -76,7 +75,6 @@ public class AssortmentPresenter implements AssortmentContent.Presenter {
                 }
                 recycleObjectList.add(new RecycleObject(RecycleViewType.RECYCEL_DATA, recommendReceiveList));
             }
-
             if (isRefresh) {
                 mView.refreshRecycleView(recycleObjectList);
             } else {

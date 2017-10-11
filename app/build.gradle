@@ -29,6 +29,12 @@ android {
         }
     }
 
+    signingConfigs {
+        debug {
+            storeFile file('E:/seuic/work/TMS/Store/keystore/debug.keystore')
+        }
+    }
+
 }
 
 dependencies {

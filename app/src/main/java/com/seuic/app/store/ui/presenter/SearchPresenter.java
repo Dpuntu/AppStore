@@ -38,9 +38,9 @@ public class SearchPresenter implements SearchContact.Presenter {
     public void queryHistorySearch(String searchText) {
         List<SearchHistoryTable> searchHistoryTables = GreenDaoManager.getInstance().querySearchHistory();
         recycleObjects = new ArrayList<>();
-        recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE,
-                                             new RecycleTitleMoreBean("搜索历史", false, "")));
         if (searchHistoryTables != null && searchHistoryTables.size() > 0) {
+            recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE,
+                                                 new RecycleTitleMoreBean("搜索历史", false, "")));
             for (SearchHistoryTable historyTable : searchHistoryTables) {
                 recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA,
                                                      new RecycleSearchBean(historyTable.getAppName(),
@@ -48,7 +48,6 @@ public class SearchPresenter implements SearchContact.Presenter {
                                                                            historyTable.getSearchTime())));
             }
         }
-
         RxUtils.onErrorInterceptor(
                 ApiManager.getInstance()
                         .getService()

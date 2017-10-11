@@ -27,7 +27,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/app_detail_screen_gallery"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"/>
 
         <TextView
             android:id="@+id/app_detail_desc_title"
@@ -43,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dip"
+            android:layout_marginLeft="10dip"
             android:layout_marginTop="8dip"
             android:textColor="@color/detailDescColor"
             android:textSize="@dimen/recycle_small"/>
@@ -60,6 +63,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="18dip"
+            android:layout_marginLeft="10dip"
             android:layout_marginTop="8dip"
             android:textColor="@color/detailDescColor"
             android:textSize="@dimen/recycle_small"/>

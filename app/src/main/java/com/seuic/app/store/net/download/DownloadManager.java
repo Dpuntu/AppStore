@@ -11,6 +11,7 @@ import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.greendao.RecommendReceiveTable;
 import com.seuic.app.store.install.InstallAppManager;
 import com.seuic.app.store.listener.DownloadCountListener;
+import com.seuic.app.store.listener.UpdateCountListener;
 import com.seuic.app.store.net.download.task.DownloadPoolManager;
 import com.seuic.app.store.net.download.task.DownloadTask;
 import com.seuic.app.store.net.download.task.OkhttpDownloader;
@@ -181,7 +182,35 @@ public class DownloadManager {
     /**
      * 初始化的时候，从数据库读到数据
      */
-    public void addDownloadingMap(DownloadingBean downloadingBean) {
+    public void checkDownloadingMap() {
+        List<DownloadTaskTable> downloadTaskTables = GreenDaoManager.getInstance().queryDownloadTaskTable();
+        if (downloadTaskTables == null) {
+            return;
+        }
+        for (DownloadTaskTable downloadTaskTable : downloadTaskTables) {
+            RecommendReceiveTable recommendReceiveTable = GreenDaoManager.getInstance().queryRecommendReceive(downloadTaskTable.getTaskId());
+            if (recommendReceiveTable == null) {
+                continue;
+            }
+            if (recommendReceiveTable.getPackageName().equals(AppStoreUtils.getAppPackageName())) {
+                GreenDaoManager.getInstance().removeDownloadTaskTable(recommendReceiveTable.getAppVersionId());
+                GreenDaoManager.getInstance().removeRecommendReceiveTable(recommendReceiveTable.getAppVersionId());
+                continue;
+            }
+            DownloadingBean mDownloadingBean = new DownloadingBean(recommendReceiveTable.getAppName(),
+                                                                   downloadTaskTable.getTaskId(),
+                                                                   downloadTaskTable.getLoadedLength(),
+                                                                   downloadTaskTable.getTotalSize(),
+                                                                   recommendReceiveTable.getAppIconName(),
+                                                                   recommendReceiveTable.getPackageName());
+            addDownloadingMap(mDownloadingBean);
+        }
+    }
+
+    /**
+     * 添加到下载队列中
+     */
+    private void addDownloadingMap(DownloadingBean downloadingBean) {
         if (mDownloaderMap.containsKey(downloadingBean.getTaskId())) {
             mDownloadingMap.put(downloadingBean.getTaskId(), mDownloaderMap.get(downloadingBean.getTaskId()));
         } else {
@@ -190,16 +219,11 @@ public class DownloadManager {
                 GreenDaoManager.getInstance().removeDownloadTaskTable(downloadingBean.getTaskId());
                 return;
             }
-            add2OkhttpDownloaderMap(new RecommendReceive(recommendReceiveTable.getAppName(),
-                                                         recommendReceiveTable.getPackageName(),
-                                                         recommendReceiveTable.getAppSize(),
-                                                         recommendReceiveTable.getAppVersion(),
-                                                         recommendReceiveTable.getAppVersionId(),
-                                                         recommendReceiveTable.getAppDesc(),
-                                                         recommendReceiveTable.getMD5(),
-                                                         recommendReceiveTable.getDownloadName(),
-                                                         recommendReceiveTable.getAppIconName()));
+            add2OkhttpDownloaderMap(GreenDaoManager.getInstance().table2RecommendReceive(recommendReceiveTable));
             mDownloadingMap.put(downloadingBean.getTaskId(), mDownloaderMap.get(downloadingBean.getTaskId()));
+        }
+        if (mDownloadCountListener != null) {
+            mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
         }
     }
 
@@ -223,7 +247,9 @@ public class DownloadManager {
         }
 
         mDownloadingMap.put(taskId, mDownloaderMap.get(taskId));
-        mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
+        if (mDownloadCountListener != null) {
+            mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
+        }
 
         if (state == DownloadState.STATE_NORMAL
                 || state == DownloadState.STATE_PAUSE
@@ -320,14 +346,21 @@ public class DownloadManager {
             Loger.e("notifyDownloadUpdate don't have " + taskId + " task");
         } else {
             DownloadBean mDownloadBean = mDownloadingMap.get(taskId).getDownloadBean();
+            // AppStoreNotificationManager.getInstance().showDownloadNotification(mRecommendReceiveMap.get(taskId), mDownloadBean);
             mDownloadBean.notifyObservers(mDownloadBean);
             switch (mDownloadBean.getLoadState()) {
-                case STATE_INSTALL_FAIL:
                 case STATE_INSTALL_SUCCESS:
+                    GreenDaoManager.getInstance().removeCheckUpdateAppsTable(taskId);
+                    if (mUpdateCountListener != null) {
+                        mUpdateCountListener.onUpdateCountChange();
+                    }
+                case STATE_INSTALL_FAIL:
                     GreenDaoManager.getInstance().removeDownloadTaskTable(taskId);
                     GreenDaoManager.getInstance().removeRecommendReceiveTable(taskId);
-                    DownloadPoolManager.getInstance().remove(mDownloadingMap.get(taskId).getDownloadTask());
-                    mDownloadingMap.remove(taskId);
+                    if (mDownloadingMap.containsKey(taskId)) {
+                        DownloadPoolManager.getInstance().remove(mDownloadingMap.get(taskId).getDownloadTask());
+                        mDownloadingMap.remove(taskId);
+                    }
                     FileUtils.deleteFile(mDownloadBean.getSavePath() + mDownloadBean.getFileName());
                     break;
                 case STATE_FINISH:
@@ -339,9 +372,10 @@ public class DownloadManager {
                         notifyDownloadUpdate(taskId);
                     }
                     break;
-
             }
-            mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
+            if (mDownloadCountListener != null) {
+                mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
+            }
         }
     }
 
@@ -375,8 +409,19 @@ public class DownloadManager {
     }
 
     private DownloadCountListener mDownloadCountListener;
+    private UpdateCountListener mUpdateCountListener;
 
+    /**
+     * 当前下载任务的数量
+     */
     public void setDownloadCountListener(DownloadCountListener mDownloadCountListener) {
         this.mDownloadCountListener = mDownloadCountListener;
+    }
+
+    /**
+     * 当前更新任务的数量
+     */
+    public void setUpdateCountListener(UpdateCountListener mUpdateCountListener) {
+        this.mUpdateCountListener = mUpdateCountListener;
     }
 }

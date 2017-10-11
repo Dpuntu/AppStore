@@ -52,6 +52,7 @@ public class GreenDaoManager {
         mTypeAppsTable.setAppSize(recommendReceive.getAppSize());
         mTypeAppsTable.setAppVersion(recommendReceive.getAppVersion());
         mTypeAppsTable.setAppVersionId(recommendReceive.getAppVersionId());
+        mTypeAppsTable.setAppVersionDesc(recommendReceive.getAppVersionDesc());
         mTypeAppsTable.setAppDesc(recommendReceive.getAppDesc());
         mTypeAppsTable.setMD5(recommendReceive.getMD5());
         mTypeAppsTable.setDownloadName(recommendReceive.getDownloadName());
@@ -81,13 +82,13 @@ public class GreenDaoManager {
         mRecommendReceiveTable.setAppSize(recommendReceive.getAppSize());
         mRecommendReceiveTable.setAppVersion(recommendReceive.getAppVersion());
         mRecommendReceiveTable.setAppVersionId(recommendReceive.getAppVersionId());
+        mRecommendReceiveTable.setAppVersionDesc(recommendReceive.getAppVersionDesc());
         mRecommendReceiveTable.setAppDesc(recommendReceive.getAppDesc());
         mRecommendReceiveTable.setMD5(recommendReceive.getMD5());
         mRecommendReceiveTable.setDownloadName(recommendReceive.getDownloadName());
         mRecommendReceiveTable.setAppIconName(recommendReceive.getAppIconName());
         mRecommendReceiveTableDao.insertOrReplaceInTx(mRecommendReceiveTable);
     }
-
 
     public void insertCheckUpdateAppsTableDao(RecommendReceive recommendReceive) {
         CheckUpdateAppsTable mCheckUpdateAppsTable = new CheckUpdateAppsTable();
@@ -96,6 +97,7 @@ public class GreenDaoManager {
         mCheckUpdateAppsTable.setAppSize(recommendReceive.getAppSize());
         mCheckUpdateAppsTable.setAppVersion(recommendReceive.getAppVersion());
         mCheckUpdateAppsTable.setAppVersionId(recommendReceive.getAppVersionId());
+        mCheckUpdateAppsTable.setAppVersionDesc(recommendReceive.getAppVersionDesc());
         mCheckUpdateAppsTable.setAppDesc(recommendReceive.getAppDesc());
         mCheckUpdateAppsTable.setMD5(recommendReceive.getMD5());
         mCheckUpdateAppsTable.setDownloadName(recommendReceive.getDownloadName());
@@ -104,6 +106,8 @@ public class GreenDaoManager {
     }
 
     public void insertCheckUpdateAppsTableDao(List<RecommendReceive> recommendReceiveList) {
+        // 添加任务前，删除之前所有的数据
+        removeCheckUpdateAppsTableAll();
         for (RecommendReceive recommendReceive : recommendReceiveList) {
             insertCheckUpdateAppsTableDao(recommendReceive);
         }
@@ -142,6 +146,7 @@ public class GreenDaoManager {
         mRecommendReceiveTable.setAppSize(recommendReceive.getAppSize());
         mRecommendReceiveTable.setAppVersion(recommendReceive.getAppVersion());
         mRecommendReceiveTable.setAppVersionId(recommendReceive.getAppVersionId());
+        mRecommendReceiveTable.setAppVersionDesc(recommendReceive.getAppVersionDesc());
         mRecommendReceiveTable.setAppDesc(recommendReceive.getAppDesc());
         mRecommendReceiveTable.setMD5(recommendReceive.getMD5());
         mRecommendReceiveTable.setDownloadName(recommendReceive.getDownloadName());
@@ -152,6 +157,7 @@ public class GreenDaoManager {
     public DownloadTaskTable queryDownloadTask(String taskId) {
         return mDownloadTaskTableDao.queryBuilder().where(DownloadTaskTableDao.Properties.TaskId.eq(taskId)).unique();
     }
+
 
     public RecommendReceiveTable queryRecommendReceive(String taskId) {
         return mRecommendReceiveTableDao.queryBuilder().where(RecommendReceiveTableDao.Properties.AppVersionId.eq(taskId)).unique();
@@ -189,7 +195,6 @@ public class GreenDaoManager {
         }
     }
 
-
     public SearchHistoryTable querySearchHistory(String appName) {
         return mSearchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.AppName.eq(appName)).unique();
     }
@@ -217,7 +222,10 @@ public class GreenDaoManager {
     }
 
     public void removeCheckUpdateAppsTable(String taskId) {
-        mCheckUpdateAppsTableDao.delete(queryCheckUpdateApp(taskId));
+        CheckUpdateAppsTable mCheckUpdateAppsTable = queryCheckUpdateApp(taskId);
+        if (mCheckUpdateAppsTable != null) {
+            mCheckUpdateAppsTableDao.delete(mCheckUpdateAppsTable);
+        }
     }
 
     public void removeDownloadTaskTableAll() {
@@ -228,8 +236,28 @@ public class GreenDaoManager {
         mRecommendReceiveTableDao.deleteAll();
     }
 
+    public void removeCheckUpdateAppsTableAll() {
+        mCheckUpdateAppsTableDao.deleteAll();
+    }
+
     public void removeTypeAppsTableAll() {
         mTypeAppsTableDao.deleteAll();
     }
 
+    public RecommendReceive table2RecommendReceive(RecommendReceiveTable recommendReceiveTable) {
+        if (recommendReceiveTable != null) {
+            return new RecommendReceive(recommendReceiveTable.getAppName(),
+                                        recommendReceiveTable.getPackageName(),
+                                        recommendReceiveTable.getAppSize(),
+                                        recommendReceiveTable.getAppVersion(),
+                                        recommendReceiveTable.getAppVersionId(),
+                                        recommendReceiveTable.getAppVersionDesc(),
+                                        recommendReceiveTable.getAppDesc(),
+                                        recommendReceiveTable.getMD5(),
+                                        recommendReceiveTable.getDownloadName(),
+                                        recommendReceiveTable.getAppIconName());
+        } else {
+            return null;
+        }
+    }
 }

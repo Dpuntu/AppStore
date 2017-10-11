@@ -2,12 +2,14 @@ package com.seuic.app.store.view;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.R;
@@ -34,6 +37,8 @@ import java.util.List;
  * @author dpuntu
  *         <p>
  *         图片轮播图
+ *         <p>
+ *         参考:https://github.com/byblinkdagger/BannerView
  */
 
 public class BannerView extends FrameLayout {
@@ -195,33 +200,57 @@ public class BannerView extends FrameLayout {
             mLinearPosition.removeAllViews();
             return;
         }
-        if (viewList != null && viewList.size() != 0) {
-            if (mLinearPosition.getChildCount() != viewSize) {
-                int diffCnt = mLinearPosition.getChildCount() - viewSize;
-                boolean needAdd = diffCnt < 0;
-                diffCnt = Math.abs(diffCnt);
-                for (int i = 0; i < diffCnt; i++) {
-                    if (needAdd) {
-                        ImageView img = new ImageView(getContext());
-                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        layoutParams.rightMargin = getResources().getDimensionPixelOffset(R.dimen.dimen_9dp);
-                        img.setLayoutParams(layoutParams);
-                        img.setBackgroundResource(R.mipmap.banner_point);
-                        mLinearPosition.addView(img);
-                    } else {
-                        mLinearPosition.removeViewAt(0);
+        if (viewList == null || viewList.size() <= 0) {
+            return;
+        }
+        int curPos = mViewPager.getCurrentItem();
+        switch (imageType) {
+            case AppStoreUtils.AppStoreImageType.AD:
+                if (mLinearPosition.getChildCount() != viewSize) {
+                    int diffCnt = mLinearPosition.getChildCount() - viewSize;
+                    boolean needAdd = diffCnt < 0;
+                    diffCnt = Math.abs(diffCnt);
+                    for (int i = 0; i < diffCnt; i++) {
+                        if (needAdd) {
+                            ImageView img = new ImageView(getContext());
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                            layoutParams.rightMargin = getResources().getDimensionPixelOffset(R.dimen.dimen_9dp);
+                            img.setLayoutParams(layoutParams);
+                            img.setBackgroundResource(R.mipmap.banner_point);
+                            mLinearPosition.addView(img);
+                        } else {
+                            mLinearPosition.removeViewAt(0);
+                        }
                     }
                 }
-            }
-            int curPos = mViewPager.getCurrentItem();
-            for (int i = 0; i < mLinearPosition.getChildCount(); i++) {
-                if (i == (curPos % viewSize)) {
-                    mLinearPosition.getChildAt(i).setBackgroundResource(R.mipmap.banner_point_select);
-                } else {
-                    mLinearPosition.getChildAt(i).setBackgroundResource(R.mipmap.banner_point);
+
+                for (int i = 0; i < mLinearPosition.getChildCount(); i++) {
+                    if (i == (curPos % viewSize)) {
+                        mLinearPosition.getChildAt(i).setBackgroundResource(R.mipmap.banner_point_select);
+                    } else {
+                        mLinearPosition.getChildAt(i).setBackgroundResource(R.mipmap.banner_point);
+                    }
                 }
-            }
+                break;
+            case AppStoreUtils.AppStoreImageType.SCREEN:
+                if (mLinearPosition.getChildCount() <= 0) {
+                    TextView text = new TextView(getContext());
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    text.setLayoutParams(layoutParams);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        text.setTextColor(getContext().getResources().getColor(R.color.white, null));
+                    } else {
+                        text.setTextColor(getContext().getResources().getColor(R.color.white));
+                    }
+                    text.setTextSize(TypedValue.COMPLEX_UNIT_SP, getContext().getResources().getDimension(R.dimen.dialog_images_position));
+                    text.setText((curPos + 1) + "/" + viewSize);
+                    mLinearPosition.addView(text);
+                } else {
+                    ((TextView) mLinearPosition.getChildAt(0)).setText((curPos + 1) + "/" + viewSize);
+                }
+                break;
         }
     }
 

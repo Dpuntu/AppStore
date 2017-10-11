@@ -21,6 +21,8 @@ public class RecommendReceive implements Serializable {
     String appVersion;
     @SerializedName("app_version_id")
     String appVersionId;
+    @SerializedName("app_version_desc")
+    String appVersionDesc;
     @SerializedName("app_desc")
     String appDesc;
     @SerializedName("app_md5")
@@ -32,13 +34,15 @@ public class RecommendReceive implements Serializable {
 
     public RecommendReceive(String appName, String packageName,
                             String appSize, String appVersion,
-                            String appVersionId, String appDesc, String MD5,
+                            String appVersionId, String appVersionDesc,
+                            String appDesc, String MD5,
                             String downloadName, String appIconName) {
         this.appName = appName;
         this.packageName = packageName;
         this.appSize = appSize;
         this.appVersion = appVersion;
         this.appVersionId = appVersionId;
+        this.appVersionDesc = appVersionDesc;
         this.appDesc = appDesc;
         this.MD5 = MD5;
         this.downloadName = downloadName;
@@ -83,6 +87,14 @@ public class RecommendReceive implements Serializable {
 
     public void setAppVersionId(String appVersionId) {
         this.appVersionId = appVersionId;
+    }
+
+    public String getAppVersionDesc() {
+        return appVersionDesc;
+    }
+
+    public void setAppVersionDesc(String appVersionDesc) {
+        this.appVersionDesc = appVersionDesc;
     }
 
     public String getAppDesc() {

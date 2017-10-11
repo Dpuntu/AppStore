@@ -6,16 +6,12 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 
 import com.seuic.app.store.R;
-import com.seuic.app.store.greendao.DownloadTaskTable;
-import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.listener.DownloadCountListener;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.ui.contact.HomeContact;
 import com.seuic.app.store.ui.presenter.HomePresenter;
 import com.seuic.app.store.view.RedPointView;
 import com.seuic.app.store.view.ViewPagerIndicator;
-
-import java.util.List;
 
 import butterknife.BindView;
 
@@ -45,10 +41,7 @@ public class HomeActivity extends HomeBaseActivity implements HomeContact.View, 
     @Override
     protected void onStart() {
         super.onStart();
-        List<DownloadTaskTable> downloadTaskTableList = GreenDaoManager.getInstance().queryDownloadTaskTable();
-        if (downloadTaskTableList != null) {
-            updateResetRedPoint(downloadTaskTableList.size());
-        }
+        updateResetRedPoint(mPresenter.checkDownloadCount());
     }
 
     private void updateResetRedPoint(int count) {

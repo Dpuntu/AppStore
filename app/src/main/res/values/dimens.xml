@@ -15,4 +15,9 @@
     <dimen name="recycle_small">10sp</dimen>
 
     <dimen name="dimen_9dp">9dip</dimen>
+
+    <dimen name="dialog_images_w">296dip</dimen>
+    <dimen name="dialog_images_h">513dip</dimen>
+
+    <dimen name="dialog_images_position">10sp</dimen>
 </resources>

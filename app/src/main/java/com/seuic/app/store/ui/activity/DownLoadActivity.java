@@ -93,7 +93,6 @@ public class DownLoadActivity extends DefaultBaseActivity implements DownLoadCon
             mDownLoadAdapter = null;
             mRecyclerView.setAdapter(null);
             isRefresh = true;
-            System.gc();
         }
         updateRecycleView(recycleObjects);
     }

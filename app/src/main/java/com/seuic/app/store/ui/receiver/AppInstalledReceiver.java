@@ -21,11 +21,9 @@ import java.util.List;
 public class AppInstalledReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-
         if (intent.getAction().equals("android.intent.action.PACKAGE_ADDED")) {
             AppStoreApplication.getApp().setAppInfos(AppsUtils.getUserAppInfos(AppStoreApplication.getApp()));
         }
-
         if (intent.getAction().equals("android.intent.action.PACKAGE_REMOVED")) {
             String packageName = intent.getDataString();
             List<AppInfo> appInfos = AppStoreApplication.getApp().getAppInfos();

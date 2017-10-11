@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="320dp"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@drawable/hint_dialog"
               android:orientation="vertical"
-              android:paddingTop="16dp">
+              android:paddingTop="12dip">
 
     <TextView
         android:id="@+id/hint_title"
         android:layout_width="match_parent"
-        android:layout_height="40dip"
+        android:layout_height="50dip"
         android:gravity="center"
         android:paddingBottom="5dip"
         android:text="新任务提示"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/updateTitleColor"
         android:textSize="@dimen/activity_text_big"/>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="0.1dip"
+        android:layout_height="0.5dip"
         android:layout_marginBottom="5dip"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="@color/appStoreBgColor"/>
 
     <TextView
         android:id="@+id/hint_content"
         android:layout_width="match_parent"
-        android:layout_height="40dip"
-        android:layout_marginLeft="20dip"
-        android:layout_marginRight="20dip"
-        android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/activity_text_big"/>
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingLeft="50dip"
+        android:paddingRight="50dip"
+        android:textColor="@color/summaryColor"
+        android:textSize="@dimen/activity_text_small"/>
 
     <View
         android:id="@+id/dialog_view"
         android:layout_width="match_parent"
-        android:layout_height="0.1dip"
+        android:layout_height="0.5dip"
         android:layout_marginTop="5dip"
-        android:background="@color/colorPrimaryDark"/>
+        android:background="@color/appStoreBgColor"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -48,7 +48,7 @@
             android:layout_width="1dip"
             android:layout_height="40dip"
             android:layout_centerInParent="true"
-            android:background="@color/colorPrimaryDark"/>
+            android:background="@color/appStoreBgColor"/>
 
         <TextView
             android:id="@+id/dialog_button1"
@@ -59,8 +59,8 @@
             android:layout_toLeftOf="@id/line"
             android:gravity="center"
             android:text="取消"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/activity_text_small"/>
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/activity_text_big"/>
 
         <TextView
             android:id="@+id/dialog_button2"
@@ -71,8 +71,8 @@
             android:layout_toRightOf="@id/line"
             android:gravity="center"
             android:text="确定"
-            android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/activity_text_small"/>
+            android:textColor="@color/mainColor"
+            android:textSize="@dimen/activity_text_big"/>
     </RelativeLayout>
 
 </LinearLayout>

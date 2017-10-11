@@ -35,7 +35,7 @@ public class ManagerPresenter implements ManagerContent.Presenter {
     private ManagerContent.View mView;
     private boolean isRefresh = false;
     private RecommendReceive recommendReceiveSelf;
-    private List<RecommendReceive> mRecommendReceiveList;
+    private List<RecommendReceive> mRecommendReceiveList = new ArrayList<>();
 
     public ManagerPresenter(ManagerContent.View view) {
         mView = view;
@@ -53,37 +53,6 @@ public class ManagerPresenter implements ManagerContent.Presenter {
                 .subscribe(new CheckUpdateObserver("CheckUpdate"));
     }
 
-    @Override
-    public void checkGreenDao4Self() {
-        List<CheckUpdateAppsTable> checkUpdateAppsTableList = GreenDaoManager.getInstance().queryCheckUpdateApps();
-        boolean isUpdate = false;
-        if (mRecommendReceiveList != null) {
-            mRecommendReceiveList.clear();
-            mRecommendReceiveList = new ArrayList<>();
-        }
-        for (CheckUpdateAppsTable checkUpdateAppsTable : checkUpdateAppsTableList) {
-            RecommendReceive recommendReceive = new RecommendReceive(checkUpdateAppsTable.getAppName(),
-                                                                     checkUpdateAppsTable.getPackageName(),
-                                                                     checkUpdateAppsTable.getAppSize(),
-                                                                     checkUpdateAppsTable.getAppVersion(),
-                                                                     checkUpdateAppsTable.getAppVersionId(),
-                                                                     checkUpdateAppsTable.getAppDesc(),
-                                                                     checkUpdateAppsTable.getMD5(),
-                                                                     checkUpdateAppsTable.getDownloadName(),
-                                                                     checkUpdateAppsTable.getAppIconName());
-            if (checkUpdateAppsTable.getPackageName().equals(AppStoreUtils.getAppPackageName())) {
-                isUpdate = true;
-                mView.updateSelf(recommendReceive);
-                updateAllApp();
-                break;
-            }
-            mRecommendReceiveList.add(recommendReceive);
-        }
-
-        if (!isUpdate) {
-            mView.updateSelf(null);
-        }
-    }
 
     private class CheckUpdateObserver extends RxUtils.ResponseObserver<List<RecommendReceive>> {
         CheckUpdateObserver(String observerName) {
@@ -92,40 +61,42 @@ public class ManagerPresenter implements ManagerContent.Presenter {
 
         @Override
         public void onSuccess(List<RecommendReceive> recommendReceives) {
+            if (mRecommendReceiveList != null) {
+                mRecommendReceiveList.clear();
+            }
             boolean isUpdateSelf = false;
-            if (recommendReceives != null) {
+            if (recommendReceives == null || recommendReceives.size() <= 0) {
+                checkRefresh("", false, isRefresh);
+            } else {
                 for (RecommendReceive recommendReceive : recommendReceives) {
                     if (recommendReceive.getPackageName().equals(AppStoreUtils.getAppPackageName())) {
                         isUpdateSelf = true;
                         recommendReceiveSelf = recommendReceive;
+                        continue;
                     }
+                    mRecommendReceiveList.add(recommendReceive);
                 }
-                if (recommendReceives.size() <= 0) {
-                    checkRefresh("", isUpdateSelf, isRefresh);
-                } else {
-                    checkRefresh(recommendReceives.size() + "", isUpdateSelf, isRefresh);
-                }
+                checkRefresh(recommendReceives.size() + "", isUpdateSelf, isRefresh);
             }
-            if (mRecommendReceiveList != null) {
-                mRecommendReceiveList.clear();
-                mRecommendReceiveList = null;
-            }
-            mRecommendReceiveList = recommendReceives;
             GreenDaoManager.getInstance().insertCheckUpdateAppsTableDao(recommendReceives);
         }
 
         @Override
         public void onError(String errorMsg) {
+            if (mRecommendReceiveList != null) {
+                mRecommendReceiveList.clear();
+            }
             checkRefresh("", false, isRefresh);
+            GreenDaoManager.getInstance().removeCheckUpdateAppsTableAll();
         }
     }
 
     private void checkRefresh(String updateCount, boolean isUpdateSelf, boolean isRefresh) {
+        updateAllApp();
+
         if (isUpdateSelf) {
             updateSelf(recommendReceiveSelf);
         }
-
-        updateAllApp();
 
         if (isRefresh) {
             mView.refreshView(updateCount, isUpdateSelf ? "new" : "");
@@ -145,8 +116,8 @@ public class ManagerPresenter implements ManagerContent.Presenter {
 
     public void updateSelf(final RecommendReceive recommendReceive) {
         DialogManager.getInstance()
-                .showHintDialog(recommendReceive.getAppName() + "版本更新提示",
-                                recommendReceive.getAppDesc(),
+                .showHintDialog(recommendReceive.getAppName() + "更新提示",
+                                recommendReceive.getAppVersionDesc(),
                                 new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
@@ -165,14 +136,50 @@ public class ManagerPresenter implements ManagerContent.Presenter {
 
     // wifi环境自动更新判断
     private void updateAllApp() {
-        if (mRecommendReceiveList != null &&
-                mRecommendReceiveList.size() > 0 &&
-                (SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO, false)) &&
-                NetworkUtils.getNetType() == NetworkUtils.NETTYPE.WIFI_NET) {
+        if (mRecommendReceiveList != null
+                && mRecommendReceiveList.size() > 0
+                && SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO, false)
+                && NetworkUtils.getNetType() == NetworkUtils.NETTYPE.WIFI_NET) {
             for (RecommendReceive recommendReceive : mRecommendReceiveList) {
                 DownloadManager.getInstance().add2OkhttpDownloaderMap(recommendReceive);
                 DownloadManager.getInstance().start(recommendReceive.getAppVersionId());
             }
+        }
+    }
+
+    @Deprecated
+    @Override
+    public void checkGreenDao4Self() {
+        List<CheckUpdateAppsTable> checkUpdateAppsTableList = GreenDaoManager.getInstance().queryCheckUpdateApps();
+        boolean isUpdateSelf = false;
+        if (mRecommendReceiveList != null) {
+            mRecommendReceiveList.clear();
+        }
+        for (CheckUpdateAppsTable checkUpdateAppsTable : checkUpdateAppsTableList) {
+            RecommendReceive recommendReceive = new RecommendReceive(checkUpdateAppsTable.getAppName(),
+                                                                     checkUpdateAppsTable.getPackageName(),
+                                                                     checkUpdateAppsTable.getAppSize(),
+                                                                     checkUpdateAppsTable.getAppVersion(),
+                                                                     checkUpdateAppsTable.getAppVersionId(),
+                                                                     checkUpdateAppsTable.getAppVersionDesc(),
+                                                                     checkUpdateAppsTable.getAppDesc(),
+                                                                     checkUpdateAppsTable.getMD5(),
+                                                                     checkUpdateAppsTable.getDownloadName(),
+                                                                     checkUpdateAppsTable.getAppIconName());
+            if (checkUpdateAppsTable.getPackageName().equals(AppStoreUtils.getAppPackageName())) {
+                isUpdateSelf = true;
+                recommendReceiveSelf = recommendReceive;
+                continue;
+            }
+            mRecommendReceiveList.add(recommendReceive);
+        }
+
+        updateAllApp();
+
+        if (!isUpdateSelf) {
+            mView.updateSelf(null);
+        } else {
+            mView.updateSelf(recommendReceiveSelf);
         }
     }
 }

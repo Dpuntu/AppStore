@@ -21,6 +21,8 @@ public class SpUtils {
 
     public static final String SP_AD_MSG = "ad_msg";
 
+    public static final String SP_DOWN_COUNT = "down_count";
+
     public static final String SP_NET = "net_type";
 
     private SharedPreferences mPreferences;

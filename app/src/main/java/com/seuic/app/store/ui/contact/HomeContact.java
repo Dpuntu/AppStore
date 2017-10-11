@@ -15,5 +15,7 @@ public interface HomeContact {
 
     interface Presenter {
         void initHomeFragments();
+
+        int checkDownloadCount();
     }
 }

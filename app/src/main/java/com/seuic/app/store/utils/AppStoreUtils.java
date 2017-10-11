@@ -38,11 +38,14 @@ public class AppStoreUtils {
      */
     public static final String MD5_KEY = "pkh6pvqaw0l1ryrvnikan38iecxkdfew";
 
-
     /**
      * AppStore 请求地址
      * http://192.168.119.71:8766/apk/
      * http://192.168.10.179:8766/apk/
+     *
+     * AppStore 管理地址
+     * http://192.168.10.179:9666/index.html#/Login
+     * root@root.com 123456
      */
     public static final String APPSTORE_BASE_URL = "http://192.168.10.179:8766/apk/";
 

@@ -34,7 +34,7 @@ public class DetailImageDialog extends Dialog {
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_detail_image, null, false);
         this.setContentView(dialogView);
         this.setCanceledOnTouchOutside(false);
-        mBannerView = (BannerView) dialogView;
+        mBannerView = (BannerView) dialogView.findViewById(R.id.dialog_images);
     }
 
     public void initBannerView(int position, List<RecycleObject> mRecycleObjectList) {

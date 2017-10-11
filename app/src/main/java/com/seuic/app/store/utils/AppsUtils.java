@@ -143,6 +143,9 @@ public class AppsUtils {
 
 
     public static int openApp(String packageName) {
+        if (packageName.equals(AppStoreUtils.getAppPackageName())) {
+            return -2;
+        }
         try {
             Intent intent = AppStoreApplication.getApp().getPackageManager().getLaunchIntentForPackage(packageName);
             AppStoreApplication.getApp().startActivity(intent);

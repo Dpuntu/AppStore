@@ -21,7 +21,7 @@ public class AppDetailReceive implements Serializable {
     String appVersion;
     @SerializedName("app_version_id")
     String appVersionId;
-    @SerializedName("app_version_id_desc")
+    @SerializedName("getApp_version_desc")
     String appVersionIdDesc;
     @SerializedName("app_desc")
     String appDesc;

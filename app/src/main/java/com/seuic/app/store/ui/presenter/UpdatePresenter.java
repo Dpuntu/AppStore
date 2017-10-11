@@ -1,5 +1,7 @@
 package com.seuic.app.store.ui.presenter;
 
+import android.view.View;
+
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
 import com.seuic.app.store.bean.RecycleViewType;
@@ -8,7 +10,10 @@ import com.seuic.app.store.greendao.CheckUpdateAppsTable;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.ui.contact.UpdateContact;
+import com.seuic.app.store.ui.dialog.DialogManager;
 import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.NetworkUtils;
+import com.seuic.app.store.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +46,7 @@ public class UpdatePresenter implements UpdateContact.Presenter {
                                                                          checkUpdateAppsTable.getAppSize(),
                                                                          checkUpdateAppsTable.getAppVersion(),
                                                                          checkUpdateAppsTable.getAppVersionId(),
+                                                                         checkUpdateAppsTable.getAppVersionDesc(),
                                                                          checkUpdateAppsTable.getAppDesc(),
                                                                          checkUpdateAppsTable.getMD5(),
                                                                          checkUpdateAppsTable.getDownloadName(),
@@ -54,7 +60,38 @@ public class UpdatePresenter implements UpdateContact.Presenter {
     }
 
     @Override
-    public void updateAllApps(List<RecommendReceive> recommendReceives) {
+    public void updateAllApps(final List<RecommendReceive> recommendReceives) {
+        NetworkUtils.NETTYPE netType = NetworkUtils.getNetType();
+        switch (netType) {
+            case NONE_NET:
+                ToastUtils.showToast("请检查网络链接是否正常");
+                break;
+            case DATA_NET:
+                DialogManager.getInstance()
+                        .showHintDialog("下载提示",
+                                        "正在使用数据连接是否继续下载？",
+                                        new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                DialogManager.getInstance().dismissHintDialog();
+                                                downloadAllApps(recommendReceives);
+                                            }
+                                        },
+                                        new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                DialogManager.getInstance().dismissHintDialog();
+                                            }
+                                        });
+                break;
+            case WIFI_NET:
+                downloadAllApps(recommendReceives);
+                break;
+        }
+    }
+
+    private void downloadAllApps(List<RecommendReceive> recommendReceives) {
+        DialogManager.getInstance().dismissHintDialog();
         if (recommendReceives != null && recommendReceives.size() > 0) {
             for (RecommendReceive recommendReceive : recommendReceives) {
                 DownloadManager.getInstance().start(recommendReceive.getAppVersionId());

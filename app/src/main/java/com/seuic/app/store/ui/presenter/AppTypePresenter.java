@@ -42,6 +42,7 @@ public class AppTypePresenter implements AppTypeContact.Presenter {
                                                   typeAppsTable.getAppSize(),
                                                   typeAppsTable.getAppVersion(),
                                                   typeAppsTable.getAppVersionId(),
+                                                  typeAppsTable.getAppVersionDesc(),
                                                   typeAppsTable.getAppDesc(),
                                                   typeAppsTable.getMD5(),
                                                   typeAppsTable.getDownloadName(),

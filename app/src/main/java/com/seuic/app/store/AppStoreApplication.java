@@ -43,7 +43,7 @@ public class AppStoreApplication extends Application {
                 .getEditor()
                 .putInt(SpUtils.SP_NET, NetworkUtils.getNetWorkType(mApp))
                 .commit();
-        //磁盘缓存清理
+        //磁盘缓存清理并初始化下载任务队列
         startService(new Intent(this, CacheCheckService.class));
     }
 
@@ -65,5 +65,4 @@ public class AppStoreApplication extends Application {
     public static AppStoreApplication getApp() {
         return mApp;
     }
-
 }

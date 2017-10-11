@@ -2,6 +2,7 @@ package com.seuic.app.store.net.download;
 
 import com.seuic.app.store.utils.HttpHeadUtils;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,7 @@ import java.util.Map;
  * @author dpuntu
  */
 
-public class DownloadBean implements DownloadSubject {
+public class DownloadBean implements DownloadSubject, Serializable {
     /**
      * 下载任务ID，默认为下载地址 MD5 后的值
      */

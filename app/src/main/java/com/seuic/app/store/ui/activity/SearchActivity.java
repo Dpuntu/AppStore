@@ -101,6 +101,9 @@ public class SearchActivity extends HomeBaseActivity implements SearchContact.Vi
 
     @Override
     public void updateHistoryRecycleView(List<RecycleObject> recycleObjects) {
+        if (recycleObjects == null || recycleObjects.size() <= 0) {
+            return;
+        }
         if (mSearchHistoryAdapter == null) {
             createSearchHistoryAdapter(recycleObjects);
         } else {
@@ -110,6 +113,9 @@ public class SearchActivity extends HomeBaseActivity implements SearchContact.Vi
 
     @Override
     public void updateSearchRecycleView(List<RecycleObject> recycleObjects) {
+        if (recycleObjects == null || recycleObjects.size() <= 0) {
+            return;
+        }
         if (mSearchAdapter == null) {
             createSearchAdapter(recycleObjects);
         } else {
@@ -119,13 +125,13 @@ public class SearchActivity extends HomeBaseActivity implements SearchContact.Vi
 
     private void createSearchAdapter(List<RecycleObject> recycleObjects) {
         mSearchAdapter = new SearchAdapter(recycleObjects);
-        RecyclerViewUtils.createVerticalRecyclerView(this,mSearchRecyclerView,true,true);
+        RecyclerViewUtils.createVerticalRecyclerView(this, mSearchRecyclerView, true, true);
         mSearchRecyclerView.setAdapter(mSearchAdapter);
     }
 
     private void createSearchHistoryAdapter(List<RecycleObject> recycleObjects) {
         mSearchHistoryAdapter = new SearchHistoryAdapter(recycleObjects);
-        RecyclerViewUtils.createVerticalRecyclerView(this,mHistoryRecyclerView,true,true);
+        RecyclerViewUtils.createVerticalRecyclerView(this, mHistoryRecyclerView, true, true);
         mHistoryRecyclerView.setAdapter(mSearchHistoryAdapter);
 
         mSearchHistoryAdapter.setOnItemClickListener(new BaseTitleRecycleViewAdapter.OnItemClickListener<RecycleSearchBean>() {

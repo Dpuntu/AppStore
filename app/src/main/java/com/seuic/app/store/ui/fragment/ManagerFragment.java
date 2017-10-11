@@ -2,6 +2,8 @@ package com.seuic.app.store.ui.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +20,10 @@ import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleSummaryBean;
 import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.RecommendReceive;
+import com.seuic.app.store.greendao.CheckUpdateAppsTable;
+import com.seuic.app.store.greendao.GreenDaoManager;
+import com.seuic.app.store.listener.UpdateCountListener;
+import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.ui.activity.InstallActivity;
 import com.seuic.app.store.ui.activity.UpdateActivity;
 import com.seuic.app.store.ui.contact.ManagerContent;
@@ -38,12 +44,13 @@ import butterknife.Unbinder;
  * @author dpuntu
  */
 
-public class ManagerFragment extends Fragment implements ManagerContent.View {
+public class ManagerFragment extends Fragment implements ManagerContent.View, UpdateCountListener {
     private Unbinder mUnbinder;
     @BindView(R.id.manager_parent)
     LinearLayout mLinearLayout;
     private ManagerPresenter mManagerPresenter;
     private RedPointView appUpdate, updateSelf;
+    private Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Nullable
     @Override
@@ -57,6 +64,7 @@ public class ManagerFragment extends Fragment implements ManagerContent.View {
     private void initViews(View view) {
         mManagerPresenter = new ManagerPresenter(this);
         mManagerPresenter.checkUpdate(false);
+        DownloadManager.getInstance().setUpdateCountListener(this);
     }
 
     @Override
@@ -129,18 +137,19 @@ public class ManagerFragment extends Fragment implements ManagerContent.View {
                 break;
             case RecycleViewType.MANAGER_AUTO_UPDATE:// 自动更新
                 mSwitch.setChecked(
-                        SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO,false));
+                        SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO, false));
                 mImageView.setVisibility(View.GONE);
                 mRedPointView.setTypeText(RedPointView.RedPointType.TYPE_GONE,
                                           mRecycleSummaryBean.getUpdateText());
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        boolean isAuto = SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO, false);
                         SpUtils.getInstance()
                                 .getEditor()
-                                .putBoolean(SpUtils.SP_SWITCH_AUTO, !mSwitch.isChecked())
+                                .putBoolean(SpUtils.SP_SWITCH_AUTO, !isAuto)
                                 .commit();
-                        mSwitch.setChecked(!mSwitch.isChecked());
+                        mSwitch.setChecked(!isAuto);
                     }
                 });
                 break;
@@ -163,7 +172,8 @@ public class ManagerFragment extends Fragment implements ManagerContent.View {
                             startActivity(new Intent(getActivity(), InstallActivity.class));
                             break;
                         case RecycleViewType.MANAGER_UPDATE_SELF:
-                            mManagerPresenter.checkGreenDao4Self();
+                            mManagerPresenter.checkUpdate(true);
+//                            mManagerPresenter.checkGreenDao4Self();
                             break;
                     }
                 }
@@ -178,5 +188,20 @@ public class ManagerFragment extends Fragment implements ManagerContent.View {
         } else {
             redPointView.setTypeText(type, updateText);
         }
+    }
+
+    @Override
+    public void onUpdateCountChange() {
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                List<CheckUpdateAppsTable> checkUpdateAppsTables = GreenDaoManager.getInstance().queryCheckUpdateApps();
+                if (checkUpdateAppsTables == null || checkUpdateAppsTables.size() <= 0) {
+                    refreshView(appUpdate, null, RedPointView.RedPointType.TYPE_NUM);
+                } else {
+                    refreshView(appUpdate, checkUpdateAppsTables.size() + "", RedPointView.RedPointType.TYPE_NUM);
+                }
+            }
+        });
     }
 }

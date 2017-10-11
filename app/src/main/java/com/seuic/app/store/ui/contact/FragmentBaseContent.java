@@ -17,6 +17,8 @@ public interface FragmentBaseContent {
         void refreshRecycleView(List<RecycleObject> recycleObjectList);
 
         void onLoadError(String errorMsg);
+
+        void removeRefresh();
     }
 
     interface Presenter {

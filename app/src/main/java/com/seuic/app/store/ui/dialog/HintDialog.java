@@ -29,8 +29,8 @@ public class HintDialog extends Dialog {
     public HintDialog(Context context, int themeResId) {
         super(context, themeResId);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_hint, null, false);
-        this.setContentView(dialogView);
-        this.setCanceledOnTouchOutside(false);
+        setContentView(dialogView);
+        setCanceledOnTouchOutside(false);
         celBtn = (TextView) dialogView.findViewById(R.id.dialog_button1);
         okBtn = (TextView) dialogView.findViewById(R.id.dialog_button2);
         hintTitle = (TextView) dialogView.findViewById(R.id.hint_title);

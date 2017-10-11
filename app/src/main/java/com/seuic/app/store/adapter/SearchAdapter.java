@@ -14,6 +14,7 @@ import com.seuic.app.store.bean.response.AppDetailReceive;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.glide.GlideAppManager;
 import com.seuic.app.store.net.download.DownloadManager;
+import com.seuic.app.store.ui.dialog.DialogManager;
 import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.MuTextViewClickUtils;
 import com.seuic.app.store.view.MultifunctionalTextView;
@@ -45,6 +46,7 @@ public class SearchAdapter extends BaseTitleRecycleViewAdapter<SearchAdapter.Sea
                                                                        appDetailReceive.getAppSize(),
                                                                        appDetailReceive.getAppVersion(),
                                                                        appDetailReceive.getAppVersionId(),
+                                                                       appDetailReceive.getAppVersionIdDesc(),
                                                                        appDetailReceive.getAppDesc(),
                                                                        appDetailReceive.getMD5(),
                                                                        appDetailReceive.getDownloadName(),
@@ -101,19 +103,17 @@ public class SearchAdapter extends BaseTitleRecycleViewAdapter<SearchAdapter.Sea
         ScreenShotAdapter screenShotAdapter = new ScreenShotAdapter(screenShots);
         holder.mGalleryRecycle.setLayoutManager(layoutManager);
         holder.mGalleryRecycle.setAdapter(screenShotAdapter);
-        screenShotAdapter.setOnItemClickListener(
-                new BaseTitleRecycleViewAdapter.OnItemClickListener<ScreenShotBean>() {
-                    @Override
-                    public void onItemClick(View view, ScreenShotBean bean) {
-
-                    }
-                });
+        screenShotAdapter.setOnItemClickAllListener(new OnItemClickAllListener() {
+            @Override
+            public void OnItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList) {
+                DialogManager.getInstance().showImageDetailDialog(position, mRecycleObjectList);
+            }
+        });
     }
 
     private void checkScreenShotName(List<RecycleObject> screenShots, String appShot) {
         if (appShot != null && !appShot.isEmpty()) {
-            screenShots.add(new RecycleObject<>(RecycleViewType.RECYCEL_DATA,
-                                                new ScreenShotBean(appShot)));
+            screenShots.add(new RecycleObject<>(RecycleViewType.RECYCEL_DATA, new ScreenShotBean(appShot)));
         }
     }
 }

@@ -40,7 +40,7 @@ public class DownloadTask implements Runnable {
     public DownloadTask() {
     }
 
-    public void setDownloadTask(DownloadBean mDownloadBean, OkHttpClient client) {
+    public void setDownloadTask(DownloadBean mDownloadBean, OkHttpClient client ) {
         this.mDownloadBean = mDownloadBean;
         oldTime = -1;
         oldLength = -1;

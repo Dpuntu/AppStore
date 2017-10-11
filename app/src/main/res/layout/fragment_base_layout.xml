@@ -3,28 +3,28 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <com.seuic.app.store.view.BannerView
-        android:id="@+id/recommend_banner"
-        android:layout_width="match_parent"
-        android:layout_height="120dip"
-        android:layout_centerHorizontal="true"/>
-
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/recommend_refresh"
+        android:id="@+id/fragment_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/recommend_banner"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recommend_recycle"
+        <!--
+         NestedScrollView是为了解决滑动不流畅问题
+         参考  http://blog.csdn.net/u010696826/article/details/52808323
+        -->
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/fragment_recycle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
-        android:id="@+id/recommend_refresh_text"
+        android:id="@+id/fragment_error_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"

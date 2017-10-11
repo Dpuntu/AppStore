@@ -10,8 +10,8 @@ import java.util.List;
  * @author dpuntu
  */
 
-public interface RecommendContent extends FragmentBaseContent {
-    interface View extends FragmentBaseContent.View {
+public interface RecommendContent {
+    interface View extends FragmentBaseContent.View{
         void updateBannerView(String count, boolean isHidden, long intervalTime, List<AdvertisementsReceive.AdReceiveDetails> mDetailses);
     }
 

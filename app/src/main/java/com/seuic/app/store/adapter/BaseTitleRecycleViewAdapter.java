@@ -35,6 +35,8 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
     private List<RecycleObject> mRecycleObjectList;
     private int dataLayout;
 
+    private static final int ITEM_HEAD = Integer.MAX_VALUE;
+
     /**
      * @param mRecycleObjectList
      *         数据源
@@ -58,10 +60,19 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
         notifyDataSetChanged();
     }
 
+    private View headView = null;
+
+    public void addHeadView(View headView) {
+        this.headView = headView;
+        notifyItemInserted(0);
+    }
+
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
+            case ITEM_HEAD:
+                return new BaseTitleRecycleViewAdapter.HeadFootViewHolder(headView);
             case RecycleViewType.RECYCEL_TITLE:
                 view = LayoutInflater
                         .from(AppStoreApplication.getApp())
@@ -88,9 +99,11 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
     @SuppressWarnings("unchecked")
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        switch (mRecycleObjectList.get(position).getType()) {
+        switch (getItemViewType(position)) {
+            case ITEM_HEAD:
+                break;
             case RecycleViewType.RECYCEL_TITLE:
-                final RecycleTitleMoreBean bean = (RecycleTitleMoreBean) mRecycleObjectList.get(position).getObject();
+                final RecycleTitleMoreBean bean = (RecycleTitleMoreBean) mRecycleObjectList.get(headView != null ? position - 1 : position).getObject();
                 ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).headText.setText(bean.getTitle());
                 ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setVisibility(bean.isShowMore() ? View.VISIBLE : View.GONE);
                 ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setOnClickListener(new View.OnClickListener() {
@@ -103,18 +116,20 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
                 });
                 break;
             case RecycleViewType.RECYCEL_DATA:
-                loadRecycleData((T) holder, (V) mRecycleObjectList.get(position).getObject());
+                loadRecycleData((T) holder, (V) mRecycleObjectList.get(headView != null ? position - 1 : position).getObject());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onItemClick(view, (V) mRecycleObjectList.get(position).getObject());
+                            mOnItemClickListener.onItemClick(view, (V) mRecycleObjectList.get(headView != null ? position - 1 : position).getObject());
                         }
                         if (mOnItemClickAllListener != null) {
-                            mOnItemClickAllListener.OnItemClickAll(view, position, mRecycleObjectList);
+                            mOnItemClickAllListener.OnItemClickAll(view, headView != null ? position - 1 : position, mRecycleObjectList);
                         }
                     }
                 });
+                break;
+            default:
                 break;
         }
     }
@@ -160,12 +175,15 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
 
     @Override
     public int getItemViewType(int position) {
-        return mRecycleObjectList.get(position).getType();
+        if (position == 0 && headView != null) {
+            return ITEM_HEAD;
+        }
+        return mRecycleObjectList.get(headView != null ? position - 1 : position).getType();
     }
 
     @Override
     public int getItemCount() {
-        return mRecycleObjectList.size();
+        return headView == null ? mRecycleObjectList.size() : mRecycleObjectList.size() + 1;
     }
 
     private class TitleViewHolder extends RecyclerView.ViewHolder {
@@ -176,6 +194,12 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
             super(itemView);
             headText = (TextView) itemView.findViewById(R.id.recycle_item_title);
             moreLayout = (LinearLayout) itemView.findViewById(R.id.recycle_item_more);
+        }
+    }
+
+    private class HeadFootViewHolder extends RecyclerView.ViewHolder {
+        HeadFootViewHolder(View itemView) {
+            super(itemView);
         }
     }
 

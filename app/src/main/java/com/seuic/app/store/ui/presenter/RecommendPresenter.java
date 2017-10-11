@@ -22,13 +22,12 @@ import io.reactivex.schedulers.Schedulers;
  * @author dpuntu
  */
 
-public class RecommendPresenter implements RecommendContent.Presenter {
-    private RecommendContent.View mView;
+public class RecommendPresenter extends BaseFragmentPresenter<RecommendContent.View> implements RecommendContent.Presenter {
     private List<AdvertisementsReceive.AdReceiveDetails> mDetailses;
     private boolean isRefresh = false;
 
     public RecommendPresenter(RecommendContent.View view) {
-        mView = view;
+        super(view);
     }
 
     @Override
@@ -82,7 +81,6 @@ public class RecommendPresenter implements RecommendContent.Presenter {
                     mDetailses = advertisementsReceive.getAdDetails();
                 }
             }
-
             mView.updateBannerView(count, isHidden, intervalTime, mDetailses);
         }
 
@@ -107,6 +105,7 @@ public class RecommendPresenter implements RecommendContent.Presenter {
 
         @Override
         public void onSuccess(List<RecommendReceive> recommendReceives) {
+            mView.removeRefresh();
             List<RecycleObject> recycleObjectList = new ArrayList<>();
             recycleObjectList.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE, new RecycleTitleMoreBean("推荐应用", false, null)));
             for (RecommendReceive recommendReceive : recommendReceives) {
@@ -121,6 +120,7 @@ public class RecommendPresenter implements RecommendContent.Presenter {
 
         @Override
         public void onError(String errorMsg) {
+            mView.removeRefresh();
             Loger.e("错误提示:" + errorMsg);
             mView.onLoadError(errorMsg);
         }

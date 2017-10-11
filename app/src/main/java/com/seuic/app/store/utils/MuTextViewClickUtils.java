@@ -38,10 +38,10 @@ public class MuTextViewClickUtils {
                     case NONE_NET:// 没有网络
                         ToastUtils.showToast("请检查网络链接是否正常");
                         break;
-                    case DATA_NET:
+                    case DATA_NET:// DATA_NET
                         DialogManager.getInstance()
-                                .showHintDialog("温馨提示",
-                                                "当前使用数据连接，是否继续下载？",
+                                .showHintDialog("下载提示",
+                                                "正在使用数据连接是否继续下载？",
                                                 new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
@@ -70,7 +70,11 @@ public class MuTextViewClickUtils {
                 break;
             //  下载取消状态,删除所有与之相关的数据，并回执失败
             case MultifunctionalTextView.TextViewState.INSTALL_FINISH:
-                if (AppsUtils.openApp(recommendReceive.getPackageName()) != 0) {
+                int openError = AppsUtils.openApp(recommendReceive.getPackageName());
+                if (openError == 0) {
+                    return;
+                }
+                if (openError == -1) {
                     boolean isUninstallApp = true;
                     for (int i = 0; i < AppStoreApplication.getApp().getAppInfos().size(); i++) {
                         if (AppStoreApplication.getApp().getAppInfos().get(i).getPackageName().equals(recommendReceive.getPackageName())) {
@@ -79,12 +83,14 @@ public class MuTextViewClickUtils {
                         }
                     }
                     if (isUninstallApp) {
-                        ToastUtils.showToast("软件未安装或被卸载,已开始下载此软件");
+                        ToastUtils.showToast("软件未安装或已卸载,开始下载此软件");
                         DownloadManager.getInstance().setDownLoadState(recommendReceive.getAppVersionId(), DownloadState.STATE_NORMAL);
                         DownloadManager.getInstance().start(recommendReceive.getAppVersionId());
                     } else {
                         ToastUtils.showToast("此类软件无法被打开");
                     }
+                } else if (openError == -2) {
+                    ToastUtils.showToast("应用市场已经打开了");
                 }
                 break;
         }

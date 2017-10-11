@@ -9,14 +9,10 @@ import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
 import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.RecommendReceive;
-import com.seuic.app.store.greendao.DownloadTaskTable;
-import com.seuic.app.store.greendao.GreenDaoManager;
-import com.seuic.app.store.greendao.RecommendReceiveTable;
 import com.seuic.app.store.net.download.DownloadBean;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.net.download.task.OkhttpDownloader;
 import com.seuic.app.store.ui.contact.DownLoadContact;
-import com.seuic.app.store.utils.Loger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +35,7 @@ public class DownLoadPresenter implements DownLoadContact.Presenter {
     public void queryDownLoadData(boolean isRefresh) {
         List<RecycleObject> recycleObjects = new ArrayList<>();
         int downLoadCount = DownloadManager.getInstance().getDownloaderTaskCount();
-        if (downLoadCount > 0) { // 进入下载页面后，先取下载管理中的数据，有的话就加载
+        if (downLoadCount > 0) {
             initDownloadCount(recycleObjects, downLoadCount);
             SimpleArrayMap<String, OkhttpDownloader> okhttpDownloaderMap = DownloadManager.getInstance().getDownloadingMap();
             SimpleArrayMap<String, RecommendReceive> recommendReceiveMap = DownloadManager.getInstance().getRecommendReceiveMap();
@@ -53,28 +49,6 @@ public class DownLoadPresenter implements DownLoadContact.Presenter {
                                                                          downloadBean.getTotalSize(),
                                                                          recommendReceive.getAppIconName(),
                                                                          recommendReceive.getPackageName())));
-            }
-        } else { // 进入下载页面后，下载管理中没有数据，就取数据库中的数据，并通过addDownloadingMap将数据添加到下载管理列表中
-            List<DownloadTaskTable> downloadTaskTables = GreenDaoManager.getInstance().queryDownloadTaskTable();
-            if (downloadTaskTables == null) {
-                initDownloadCount(recycleObjects, 0);
-            } else {
-                initDownloadCount(recycleObjects, downloadTaskTables.size());
-                for (DownloadTaskTable downloadTaskTable : downloadTaskTables) {
-                    RecommendReceiveTable recommendReceiveTable = GreenDaoManager.getInstance().queryRecommendReceive(downloadTaskTable.getTaskId());
-                    if (recommendReceiveTable != null) {
-                        DownloadingBean mDownloadingBean = new DownloadingBean(recommendReceiveTable.getAppName(),
-                                                                               downloadTaskTable.getTaskId(),
-                                                                               downloadTaskTable.getLoadedLength(),
-                                                                               downloadTaskTable.getTotalSize(),
-                                                                               recommendReceiveTable.getAppIconName(),
-                                                                               recommendReceiveTable.getPackageName());
-                        recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA, mDownloadingBean));
-                        DownloadManager.getInstance().addDownloadingMap(mDownloadingBean);
-                    } else {
-                        Loger.e("recommendReceiveTable is null , " + downloadTaskTable.getDownloadUrl());
-                    }
-                }
             }
         }
         // 是否刷新

@@ -52,7 +52,7 @@ public class UpdateAdapter extends BaseTitleRecycleViewAdapter<UpdateAdapter.Upd
                                                                          recommendReceive.getAppVersion(),
                                                                          recommendReceive.getAppSize()));
         holder.appTitle.setText(recommendReceive.getAppName());
-        holder.hiddenDesc.setText(recommendReceive.getAppDesc());
+        holder.hiddenDesc.setText(recommendReceive.getAppVersionDesc());
         holder.appDesc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

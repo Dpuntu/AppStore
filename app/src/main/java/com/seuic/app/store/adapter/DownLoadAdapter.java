@@ -98,15 +98,7 @@ public class DownLoadAdapter extends BaseTitleRecycleViewAdapter<DownLoadAdapter
                     if (recommendReceiveTable == null) {
                         recommendReceive = DownloadManager.getInstance().getRecommendReceiveMap().get(downloadingBean.getTaskId());
                     } else {
-                        recommendReceive = new RecommendReceive(recommendReceiveTable.getAppName(),
-                                                                recommendReceiveTable.getPackageName(),
-                                                                recommendReceiveTable.getAppSize(),
-                                                                recommendReceiveTable.getAppVersion(),
-                                                                recommendReceiveTable.getAppVersionId(),
-                                                                recommendReceiveTable.getAppDesc(),
-                                                                recommendReceiveTable.getMD5(),
-                                                                recommendReceiveTable.getDownloadName(),
-                                                                recommendReceiveTable.getAppIconName());
+                        recommendReceive = GreenDaoManager.getInstance().table2RecommendReceive(recommendReceiveTable);
                     }
                     mOnPauseTextClickListener.onPauseTextClick(downLoadDataViewHolder.mPauseText,
                                                                recommendReceive,

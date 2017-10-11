@@ -47,5 +47,4 @@ public class InstallPresenter implements InstallContact.Presenter {
         }
         mView.setInstallAppAdapter(new InstallAppAdapter(mRecycleObjectList));
     }
-
 }
