@@ -22,7 +22,8 @@ import io.reactivex.schedulers.Schedulers;
  * @author dpuntu
  */
 
-public class RecommendPresenter extends BaseFragmentPresenter<RecommendContent.View> implements RecommendContent.Presenter {
+public class RecommendPresenter extends BaseFragmentPresenter<RecommendContent.View>
+        implements RecommendContent.Presenter {
     private List<AdvertisementsReceive.AdReceiveDetails> mDetailses;
     private boolean isRefresh = false;
 

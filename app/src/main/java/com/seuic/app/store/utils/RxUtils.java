@@ -84,7 +84,7 @@ public class RxUtils {
 
         @Override
         public void onNext(@NonNull ResponseData<T> data) {
-            if (data.isResult()) {
+            if (data.isResult() && data.getData() != null) {
                 Loger.e(observeName + " , " + data.getMsg());
                 onSuccess(data.getData());
             } else {

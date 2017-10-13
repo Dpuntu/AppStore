@@ -68,7 +68,7 @@ public class SearchPresenter implements SearchContact.Presenter {
         public void onSuccess(List<String> strings) {
             recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE,
                                                  new RecycleTitleMoreBean("推荐搜索", false, "")));
-            if (strings != null && strings.size() > 0) {
+            if (strings.size() > 0) {
                 for (String str : strings) {
                     recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA,
                                                          new RecycleSearchBean(str, false,
@@ -107,7 +107,7 @@ public class SearchPresenter implements SearchContact.Presenter {
         @Override
         public void onSuccess(List<AppDetailReceive> appDetailReceives) {
             List<RecycleObject> recycleObjects = new ArrayList<>();
-            if (appDetailReceives != null && appDetailReceives.size() > 0) {
+            if (appDetailReceives.size() > 0) {
                 for (AppDetailReceive appDetailReceive : appDetailReceives) {
                     recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA, appDetailReceive));
                 }

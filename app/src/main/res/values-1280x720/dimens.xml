@@ -16,8 +16,8 @@
 
     <dimen name="dimen_2dp">2dip</dimen>
     <dimen name="dimen_9dp">9dip</dimen>
-    <dimen name="dimen_14dp">14dip</dimen>
-    <dimen name="dimen_25dp">25dip</dimen>
+    <dimen name="dimen_14dp">16dip</dimen>
+    <dimen name="dimen_25dp">28dip</dimen>
 
     <dimen name="dialog_images_w">296dip</dimen>
     <dimen name="dialog_images_h">513dip</dimen>

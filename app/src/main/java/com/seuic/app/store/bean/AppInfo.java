@@ -23,6 +23,10 @@ public class AppInfo implements Serializable {
     private boolean isUserApp;
     //是否安装
     private boolean isInsatll;
+    //应用权限
+    private String[] permissions;
+    //应用进程ID
+    private int uid;
 
     public Drawable getAppIcon() {
         return appIcon;
@@ -70,5 +74,21 @@ public class AppInfo implements Serializable {
 
     public void setInsatll(boolean insatll) {
         isInsatll = insatll;
+    }
+
+    public String[] getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(String[] permissions) {
+        this.permissions = permissions;
+    }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }

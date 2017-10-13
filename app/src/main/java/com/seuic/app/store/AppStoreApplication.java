@@ -5,9 +5,12 @@ import android.content.Intent;
 
 import com.seuic.app.store.bean.AppInfo;
 import com.seuic.app.store.ui.service.CacheCheckService;
+import com.seuic.app.store.ui.service.DataUsageService;
+import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.AppsUtils;
 import com.seuic.app.store.utils.ExceptionCrashUtils;
 import com.seuic.app.store.utils.FileUtils;
+import com.seuic.app.store.utils.Loger;
 import com.seuic.app.store.utils.NetworkUtils;
 import com.seuic.app.store.utils.SpUtils;
 
@@ -40,11 +43,16 @@ public class AppStoreApplication extends Application {
         mAppInfos = AppsUtils.getUserAppInfos(mApp);
         // 判断网络环境
         SpUtils.getInstance()
-                .getEditor()
-                .putInt(SpUtils.SP_NET, NetworkUtils.getNetWorkType(mApp))
-                .commit();
+                .putInt(SpUtils.SP_NET, NetworkUtils.getNetWorkType(mApp));
         //磁盘缓存清理并初始化下载任务队列
         startService(new Intent(this, CacheCheckService.class));
+        int appTime = SpUtils.getInstance().getInt(SpUtils.SP_APP_TIME, 1);
+        Loger.i("这是第" + appTime + "次启动" + AppStoreUtils.getAppPackageName());
+        if (appTime <= 1) {
+            startService(new Intent(this, DataUsageService.class));
+        }
+        SpUtils.getInstance()
+                .putInt(SpUtils.SP_APP_TIME, appTime + 1);
     }
 
     public List<AppInfo> getAppInfos() {

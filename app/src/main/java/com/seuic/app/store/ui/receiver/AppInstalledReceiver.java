@@ -6,7 +6,9 @@ import android.content.Intent;
 
 import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.bean.AppInfo;
+import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.utils.AppsUtils;
+import com.seuic.app.store.utils.TimesBytesUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,6 +31,8 @@ public class AppInstalledReceiver extends BroadcastReceiver {
             List<AppInfo> appInfos = AppStoreApplication.getApp().getAppInfos();
             for (AppInfo appInfo : appInfos) {
                 if (("package:" + appInfo.getPackageName()).equals(packageName)) {
+                    GreenDaoManager.getInstance().removeDataUsageTableDao(appInfo.getPackageName(), TimesBytesUtils.BytesType.FINAL);
+                    GreenDaoManager.getInstance().removeDataUsageTableDao(appInfo.getPackageName(), TimesBytesUtils.BytesType.ONCE);
                     appInfos.remove(appInfo);
                     AppStoreApplication.getApp().setAppInfos(appInfos);
                     EventBus.getDefault().post(appInfos);

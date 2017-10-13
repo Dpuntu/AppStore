@@ -98,12 +98,13 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
 
     @SuppressWarnings("unchecked")
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        final int index = headView != null ? position - 1 : position;
         switch (getItemViewType(position)) {
             case ITEM_HEAD:
                 break;
             case RecycleViewType.RECYCEL_TITLE:
-                final RecycleTitleMoreBean bean = (RecycleTitleMoreBean) mRecycleObjectList.get(headView != null ? position - 1 : position).getObject();
+                final RecycleTitleMoreBean bean = (RecycleTitleMoreBean) mRecycleObjectList.get(index).getObject();
                 ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).headText.setText(bean.getTitle());
                 ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setVisibility(bean.isShowMore() ? View.VISIBLE : View.GONE);
                 ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setOnClickListener(new View.OnClickListener() {
@@ -116,15 +117,15 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
                 });
                 break;
             case RecycleViewType.RECYCEL_DATA:
-                loadRecycleData((T) holder, (V) mRecycleObjectList.get(headView != null ? position - 1 : position).getObject());
+                loadRecycleData((T) holder, (V) mRecycleObjectList.get(index).getObject());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onItemClick(view, (V) mRecycleObjectList.get(headView != null ? position - 1 : position).getObject());
+                            mOnItemClickListener.onItemClick(view, (V) mRecycleObjectList.get(index).getObject());
                         }
                         if (mOnItemClickAllListener != null) {
-                            mOnItemClickAllListener.OnItemClickAll(view, headView != null ? position - 1 : position, mRecycleObjectList);
+                            mOnItemClickAllListener.OnItemClickAll(view, index, mRecycleObjectList);
                         }
                     }
                 });

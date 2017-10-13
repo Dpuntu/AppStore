@@ -33,7 +33,7 @@ public class AppsUtils {
     public static ArrayList<AppInfo> getAllAppInfos(Context context) {
         ArrayList<AppInfo> packages = new ArrayList<>();
         PackageManager manager = context.getPackageManager();
-        List<PackageInfo> packageInfos = manager.getInstalledPackages(PackageManager.GET_ACTIVITIES);
+        List<PackageInfo> packageInfos = manager.getInstalledPackages(PackageManager.GET_PERMISSIONS);
         for (PackageInfo packageInfo : packageInfos) {
             ApplicationInfo mApplicationInfo = packageInfo.applicationInfo;
             AppInfo appBean = new AppInfo();
@@ -43,6 +43,8 @@ public class AppsUtils {
             appBean.setInsatll(appIsInstalled(manager, mApplicationInfo.packageName));
             appBean.setAppVersion(packageInfo.versionName);
             appBean.setUserApp(appIsUserd(mApplicationInfo));
+            appBean.setPermissions(packageInfo.requestedPermissions);
+            appBean.setUid(mApplicationInfo.uid);
             packages.add(appBean);
         }
         return packages;
@@ -58,7 +60,7 @@ public class AppsUtils {
     public static ArrayList<AppInfo> getUserAppInfos(Context context) {
         ArrayList<AppInfo> packages = new ArrayList<>();
         PackageManager manager = context.getPackageManager();
-        List<PackageInfo> packageInfos = manager.getInstalledPackages(PackageManager.GET_ACTIVITIES);
+        List<PackageInfo> packageInfos = manager.getInstalledPackages(PackageManager.GET_PERMISSIONS);
         for (PackageInfo packageInfo : packageInfos) {
             ApplicationInfo mApplicationInfo = packageInfo.applicationInfo;
             if (appIsUserd(mApplicationInfo)) {
@@ -69,6 +71,8 @@ public class AppsUtils {
                 appBean.setInsatll(appIsInstalled(manager, mApplicationInfo.packageName));
                 appBean.setAppVersion(packageInfo.versionName);
                 appBean.setUserApp(appIsUserd(mApplicationInfo));
+                appBean.setPermissions(packageInfo.requestedPermissions);
+                appBean.setUid(mApplicationInfo.uid);
                 packages.add(appBean);
             }
         }

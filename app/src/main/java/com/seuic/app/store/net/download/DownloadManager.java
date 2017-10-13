@@ -40,13 +40,13 @@ import static com.seuic.app.store.net.download.DownloadState.STATE_INSTALL_FAIL;
 
 public class DownloadManager {
     /**
+     * 正在下载任务集合
+     */
+    private SimpleArrayMap<String, OkhttpDownloader> mIsDownLoadingMap = new SimpleArrayMap<>();
+    /**
      * 下载任务集合
      */
     private SimpleArrayMap<String, OkhttpDownloader> mDownloaderMap = new SimpleArrayMap<>();
-    /**
-     * 正在下载任务集合
-     */
-    private SimpleArrayMap<String, OkhttpDownloader> mDownloadingMap = new SimpleArrayMap<>();
     /**
      * 下载的APP详情
      */
@@ -75,8 +75,8 @@ public class DownloadManager {
     }
 
     public int getDownloaderTaskCount() {
-        if (mDownloadingMap.size() > 0) {
-            return mDownloadingMap.size();
+        if (mIsDownLoadingMap.size() > 0) {
+            return mIsDownLoadingMap.size();
         } else {
             return 0;
         }
@@ -94,7 +94,7 @@ public class DownloadManager {
     }
 
     public SimpleArrayMap<String, OkhttpDownloader> getDownloadingMap() {
-        return mDownloadingMap;
+        return mIsDownLoadingMap;
     }
 
     public SimpleArrayMap<String, RecommendReceive> getRecommendReceiveMap() {
@@ -110,14 +110,14 @@ public class DownloadManager {
         /**
          * 如果mDownloadingMap中有任务，不需要再添加
          * */
-        if (mDownloadingMap.containsKey(recommendReceive.getAppVersionId())) {
+        if (mIsDownLoadingMap.containsKey(recommendReceive.getAppVersionId())
+                || (mDownloaderMap.containsKey(recommendReceive.getAppVersionId())
+                && mRecommendReceiveMap.containsKey(recommendReceive.getAppVersionId()))) {
             return;
         }
 
-        if (mDownloaderMap.containsKey(recommendReceive.getAppVersionId())) {
-            mDownloaderMap.remove(recommendReceive.getAppVersionId());
-            mRecommendReceiveMap.remove(recommendReceive.getAppVersionId());
-        }
+        mDownloaderMap.remove(recommendReceive.getAppVersionId());
+        mRecommendReceiveMap.remove(recommendReceive.getAppVersionId());
 
         DownloadState downloadState = DownloadState.STATE_NORMAL;
         List<AppInfo> appInfos = AppStoreApplication.getApp().getAppInfos();
@@ -163,8 +163,21 @@ public class DownloadManager {
         mRecommendReceiveMap.put(mOkhttpDownloader.getDownloadBean().getTaskId(), recommendReceive);
     }
 
+
+    public boolean iSAppStoreUpdate(RecommendReceive recommendReceive) {
+        if (mIsDownLoadingMap.containsKey(recommendReceive.getAppVersionId())) {
+            DownloadState downloadState = mIsDownLoadingMap.get(recommendReceive.getAppVersionId()).getDownloadBean().getLoadState();
+            if (downloadState == DownloadState.STATE_FINISH
+                    || downloadState == DownloadState.STATE_LOADING) {
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     /**
-     * 查找任务表mDownloadingMap中是否存在任务
+     * 查找任务表mIsDownLoadingMap中是否存在任务
      * <p>
      * 没有的话从可能下载的mDownloaderMap表中导入下载数据
      * <p>
@@ -172,10 +185,11 @@ public class DownloadManager {
      */
     public void start(String taskId) {
         Loger.e("开始任务 " + taskId);
-        if (mDownloaderMap.containsKey(taskId)) {
-            startSingleTask(mDownloaderMap.get(taskId));
+        if (mIsDownLoadingMap.containsKey(taskId)) {
+            startSingleTask(mIsDownLoadingMap.get(taskId));
         } else {
-            throw new IllegalArgumentException("do you add this app to mDownloaderMap ? please add this by add2OkhttpDownloaderMap function");
+            mIsDownLoadingMap.put(taskId, mDownloaderMap.get(taskId));
+            startSingleTask(mIsDownLoadingMap.get(taskId));
         }
     }
 
@@ -212,7 +226,7 @@ public class DownloadManager {
      */
     private void addDownloadingMap(DownloadingBean downloadingBean) {
         if (mDownloaderMap.containsKey(downloadingBean.getTaskId())) {
-            mDownloadingMap.put(downloadingBean.getTaskId(), mDownloaderMap.get(downloadingBean.getTaskId()));
+            mIsDownLoadingMap.put(downloadingBean.getTaskId(), mDownloaderMap.get(downloadingBean.getTaskId()));
         } else {
             RecommendReceiveTable recommendReceiveTable = GreenDaoManager.getInstance().queryRecommendReceive(downloadingBean.getTaskId());
             if (recommendReceiveTable == null) {
@@ -220,17 +234,17 @@ public class DownloadManager {
                 return;
             }
             add2OkhttpDownloaderMap(GreenDaoManager.getInstance().table2RecommendReceive(recommendReceiveTable));
-            mDownloadingMap.put(downloadingBean.getTaskId(), mDownloaderMap.get(downloadingBean.getTaskId()));
+            mIsDownLoadingMap.put(downloadingBean.getTaskId(), mDownloaderMap.get(downloadingBean.getTaskId()));
         }
         if (mDownloadCountListener != null) {
-            mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
+            mDownloadCountListener.onDownloadCountChange(mIsDownLoadingMap.size());
         }
     }
 
     public void startAll() {
-        if (mDownloadingMap.size() > 0) {
-            for (int i = 0; i < mDownloadingMap.size(); i++) {
-                startSingleTask(mDownloadingMap.get(mDownloadingMap.keyAt(i)));
+        if (mIsDownLoadingMap.size() > 0) {
+            for (int i = 0; i < mIsDownLoadingMap.size(); i++) {
+                startSingleTask(mIsDownLoadingMap.get(mIsDownLoadingMap.keyAt(i)));
             }
         } else {
             Loger.e("startAll don't have any task");
@@ -242,13 +256,8 @@ public class DownloadManager {
         String taskId = bean.getTaskId();
         DownloadState state = bean.getLoadState();
 
-        if (mDownloadingMap.containsKey(taskId)) {
-            mDownloadingMap.remove(taskId);
-        }
-
-        mDownloadingMap.put(taskId, mDownloaderMap.get(taskId));
         if (mDownloadCountListener != null) {
-            mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
+            mDownloadCountListener.onDownloadCountChange(mIsDownLoadingMap.size());
         }
 
         if (state == DownloadState.STATE_NORMAL
@@ -259,7 +268,7 @@ public class DownloadManager {
                 || state == DownloadState.STATE_INSTALL_FAIL) {
             DownloadTask downloadTask = mOkhttpDownloader.getDownloadTask();
             downloadTask.setDownloadTask(bean, mOkhttpDownloader.getClient());
-            mDownloadingMap.get(taskId).setDownloadTask(downloadTask);
+            mIsDownLoadingMap.get(taskId).setDownloadTask(downloadTask);
             DownloadPoolManager.getInstance().execute(downloadTask);
             /**
              * 将任务插入到数据库
@@ -306,8 +315,8 @@ public class DownloadManager {
      * 将所有的任务都暂停
      */
     public void pauseAll() {
-        for (int i = 0; i < mDownloadingMap.size(); i++) {
-            pause(mDownloadingMap.keyAt(i));
+        for (int i = 0; i < mIsDownLoadingMap.size(); i++) {
+            pause(mIsDownLoadingMap.keyAt(i));
         }
     }
 
@@ -318,7 +327,7 @@ public class DownloadManager {
      *         任务ID
      */
     public void removeLoadingTask(String taskId) {
-        if (!mDownloadingMap.containsKey(taskId)) {
+        if (!mIsDownLoadingMap.containsKey(taskId)) {
             Loger.e("removeLoadingTask don't have " + taskId + " task");
         } else {
             removeTask(taskId);
@@ -342,10 +351,10 @@ public class DownloadManager {
      */
 
     public void notifyDownloadUpdate(String taskId) {
-        if (!mDownloadingMap.containsKey(taskId)) {
+        if (!mIsDownLoadingMap.containsKey(taskId)) {
             Loger.e("notifyDownloadUpdate don't have " + taskId + " task");
         } else {
-            DownloadBean mDownloadBean = mDownloadingMap.get(taskId).getDownloadBean();
+            DownloadBean mDownloadBean = mIsDownLoadingMap.get(taskId).getDownloadBean();
             // AppStoreNotificationManager.getInstance().showDownloadNotification(mRecommendReceiveMap.get(taskId), mDownloadBean);
             mDownloadBean.notifyObservers(mDownloadBean);
             switch (mDownloadBean.getLoadState()) {
@@ -357,9 +366,9 @@ public class DownloadManager {
                 case STATE_INSTALL_FAIL:
                     GreenDaoManager.getInstance().removeDownloadTaskTable(taskId);
                     GreenDaoManager.getInstance().removeRecommendReceiveTable(taskId);
-                    if (mDownloadingMap.containsKey(taskId)) {
-                        DownloadPoolManager.getInstance().remove(mDownloadingMap.get(taskId).getDownloadTask());
-                        mDownloadingMap.remove(taskId);
+                    if (mIsDownLoadingMap.containsKey(taskId)) {
+                        DownloadPoolManager.getInstance().remove(mIsDownLoadingMap.get(taskId).getDownloadTask());
+                        mIsDownLoadingMap.remove(taskId);
                     }
                     FileUtils.deleteFile(mDownloadBean.getSavePath() + mDownloadBean.getFileName());
                     break;
@@ -374,7 +383,7 @@ public class DownloadManager {
                     break;
             }
             if (mDownloadCountListener != null) {
-                mDownloadCountListener.onDownloadCountChange(mDownloadingMap.size());
+                mDownloadCountListener.onDownloadCountChange(mIsDownLoadingMap.size());
             }
         }
     }

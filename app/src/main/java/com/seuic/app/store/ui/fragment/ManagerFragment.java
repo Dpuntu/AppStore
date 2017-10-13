@@ -51,6 +51,7 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
     private ManagerPresenter mManagerPresenter;
     private RedPointView appUpdate, updateSelf;
     private Handler mHandler = new Handler(Looper.getMainLooper());
+    private long updateClickTime = 0;
 
     @Nullable
     @Override
@@ -137,18 +138,16 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
                 break;
             case RecycleViewType.MANAGER_AUTO_UPDATE:// 自动更新
                 mSwitch.setChecked(
-                        SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO, false));
+                        SpUtils.getInstance().getBoolean(SpUtils.SP_SWITCH_AUTO, false));
                 mImageView.setVisibility(View.GONE);
                 mRedPointView.setTypeText(RedPointView.RedPointType.TYPE_GONE,
                                           mRecycleSummaryBean.getUpdateText());
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        boolean isAuto = SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO, false);
+                        boolean isAuto = SpUtils.getInstance().getBoolean(SpUtils.SP_SWITCH_AUTO, false);
                         SpUtils.getInstance()
-                                .getEditor()
-                                .putBoolean(SpUtils.SP_SWITCH_AUTO, !isAuto)
-                                .commit();
+                                .putBoolean(SpUtils.SP_SWITCH_AUTO, !isAuto);
                         mSwitch.setChecked(!isAuto);
                     }
                 });
@@ -172,8 +171,11 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
                             startActivity(new Intent(getActivity(), InstallActivity.class));
                             break;
                         case RecycleViewType.MANAGER_UPDATE_SELF:
-                            mManagerPresenter.checkUpdate(true);
-//                            mManagerPresenter.checkGreenDao4Self();
+                            if (AndroidUtils.isCanClick(updateClickTime)) {
+                                updateClickTime = System.currentTimeMillis();
+                                mManagerPresenter.checkUpdate(true);
+                                // mManagerPresenter.checkGreenDao4Self();
+                            }
                             break;
                     }
                 }

@@ -44,6 +44,7 @@ public class AndroidUtils {
             serialNum = new String(buffer, "UTF-8");
             fin.close();
         } catch (Exception e) {
+            Loger.e("SN号获取失败，可能是设备不支持");
             e.printStackTrace();
         }
         return serialNum;
@@ -155,9 +156,22 @@ public class AndroidUtils {
      * @return
      */
     public static String formatDataSize(long dataSize) {
+        String unit = "B";
+        long MAX = 1024 * 1024 * 1024;
+        float dataSizeF = dataSize * 1F;
+        if (dataSize >= MAX) {
+            dataSizeF = dataSize / (MAX * 1F);
+            unit = "G";
+        } else if (dataSize >= MAX / 1024) {
+            dataSizeF = dataSize / 1024F / 1024F;
+            unit = "M";
+        } else if (dataSize >= 1024) {
+            dataSizeF = dataSize / 1024F;
+            unit = "K";
+        }
         DecimalFormat decimalFormat = new DecimalFormat("0.00");
-        String size = decimalFormat.format((dataSize * 1F / 1024F / 1024F));
-        return size + "M";
+        String size = decimalFormat.format(dataSizeF);
+        return size + unit;
     }
 
     /**
@@ -171,12 +185,12 @@ public class AndroidUtils {
     public static String formatSpeed(float speed) {
         String unit = "b/s";
         DecimalFormat decimalFormat;
-        if (speed >= 1024) {
-            speed = speed / 1024F;
-            unit = "kb/s";
-        } else if (speed >= 1024 * 1024) {
+        if (speed >= 1024 * 1024) {
             speed = speed / 1024F / 1024F;
             unit = "mb/s";
+        } else if (speed >= 1024) {
+            speed = speed / 1024F;
+            unit = "kb/s";
         }
         decimalFormat = new DecimalFormat("0.00");
         String speedNew = decimalFormat.format(speed);
@@ -189,5 +203,24 @@ public class AndroidUtils {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private static final int MIN_CLICK_DELAY_TIME = 2000;
+
+    /**
+     * 防止多次点击
+     *
+     * @param lastClickTime
+     *         最后的点击时间
+     *
+     * @return 是否可以点击了
+     */
+    public static boolean isCanClick(long lastClickTime) {
+        boolean flag = false;
+        long curClickTime = System.currentTimeMillis();
+        if ((curClickTime - lastClickTime) >= MIN_CLICK_DELAY_TIME) {
+            flag = true;
+        }
+        return flag;
     }
 }

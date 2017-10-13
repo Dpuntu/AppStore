@@ -65,7 +65,7 @@ public class ManagerPresenter implements ManagerContent.Presenter {
                 mRecommendReceiveList.clear();
             }
             boolean isUpdateSelf = false;
-            if (recommendReceives == null || recommendReceives.size() <= 0) {
+            if (recommendReceives.size() <= 0) {
                 checkRefresh("", false, isRefresh);
             } else {
                 for (RecommendReceive recommendReceive : recommendReceives) {
@@ -115,6 +115,22 @@ public class ManagerPresenter implements ManagerContent.Presenter {
     }
 
     public void updateSelf(final RecommendReceive recommendReceive) {
+        if (recommendReceive == null) {
+            return;
+        }
+        boolean isUpdate = DownloadManager.getInstance().iSAppStoreUpdate(recommendReceive);
+        if (isUpdate) {
+            DialogManager.getInstance()
+                    .showHintDialog("更新提示",
+                                    "正在更新" + recommendReceive.getAppName() + "中...\r\n请等待完成",
+                                    new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            DialogManager.getInstance().dismissHintDialog();
+                                        }
+                                    });
+            return;
+        }
         DialogManager.getInstance()
                 .showHintDialog(recommendReceive.getAppName() + "更新提示",
                                 recommendReceive.getAppVersionDesc(),
@@ -132,13 +148,15 @@ public class ManagerPresenter implements ManagerContent.Presenter {
                                         DialogManager.getInstance().dismissHintDialog();
                                     }
                                 });
+
+
     }
 
     // wifi环境自动更新判断
     private void updateAllApp() {
         if (mRecommendReceiveList != null
                 && mRecommendReceiveList.size() > 0
-                && SpUtils.getInstance().getPreferences().getBoolean(SpUtils.SP_SWITCH_AUTO, false)
+                && SpUtils.getInstance().getBoolean(SpUtils.SP_SWITCH_AUTO, false)
                 && NetworkUtils.getNetType() == NetworkUtils.NETTYPE.WIFI_NET) {
             for (RecommendReceive recommendReceive : mRecommendReceiveList) {
                 DownloadManager.getInstance().add2OkhttpDownloaderMap(recommendReceive);

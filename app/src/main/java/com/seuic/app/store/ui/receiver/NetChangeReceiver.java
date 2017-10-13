@@ -24,9 +24,7 @@ public class NetChangeReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
             SpUtils.getInstance()
-                    .getEditor()
-                    .putInt(SpUtils.SP_NET, NetworkUtils.getNetWorkType(AppStoreApplication.getApp()))
-                    .commit();
+                    .putInt(SpUtils.SP_NET, NetworkUtils.getNetWorkType(AppStoreApplication.getApp()));
         }
     }
 }

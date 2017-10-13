@@ -306,7 +306,6 @@ public class NetworkUtils {
      */
     public static NETTYPE getNetType() {
         int netWork = SpUtils.getInstance()
-                .getPreferences()
                 .getInt(SpUtils.SP_NET, NetworkUtils.NETWORK_UNKNOWN);
         switch (netWork) {
             case NetworkUtils.NETWORK_2G:

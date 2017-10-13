@@ -25,18 +25,32 @@ public class DialogManager {
         return mDialogManager;
     }
 
-    public void showHintDialog(String title, String summary, View.OnClickListener okClick, View.OnClickListener cancelClick) {
-        if (mHintDialog == null) {
-            mHintDialog = new HintDialog(AppStoreApplication.getApp());
+    public void showHintDialog(String title, String summary, View.OnClickListener okClick) {
+        if (mHintDialog != null && !mHintDialog.isShowing()) {
+            mHintDialog.dismiss();
+            mHintDialog = null;
         }
+        mHintDialog = new HintDialog(AppStoreApplication.getApp(), HintDialog.ButtonStyle.ONE);
+        mHintDialog.setHintTitle(title);
+        mHintDialog.setHintContent(summary);
+        mHintDialog.setOkClickListener(okClick);
+        mHintDialog.setCancelable(false);
+        mHintDialog.show();
+    }
+
+    public void showHintDialog(String title, String summary, View.OnClickListener okClick, View.OnClickListener cancelClick) {
+        if (mHintDialog != null && !mHintDialog.isShowing()) {
+            mHintDialog.dismiss();
+            mHintDialog.setCancelable(false);
+            mHintDialog = null;
+        }
+        mHintDialog = new HintDialog(AppStoreApplication.getApp(), HintDialog.ButtonStyle.TWO);
         mHintDialog.setHintTitle(title);
         mHintDialog.setHintContent(summary);
         mHintDialog.setCancelClickListener(cancelClick);
         mHintDialog.setOkClickListener(okClick);
-        if (!mHintDialog.isShowing()) {
-            mHintDialog.setCancelable(false);
-            mHintDialog.show();
-        }
+        mHintDialog.setCancelable(false);
+        mHintDialog.show();
     }
 
 

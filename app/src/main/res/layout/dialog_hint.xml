@@ -39,40 +39,8 @@
         android:layout_marginTop="5dip"
         android:background="@color/appStoreBgColor"/>
 
-    <RelativeLayout
+    <FrameLayout
+        android:id="@+id/dialog_content"
         android:layout_width="match_parent"
-        android:layout_height="50dip">
-
-        <View
-            android:id="@+id/line"
-            android:layout_width="1dip"
-            android:layout_height="40dip"
-            android:layout_centerInParent="true"
-            android:background="@color/appStoreBgColor"/>
-
-        <TextView
-            android:id="@+id/dialog_button1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="5dip"
-            android:layout_toLeftOf="@id/line"
-            android:gravity="center"
-            android:text="取消"
-            android:textColor="@color/mainColor"
-            android:textSize="@dimen/activity_text_big"/>
-
-        <TextView
-            android:id="@+id/dialog_button2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="5dip"
-            android:layout_toRightOf="@id/line"
-            android:gravity="center"
-            android:text="确定"
-            android:textColor="@color/mainColor"
-            android:textSize="@dimen/activity_text_big"/>
-    </RelativeLayout>
-
+        android:layout_height="wrap_content"/>
 </LinearLayout>

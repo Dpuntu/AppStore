@@ -36,11 +36,6 @@ public class HomeActivity extends HomeBaseActivity implements HomeContact.View, 
         mPagerHeadSelector.setViewPager(mViewPager, 0);
         mPagerHeadSelector.addOnPageChangeListener(mOnPageChangeListener);
         DownloadManager.getInstance().setDownloadCountListener(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
         updateResetRedPoint(mPresenter.checkDownloadCount());
     }
 

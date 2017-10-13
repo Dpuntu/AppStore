@@ -24,6 +24,7 @@ public class GreenDaoManager {
     private static CheckUpdateAppsTableDao mCheckUpdateAppsTableDao;
     private static SearchHistoryTableDao mSearchHistoryTableDao;
     private static TypeAppsTableDao mTypeAppsTableDao;
+    private static DataUsageTableDao mDataUsageTableDao;
 
     private GreenDaoManager() {
     }
@@ -41,10 +42,21 @@ public class GreenDaoManager {
         mCheckUpdateAppsTableDao = daoSession.getCheckUpdateAppsTableDao();
         mSearchHistoryTableDao = daoSession.getSearchHistoryTableDao();
         mTypeAppsTableDao = daoSession.getTypeAppsTableDao();
+        mDataUsageTableDao = daoSession.getDataUsageTableDao();
 
         return sGreenDaoManager;
     }
 
+    /**
+     * 插入App到APP类型数据库
+     *
+     * @param recommendReceive
+     *              网络APP的详细数据
+     * @param typeName
+     *              APP分类名称
+     * @param typeId
+     *              APP分类的ID
+     */
     public void insertTypeAppsTableDao(RecommendReceive recommendReceive, String typeName, String typeId) {
         TypeAppsTable mTypeAppsTable = new TypeAppsTable();
         mTypeAppsTable.setAppName(recommendReceive.getAppName());
@@ -62,6 +74,12 @@ public class GreenDaoManager {
         mTypeAppsTableDao.insertOrReplaceInTx(mTypeAppsTable);
     }
 
+    /**
+     * 插入下载数据到下载数据库
+     *
+     * @param downloadBean
+     *              下载数据
+     */
     public void insertDownloadTaskTable(DownloadBean downloadBean) {
         removeDownloadTaskTable(downloadBean.getTaskId());
         DownloadTaskTable mDownloadTaskTable = new DownloadTaskTable();
@@ -74,6 +92,12 @@ public class GreenDaoManager {
         mDownloadTaskTableDao.insertOrReplaceInTx(mDownloadTaskTable);
     }
 
+    /**
+     * 插入App到所有APP数据库
+     *
+     * @param recommendReceive
+     *              网络APP的详细数据
+     */
     public void insertRecommendReceiveTableDao(RecommendReceive recommendReceive) {
         removeRecommendReceiveTable(recommendReceive.getAppVersionId());
         RecommendReceiveTable mRecommendReceiveTable = new RecommendReceiveTable();
@@ -90,6 +114,12 @@ public class GreenDaoManager {
         mRecommendReceiveTableDao.insertOrReplaceInTx(mRecommendReceiveTable);
     }
 
+    /**
+     * 插入App到更新APP数据库
+     *
+     * @param recommendReceive
+     *              网络APP的详细数据
+     */
     public void insertCheckUpdateAppsTableDao(RecommendReceive recommendReceive) {
         CheckUpdateAppsTable mCheckUpdateAppsTable = new CheckUpdateAppsTable();
         mCheckUpdateAppsTable.setAppName(recommendReceive.getAppName());
@@ -105,6 +135,12 @@ public class GreenDaoManager {
         mCheckUpdateAppsTableDao.insertOrReplaceInTx(mCheckUpdateAppsTable);
     }
 
+    /**
+     * 插入App集合到更新APP数据库
+     *
+     * @param recommendReceiveList
+     *              网络APP的详细数据的集合
+     */
     public void insertCheckUpdateAppsTableDao(List<RecommendReceive> recommendReceiveList) {
         // 添加任务前，删除之前所有的数据
         removeCheckUpdateAppsTableAll();
@@ -113,6 +149,14 @@ public class GreenDaoManager {
         }
     }
 
+    /**
+     * 插入搜索数据到搜索数据库
+     *
+     * @param appName
+     *              搜索的名字
+     * @param searchTime
+     *              搜索的时间
+     */
     public void insertSearchHistoryTableDao(String appName, String searchTime) {
         SearchHistoryTable searchHistoryTable = new SearchHistoryTable();
         searchHistoryTable.setAppName(appName);
@@ -124,6 +168,38 @@ public class GreenDaoManager {
         }
     }
 
+    /**
+     * 插入APP的流量统计
+     *
+     * @param packageName
+     *              app的包名
+     * @param rxBytes
+     *              app下载的流量数据大小，单位byte
+     * @param txBytes
+     *              app上传的流量数据大小，单位byte
+     * @param onceTime
+     *              统计类型
+     *              ONCE 本次开机数据
+     *              FINAL 永久数据
+     */
+    public void insertDataUsageTableDao(String packageName, long rxBytes, long txBytes, int onceTime) {
+        DataUsageTable mDataUsageTable = queryDataUsageTable(packageName, onceTime);
+        if (mDataUsageTable == null) {
+            mDataUsageTable = new DataUsageTable();
+        }
+        mDataUsageTable.setPackageName(packageName);
+        mDataUsageTable.setUidRxBytes(rxBytes);
+        mDataUsageTable.setUidTxBytes(txBytes);
+        mDataUsageTable.setOnceTime(onceTime);
+        mDataUsageTableDao.insertOrReplaceInTx(mDataUsageTable);
+    }
+
+    /**
+     * 更新下载数据到下载数据库
+     *
+     * @param downloadBean
+     *              下载数据
+     */
     public void updateDownloadTaskTable(DownloadBean downloadBean) {
         DownloadTaskTable rDownloadTaskTable = queryDownloadTask(downloadBean.getTaskId());
         DownloadTaskTable mDownloadTaskTable = new DownloadTaskTable();
@@ -137,6 +213,12 @@ public class GreenDaoManager {
         mDownloadTaskTableDao.update(mDownloadTaskTable);
     }
 
+    /**
+     * 更新App到所有APP数据库
+     *
+     * @param recommendReceive
+     *              网络APP的详细数据
+     */
     public void updateRecommendReceiveTableDao(RecommendReceive recommendReceive) {
         RecommendReceiveTable rRecommendReceiveTable = queryRecommendReceive(recommendReceive.getAppVersionId());
         RecommendReceiveTable mRecommendReceiveTable = new RecommendReceiveTable();
@@ -154,23 +236,54 @@ public class GreenDaoManager {
         mRecommendReceiveTableDao.update(mRecommendReceiveTable);
     }
 
+    /**
+     * 查询下载任务表
+     *
+     * @param taskId
+     *              任务ID
+     */
     public DownloadTaskTable queryDownloadTask(String taskId) {
         return mDownloadTaskTableDao.queryBuilder().where(DownloadTaskTableDao.Properties.TaskId.eq(taskId)).unique();
     }
 
-
+    /**
+     * 查询APP
+     *
+     * @param taskId
+     *              任务ID
+     */
     public RecommendReceiveTable queryRecommendReceive(String taskId) {
         return mRecommendReceiveTableDao.queryBuilder().where(RecommendReceiveTableDao.Properties.AppVersionId.eq(taskId)).unique();
     }
 
+    /**
+     * 查询APP
+     *
+     * @param packageName
+     *              包名
+     */
     public RecommendReceiveTable queryRecommendReceiveByPackageName(String packageName) {
         return mRecommendReceiveTableDao.queryBuilder().where(RecommendReceiveTableDao.Properties.PackageName.eq(packageName)).unique();
     }
 
+    /**
+     * 查询更新APP
+     *
+     * @param taskId
+     *              任务ID
+     */
     public CheckUpdateAppsTable queryCheckUpdateApp(String taskId) {
         return mCheckUpdateAppsTableDao.queryBuilder().where(CheckUpdateAppsTableDao.Properties.AppVersionId.eq(taskId)).unique();
     }
 
+    /**
+     * 查询某一类的APP集合
+     *
+     * @param typeName
+     *              分类名称
+     * @param typeId
+     *              分类ID
+     */
     public List<TypeAppsTable> queryTypeAppsTable(String typeName, String typeId) {
         return mTypeAppsTableDao.queryBuilder()
                 .where(TypeAppsTableDao.Properties.AppTypeName.eq(typeName))
@@ -178,14 +291,23 @@ public class GreenDaoManager {
                 .list();
     }
 
+    /**
+     * 查询所有的更新App
+     */
     public List<CheckUpdateAppsTable> queryCheckUpdateApps() {
         return mCheckUpdateAppsTableDao.queryBuilder().list();
     }
 
+    /**
+     * 查询所有下载任务
+     */
     public List<DownloadTaskTable> queryDownloadTaskTable() {
         return mDownloadTaskTableDao.queryBuilder().list();
     }
 
+    /**
+     * 查询所有网络App
+     */
     public List<RecommendReceiveTable> queryRecommendReceiveTable() {
         List<RecommendReceiveTable> recommendReceiveTables = mRecommendReceiveTableDao.queryBuilder().list();
         if (recommendReceiveTables == null || recommendReceiveTables.size() <= 0) {
@@ -195,18 +317,55 @@ public class GreenDaoManager {
         }
     }
 
+    /**
+     * 查询搜索历史
+     *
+     * @param appName
+     *              搜索关键字
+     */
     public SearchHistoryTable querySearchHistory(String appName) {
         return mSearchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.AppName.eq(appName)).unique();
     }
 
+    /**
+     * 查询所有历史
+     */
     public List<SearchHistoryTable> querySearchHistory() {
         return mSearchHistoryTableDao.queryBuilder().list();
     }
 
+    /**
+     * 查询某个App的某一类流量
+     *
+     * @param packageName
+     *              app包名
+     * @param onceTime
+     *              统计类型
+     *              ONCE 本次开机数据
+     *              FINAL 永久数据
+     */
+    public DataUsageTable queryDataUsageTable(String packageName, int onceTime) {
+        return mDataUsageTableDao.queryBuilder()
+                .where(DataUsageTableDao.Properties.PackageName.eq(packageName))
+                .where(DataUsageTableDao.Properties.OnceTime.eq(onceTime)).unique();
+    }
+
+    /**
+     * 移除某个历史
+     *
+     * @param appName
+     *              搜索关键字
+     */
     public void removeSearchHistoryTable(String appName) {
         mSearchHistoryTableDao.delete(querySearchHistory(appName));
     }
 
+    /**
+     * 移除某个下载任务
+     *
+     * @param taskId
+     *              任务ID
+     */
     public void removeDownloadTaskTable(String taskId) {
         DownloadTaskTable downloadTaskTable = queryDownloadTask(taskId);
         if (downloadTaskTable != null) {
@@ -214,6 +373,12 @@ public class GreenDaoManager {
         }
     }
 
+    /**
+     * 移除某个网络App
+     *
+     * @param taskId
+     *              任务ID
+     */
     public void removeRecommendReceiveTable(String taskId) {
         RecommendReceiveTable recommendReceiveTable = queryRecommendReceive(taskId);
         if (recommendReceiveTable != null) {
@@ -221,6 +386,12 @@ public class GreenDaoManager {
         }
     }
 
+    /**
+     * 移除某个更新App
+     *
+     * @param taskId
+     *              任务ID
+     */
     public void removeCheckUpdateAppsTable(String taskId) {
         CheckUpdateAppsTable mCheckUpdateAppsTable = queryCheckUpdateApp(taskId);
         if (mCheckUpdateAppsTable != null) {
@@ -228,34 +399,66 @@ public class GreenDaoManager {
         }
     }
 
+    /**
+     * 移除某个App的某类流量统计
+     *
+     * @param packageName
+     *              包名
+     * @param onceTime
+     *              统计类型
+     *              ONCE 本次开机数据
+     *              FINAL 永久数据
+     */
+    public void removeDataUsageTableDao(String packageName, int onceTime) {
+        DataUsageTable mDataUsageTable = queryDataUsageTable(packageName, onceTime);
+        if (mDataUsageTable != null) {
+            mDataUsageTableDao.delete(mDataUsageTable);
+        }
+    }
+
+    /**
+     * 移除所有的下载任务
+     */
     public void removeDownloadTaskTableAll() {
         mDownloadTaskTableDao.deleteAll();
     }
 
+    /**
+     * 移除所有的网络App
+     */
     public void removeRecommendReceiveTableAll() {
         mRecommendReceiveTableDao.deleteAll();
     }
 
+    /**
+     * 移除所有的更新App
+     */
     public void removeCheckUpdateAppsTableAll() {
         mCheckUpdateAppsTableDao.deleteAll();
     }
 
+    /**
+     * 移除所有的分类App
+     */
     public void removeTypeAppsTableAll() {
         mTypeAppsTableDao.deleteAll();
     }
 
+    /**
+     * 将网络APP读取的表信息转为RecommendReceive类型
+     */
     public RecommendReceive table2RecommendReceive(RecommendReceiveTable recommendReceiveTable) {
         if (recommendReceiveTable != null) {
             return new RecommendReceive(recommendReceiveTable.getAppName(),
-                                        recommendReceiveTable.getPackageName(),
-                                        recommendReceiveTable.getAppSize(),
-                                        recommendReceiveTable.getAppVersion(),
-                                        recommendReceiveTable.getAppVersionId(),
-                                        recommendReceiveTable.getAppVersionDesc(),
-                                        recommendReceiveTable.getAppDesc(),
-                                        recommendReceiveTable.getMD5(),
-                                        recommendReceiveTable.getDownloadName(),
-                                        recommendReceiveTable.getAppIconName());
+                    recommendReceiveTable.getPackageName(),
+                    recommendReceiveTable.getAppSize(),
+                    recommendReceiveTable.getAppVersion(),
+                    recommendReceiveTable.getAppVersionId(),
+                    recommendReceiveTable.getAppVersionDesc(),
+                    recommendReceiveTable.getAppDesc(),
+                    recommendReceiveTable.getMD5(),
+                    recommendReceiveTable.getDownloadName(),
+                    recommendReceiveTable.getAppIconName());
         } else {
             return null;
         }

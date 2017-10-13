@@ -17,7 +17,7 @@ public class HttpHeadUtils {
     public static String HEAD_SIGN = "sign";
     public static String HEAD_CONNECTION = "Connection";
 
-    public static HashMap<String, String> getHeadMap() {
+    public static HashMap<String, String> getHeadMap() {// 由于每次都需要变动，所以无法做到一次初始化次次使用
         HashMap<String, String> headMap = new HashMap<>();
         String time = AndroidUtils.systemTime();
         String randomStr = StringUtils.createRandom(false, 14);
