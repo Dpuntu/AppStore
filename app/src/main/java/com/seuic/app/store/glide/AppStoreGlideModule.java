@@ -7,7 +7,7 @@ import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.Registry;
 import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.integration.okhttp3.OkHttpUrlLoader;
-import com.bumptech.glide.load.engine.cache.ExternalCacheDiskCacheFactory;
+import com.bumptech.glide.load.engine.cache.DiskLruCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.LruResourceCache;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -30,9 +30,8 @@ public final class AppStoreGlideModule extends AppGlideModule {
         // 默认就是/cache/ ， 不需要额外设置
         if (FileUtils.isExternalStorage()) {
             builder.setDiskCache(
-                    new ExternalCacheDiskCacheFactory(
-                            AppStoreApplication.getApp(),
-                            null,
+                    new DiskLruCacheFactory(
+                            FileUtils.getCachePath(),
                             GlideParams.DISK_CACHE_SIZE));
         } else {
             builder.setDiskCache(

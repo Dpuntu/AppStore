@@ -34,7 +34,8 @@ public class DataUsageService extends Service {
         super.onCreate();
         Loger.w("DataUsageService - onCreate");
         executorService = new ScheduledThreadPoolExecutor(1);
-        executorService.scheduleWithFixedDelay(dataUsageRunnable, 5, 60, TimeUnit.SECONDS);
+        // 15秒记录一次数据
+        executorService.scheduleWithFixedDelay(dataUsageRunnable, 3, 15, TimeUnit.SECONDS);
     }
 
     @Override

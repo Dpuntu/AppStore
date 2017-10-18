@@ -4,11 +4,12 @@ import android.support.v4.util.SimpleArrayMap;
 
 import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.R;
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.bean.DownloadingBean;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.RecommendReceive;
+import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.download.DownloadBean;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.net.download.task.OkhttpDownloader;
@@ -37,12 +38,12 @@ public class DownLoadPresenter implements DownLoadContact.Presenter {
         int downLoadCount = DownloadManager.getInstance().getDownloaderTaskCount();
         if (downLoadCount > 0) {
             initDownloadCount(recycleObjects, downLoadCount);
-            SimpleArrayMap<String, OkhttpDownloader> okhttpDownloaderMap = DownloadManager.getInstance().getDownloadingMap();
-            SimpleArrayMap<String, RecommendReceive> recommendReceiveMap = DownloadManager.getInstance().getRecommendReceiveMap();
-            for (int i = 0; i < okhttpDownloaderMap.size(); i++) {
-                DownloadBean downloadBean = okhttpDownloaderMap.get(okhttpDownloaderMap.keyAt(i)).getDownloadBean();
-                RecommendReceive recommendReceive = recommendReceiveMap.get(okhttpDownloaderMap.keyAt(i));
-                recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA,
+            SimpleArrayMap<String, OkhttpDownloader> mIsDownLoadingMap = DownloadManager.getInstance().getIsDownLoadingMap();
+            for (int i = 0; i < mIsDownLoadingMap.size(); i++) {
+                DownloadBean downloadBean = mIsDownLoadingMap.get(mIsDownLoadingMap.keyAt(i)).getDownloadBean();
+                RecommendReceive recommendReceive = GreenDaoManager.getInstance().table2RecommendReceive(
+                        GreenDaoManager.getInstance().queryRecommendReceive(mIsDownLoadingMap.keyAt(i)));
+                recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA,
                                                      new DownloadingBean(recommendReceive.getAppName(),
                                                                          downloadBean.getTaskId(),
                                                                          downloadBean.getLoadedLength(),
@@ -61,7 +62,7 @@ public class DownLoadPresenter implements DownLoadContact.Presenter {
 
     @SuppressWarnings("unchecked")
     private void initDownloadCount(List<RecycleObject> recycleObjects, int count) {
-        recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE,
+        recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_TITLE,
                                              new RecycleTitleMoreBean(
                                                      AppStoreApplication.getApp()
                                                              .getString(R.string.download_count, count),

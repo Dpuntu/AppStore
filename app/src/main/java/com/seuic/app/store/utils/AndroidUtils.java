@@ -2,6 +2,7 @@ package com.seuic.app.store.utils;
 
 import android.graphics.Color;
 import android.os.Build;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
@@ -20,6 +21,15 @@ import java.text.DecimalFormat;
  */
 
 public class AndroidUtils {
+    /**
+     * 判断主线程
+     *
+     * @return 是否为主线程
+     */
+    public static boolean isMainThread() {
+        return Looper.getMainLooper() == Looper.myLooper();
+    }
+
     /**
      * 获取系统时间戳
      *
@@ -42,10 +52,12 @@ public class AndroidUtils {
             byte[] buffer = new byte[length];
             fin.read(buffer);
             serialNum = new String(buffer, "UTF-8");
+            SpUtils.getInstance().putStr(SpUtils.SP_DEVICE_SN, serialNum);
             fin.close();
         } catch (Exception e) {
-            Loger.e("SN号获取失败，可能是设备不支持");
+            Loger.e("SN号获取失败, 正在使用备份数据");
             e.printStackTrace();
+            serialNum = SpUtils.getInstance().getStr(SpUtils.SP_DEVICE_SN, "0F81CE33-0733-1246-DC1D-E2881D7392FE");
         }
         return serialNum;
     }
@@ -175,7 +187,7 @@ public class AndroidUtils {
     }
 
     /**
-     * 长度计算
+     * 速度计算
      *
      * @param speed
      *         原长度
@@ -208,7 +220,7 @@ public class AndroidUtils {
     private static final int MIN_CLICK_DELAY_TIME = 2000;
 
     /**
-     * 防止多次点击
+     * 防止多次点击,2秒点一次
      *
      * @param lastClickTime
      *         最后的点击时间

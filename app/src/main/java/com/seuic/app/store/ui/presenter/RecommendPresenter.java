@@ -1,8 +1,8 @@
 package com.seuic.app.store.ui.presenter;
 
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.AdvertisementsReceive;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.net.ApiManager;
@@ -108,9 +108,9 @@ public class RecommendPresenter extends BaseFragmentPresenter<RecommendContent.V
         public void onSuccess(List<RecommendReceive> recommendReceives) {
             mView.removeRefresh();
             List<RecycleObject> recycleObjectList = new ArrayList<>();
-            recycleObjectList.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE, new RecycleTitleMoreBean("推荐应用", false, null)));
+            recycleObjectList.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_TITLE, new RecycleTitleMoreBean("推荐应用", false, null)));
             for (RecommendReceive recommendReceive : recommendReceives) {
-                recycleObjectList.add(new RecycleObject(RecycleViewType.RECYCEL_DATA, recommendReceive));
+                recycleObjectList.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA, recommendReceive));
             }
             if (isRefresh) {
                 mView.refreshRecycleView(recycleObjectList);

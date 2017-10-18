@@ -22,7 +22,6 @@ public class HttpHeadUtils {
         String time = AndroidUtils.systemTime();
         String randomStr = StringUtils.createRandom(false, 14);
         String sn = AndroidUtils.getSerial();
-//        String sn = "0F81CE33-0733-1246-DC1D-E2881D7392FE";// 测试SN
         String prs = AndroidUtils.getCustomer();
         String channel = AppStoreUtils.CHANNEL;
         String sign = "time=" + time + "&"

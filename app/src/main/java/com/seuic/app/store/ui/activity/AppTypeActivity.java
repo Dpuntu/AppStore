@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.seuic.app.store.R;
-import com.seuic.app.store.adapter.BaseTitleRecycleViewAdapter;
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.adapter.TypeAppsAdapter;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.ui.contact.AppTypeContact;
@@ -74,7 +74,7 @@ public class AppTypeActivity extends DefaultBaseActivity implements AppTypeConta
                 MuTextViewClickUtils.clickChangeState(recommendReceive, textState);
             }
         });
-        typeAppsAdapter.setOnItemClickListener(new BaseTitleRecycleViewAdapter.OnItemClickListener<RecommendReceive>() {
+        typeAppsAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener<RecommendReceive>() {
             @Override
             public void onItemClick(View view, RecommendReceive recommendReceive) {
                 // 应用详情

@@ -23,7 +23,7 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class UpdateAdapter extends BaseTitleRecycleViewAdapter<UpdateAdapter.UpdateViewHolder, RecommendReceive> {
+public class UpdateAdapter extends BaseRecycleViewAdapter<UpdateAdapter.UpdateViewHolder, RecommendReceive> {
     public UpdateAdapter(List<RecycleObject> mRecycleObjectList) {
         super(mRecycleObjectList, R.layout.activity_update_recycle_item);
     }
@@ -65,7 +65,7 @@ public class UpdateAdapter extends BaseTitleRecycleViewAdapter<UpdateAdapter.Upd
         });
     }
 
-    public class UpdateViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    public class UpdateViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         ImageView imageView;
         MultifunctionalTextView updateText;
         TextView appVersion, appTitle, hiddenDesc;

@@ -22,6 +22,7 @@ import java.util.List;
  */
 
 public class AppsUtils {
+    private static List<AppInfo> mAppInfos;
 
     /**
      * 获得机器中所有的APP信息
@@ -30,24 +31,24 @@ public class AppsUtils {
      *
      * @return List app列表
      */
-    public static ArrayList<AppInfo> getAllAppInfos(Context context) {
-        ArrayList<AppInfo> packages = new ArrayList<>();
+    private static List<AppInfo> getAllAppInfos(Context context) {
+        ArrayList<AppInfo> appInfos = new ArrayList<>();
         PackageManager manager = context.getPackageManager();
         List<PackageInfo> packageInfos = manager.getInstalledPackages(PackageManager.GET_PERMISSIONS);
         for (PackageInfo packageInfo : packageInfos) {
             ApplicationInfo mApplicationInfo = packageInfo.applicationInfo;
-            AppInfo appBean = new AppInfo();
-            appBean.setPackageName(mApplicationInfo.packageName);
-            appBean.setAppIcon(mApplicationInfo.loadIcon(manager));
-            appBean.setAppName(mApplicationInfo.loadLabel(manager).toString());
-            appBean.setInsatll(appIsInstalled(manager, mApplicationInfo.packageName));
-            appBean.setAppVersion(packageInfo.versionName);
-            appBean.setUserApp(appIsUserd(mApplicationInfo));
-            appBean.setPermissions(packageInfo.requestedPermissions);
-            appBean.setUid(mApplicationInfo.uid);
-            packages.add(appBean);
+            AppInfo appInfo = new AppInfo();
+            appInfo.setPackageName(mApplicationInfo.packageName);
+            appInfo.setAppIcon(mApplicationInfo.loadIcon(manager));
+            appInfo.setAppName(mApplicationInfo.loadLabel(manager).toString());
+            appInfo.setInstall(appIsInstalled(manager, mApplicationInfo.packageName));
+            appInfo.setAppVersion(packageInfo.versionName);
+            appInfo.setUserApp(true);
+            appInfo.setPermissions(packageInfo.requestedPermissions);
+            appInfo.setUid(mApplicationInfo.uid);
+            appInfos.add(appInfo);
         }
-        return packages;
+        return appInfos;
     }
 
     /**
@@ -57,46 +58,105 @@ public class AppsUtils {
      *
      * @return List app列表
      */
-    public static ArrayList<AppInfo> getUserAppInfos(Context context) {
-        ArrayList<AppInfo> packages = new ArrayList<>();
+    private static List<AppInfo> getUserAppInfos(Context context) {
+        ArrayList<AppInfo> appInfos = new ArrayList<>();
         PackageManager manager = context.getPackageManager();
         List<PackageInfo> packageInfos = manager.getInstalledPackages(PackageManager.GET_PERMISSIONS);
         for (PackageInfo packageInfo : packageInfos) {
             ApplicationInfo mApplicationInfo = packageInfo.applicationInfo;
             if (appIsUserd(mApplicationInfo)) {
-                AppInfo appBean = new AppInfo();
-                appBean.setPackageName(mApplicationInfo.packageName);
-                appBean.setAppIcon(mApplicationInfo.loadIcon(manager));
-                appBean.setAppName(mApplicationInfo.loadLabel(manager).toString());
-                appBean.setInsatll(appIsInstalled(manager, mApplicationInfo.packageName));
-                appBean.setAppVersion(packageInfo.versionName);
-                appBean.setUserApp(appIsUserd(mApplicationInfo));
-                appBean.setPermissions(packageInfo.requestedPermissions);
-                appBean.setUid(mApplicationInfo.uid);
-                packages.add(appBean);
+                AppInfo appInfo = new AppInfo();
+                appInfo.setPackageName(mApplicationInfo.packageName);
+                appInfo.setAppIcon(mApplicationInfo.loadIcon(manager));
+                appInfo.setAppName(mApplicationInfo.loadLabel(manager).toString());
+                appInfo.setInstall(appIsInstalled(manager, mApplicationInfo.packageName));
+                appInfo.setAppVersion(packageInfo.versionName);
+                appInfo.setUserApp(true);
+                appInfo.setPermissions(packageInfo.requestedPermissions);
+                appInfo.setUid(mApplicationInfo.uid);
+                appInfos.add(appInfo);
             }
         }
-        return packages;
+        return appInfos;
+    }
+
+    /**
+     * 获得APP信息
+     *
+     * @param context
+     *
+     * @return app信息
+     */
+    private static AppInfo getUserAppInfo(Context context, String packageName) {
+        AppInfo appInfo = new AppInfo();
+        PackageManager manager = context.getPackageManager();
+        PackageInfo packageInfo;
+        ApplicationInfo mApplicationInfo;
+        try {
+            packageInfo = manager.getPackageInfo(packageName, 0);
+            mApplicationInfo = packageInfo.applicationInfo;
+            appInfo.setPackageName(mApplicationInfo.packageName);
+            appInfo.setAppIcon(mApplicationInfo.loadIcon(manager));
+            appInfo.setAppName(mApplicationInfo.loadLabel(manager).toString());
+            appInfo.setInstall(appIsInstalled(manager, mApplicationInfo.packageName));
+            appInfo.setAppVersion(packageInfo.versionName);
+            appInfo.setUserApp(true);
+            appInfo.setPermissions(packageInfo.requestedPermissions);
+            appInfo.setUid(mApplicationInfo.uid);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return appInfo;
+    }
+
+    public static List<AppInfo> getAppInfos() {
+        if (mAppInfos == null || mAppInfos.size() <= 0) {
+            mAppInfos = getUserAppInfos(AppStoreApplication.getApp());
+        }
+        return mAppInfos;
+    }
+
+    public static void setAppInfos(List<AppInfo> appInfos) {
+        if (mAppInfos != null && mAppInfos.size() > 0) {
+            mAppInfos.clear();
+        }
+        mAppInfos = appInfos;
+    }
+
+    public static void addAppInfo(AppInfo appInfo) {
+        if (mAppInfos != null && mAppInfos.size() > 0) {
+            mAppInfos.add(appInfo);
+        }
+    }
+
+    public static void addAppInfo(String packageName) {
+        addAppInfo(getUserAppInfo(AppStoreApplication.getApp(), packageName));
+    }
+
+    public static void removeAppInfo(String packageName) {
+        if (mAppInfos != null && mAppInfos.size() > 0) {
+            AppInfo info = null;
+            for (AppInfo appInfo : mAppInfos) {
+                if ((appInfo.getPackageName()).equals(packageName)) {
+                    info = appInfo;
+                }
+            }
+            mAppInfos.remove(info);
+        }
     }
 
     /**
      * 获得机器中所有三方APP的包名和版本信息
      *
-     * @param context
-     *
      * @return List app列表
      */
-    public static List<AppVersionRequest> getAppVersionRequests(Context context) {
-        List<AppVersionRequest> appVersionRequests = new ArrayList<>();
-        PackageManager manager = context.getPackageManager();
-        List<PackageInfo> packageInfos = manager.getInstalledPackages(PackageManager.GET_ACTIVITIES);
-        for (PackageInfo packageInfo : packageInfos) {
-            ApplicationInfo mApplicationInfo = packageInfo.applicationInfo;
-            if (appIsUserd(mApplicationInfo)) {
-                appVersionRequests.add(new AppVersionRequest(mApplicationInfo.packageName, packageInfo.versionName));
-            }
+    public static List<AppVersionRequest> getRequestApps() {
+        List<AppVersionRequest> requestApps = new ArrayList<>();
+        List<AppInfo> appInfos = getAppInfos();
+        for (AppInfo info : appInfos) {
+            requestApps.add(new AppVersionRequest(info.getPackageName(), info.getAppVersion()));
         }
-        return appVersionRequests;
+        return requestApps;
     }
 
     /**
@@ -159,4 +219,23 @@ public class AppsUtils {
         }
     }
 
+    /**
+     * 判断包名所对应的应用是否安装在SD卡上
+     *
+     * @param packageName
+     *         应用包名
+     */
+    public static boolean isInstallOnSDCard(String packageName) {
+        PackageManager mPackageManager = AppStoreApplication.getApp().getPackageManager();
+        ApplicationInfo appInfo;
+        try {
+            appInfo = mPackageManager.getApplicationInfo(packageName, 0);
+            if ((appInfo.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE) != 0) {
+                return true;
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

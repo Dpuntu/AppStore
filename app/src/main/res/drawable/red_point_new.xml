@@ -8,11 +8,11 @@
         android:width="0.5dp"
         android:color="@color/redPoint"/>
     <!-- 圆角 -->
-    <corners android:radius="5dip"/>
+    <corners android:radius="8dip"/>
     <!-- 边距 -->
     <padding
-        android:bottom="4dip"
-        android:left="8dip"
-        android:right="8dip"
-        android:top="4dip"/>
+        android:bottom="2dip"
+        android:left="6dip"
+        android:right="6dip"
+        android:top="2dip"/>
 </shape>

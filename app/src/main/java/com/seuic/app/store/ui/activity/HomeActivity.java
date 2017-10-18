@@ -10,6 +10,7 @@ import com.seuic.app.store.listener.DownloadCountListener;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.ui.contact.HomeContact;
 import com.seuic.app.store.ui.presenter.HomePresenter;
+import com.seuic.app.store.utils.ToastUtils;
 import com.seuic.app.store.view.RedPointView;
 import com.seuic.app.store.view.ViewPagerIndicator;
 
@@ -27,6 +28,9 @@ public class HomeActivity extends HomeBaseActivity implements HomeContact.View, 
     ViewPagerIndicator mPagerHeadSelector;
     @BindView(R.id.home_viewpager)
     ViewPager mViewPager;
+
+    private long backTime = 0;
+    private static final long TIME_SPACE = 2000;
 
     @Override
     protected void eventHandler() {
@@ -109,5 +113,16 @@ public class HomeActivity extends HomeBaseActivity implements HomeContact.View, 
     @Override
     public void onDownloadCountChange(int count) {
         updateResetRedPoint(count);
+    }
+
+    @Override
+    public void onBackPressed() {
+        long nowTime = System.currentTimeMillis();
+        if (nowTime - backTime >= TIME_SPACE) {
+            ToastUtils.showToast("再按一次退出");
+            backTime = nowTime;
+        } else {
+            System.exit(0);
+        }
     }
 }

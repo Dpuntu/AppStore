@@ -105,7 +105,7 @@ public class MultifunctionalTextView extends TextView implements View.OnClickLis
         return this.textViewState;
     }
 
-    public void setProgress(int progress) {
+    private void setProgress(int progress) {
         if (progress > 100 || progress < 0) {
             throw new IllegalStateException("progress is more than 100 or less than 0");
         } else {
@@ -209,7 +209,7 @@ public class MultifunctionalTextView extends TextView implements View.OnClickLis
         }
     }
 
-    public void bindObserver() {
+    private void bindObserver() {
         DownloadManager.getInstance().registerObserver(taskId, new DownloadObserver() {
             @Override
             public void update(DownloadBean bean) {

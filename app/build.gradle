@@ -17,10 +17,13 @@ android {
 
         debug {
             testCoverageEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
         release {
-            minifyEnabled false
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -34,7 +37,6 @@ android {
             storeFile file('E:/seuic/work/TMS/Store/keystore/debug.keystore')
         }
     }
-
 }
 
 dependencies {

@@ -1,19 +1,16 @@
 package com.seuic.app.store.ui.presenter;
 
-import android.view.View;
-
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.greendao.CheckUpdateAppsTable;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.ui.contact.UpdateContact;
 import com.seuic.app.store.ui.dialog.DialogManager;
+import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.Loger;
-import com.seuic.app.store.utils.NetworkUtils;
-import com.seuic.app.store.utils.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +33,7 @@ public class UpdatePresenter implements UpdateContact.Presenter {
     public void checkUpdateApps() {
         List<CheckUpdateAppsTable> checkUpdateAppsTableList = GreenDaoManager.getInstance().queryCheckUpdateApps();
         List<RecycleObject> recycleObjects = new ArrayList<>();
-        recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE,
+        recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_TITLE,
                                              new RecycleTitleMoreBean("可用更新", false, "")));
         List<RecommendReceive> recommendReceives = new ArrayList<>();
         if (checkUpdateAppsTableList != null && checkUpdateAppsTableList.size() > 0) {
@@ -52,7 +49,7 @@ public class UpdatePresenter implements UpdateContact.Presenter {
                                                                          checkUpdateAppsTable.getDownloadName(),
                                                                          checkUpdateAppsTable.getAppIconName());
                 recommendReceives.add(recommendReceive);
-                recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA, recommendReceive));
+                recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA, recommendReceive));
             }
         }
         mView.setRecommendReceives(recommendReceives);
@@ -61,33 +58,17 @@ public class UpdatePresenter implements UpdateContact.Presenter {
 
     @Override
     public void updateAllApps(final List<RecommendReceive> recommendReceives) {
-        NetworkUtils.NETTYPE netType = NetworkUtils.getNetType();
-        switch (netType) {
-            case NONE_NET:
-                ToastUtils.showToast("请检查网络链接是否正常");
-                break;
-            case DATA_NET:
-                DialogManager.getInstance()
-                        .showHintDialog("下载提示",
-                                        "正在使用数据连接是否继续下载？",
-                                        new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                DialogManager.getInstance().dismissHintDialog();
-                                                downloadAllApps(recommendReceives);
-                                            }
-                                        },
-                                        new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                DialogManager.getInstance().dismissHintDialog();
-                                            }
-                                        });
-                break;
-            case WIFI_NET:
+        AppStoreUtils.checkDownloadNetType(new AppStoreUtils.OnDownloadListener() {
+            @Override
+            public void onOkDownloadClick() {
                 downloadAllApps(recommendReceives);
-                break;
-        }
+            }
+
+            @Override
+            public void onCancelDownloadClick() {
+                Loger.e("拒绝下载");
+            }
+        });
     }
 
     private void downloadAllApps(List<RecommendReceive> recommendReceives) {

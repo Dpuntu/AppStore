@@ -38,8 +38,8 @@ public class FileUtils {
      *
      * @return 文件路径
      */
-    public static String getCachePath(Context context) {
-        return getFilePath(context) + "/cache/";
+    public static String getCachePath() {
+        return Environment.getExternalStorageDirectory().getPath() + "/AppStore/cache";
     }
 
     /**
@@ -118,6 +118,7 @@ public class FileUtils {
         }
     }
 
+
     /**
      * 获得文件存储路径
      *
@@ -125,9 +126,15 @@ public class FileUtils {
      * 保存的路径
      */
     private static String getFilePath(Context context) {
-        if (isExternalStorage()) {//如果外部储存可用 , 如果外部设备被锁，出现busy, 请重启
-            return context.getExternalFilesDir(null).getPath();
-            //获得外部存储路径,默认路径为 /storage/emulated/0/Android/data/com.xx.xx.xx/xx/xx/xx.xx
+        if (isExternalStorage()) {
+            try {
+                return context.getExternalFilesDir(null).getPath();
+                // 获得外部存储路径,默认路径为 /storage/emulated/0/Android/data/com.xx.xx.xx/xx/xx/xx.xx
+            } catch (NullPointerException e) {
+                Loger.i("获取存储路径失败");
+                // 获得外部存储路径,路径为 /storage/emulated/0/AppStore
+                return context.getFilesDir().getPath();
+            }
         } else {
             return context.getFilesDir().getPath();
             //直接存在/data/data里，非root手机是看不到的
@@ -197,7 +204,8 @@ public class FileUtils {
             fos.flush();
             fos.close();
         } catch (IOException e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+//            Loger.e(android.util.Log.getStackTraceString(e));
+            e.printStackTrace();
         }
     }
 

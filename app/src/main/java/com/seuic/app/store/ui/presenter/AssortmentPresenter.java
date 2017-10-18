@@ -1,8 +1,8 @@
 package com.seuic.app.store.ui.presenter;
 
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.AppTypeReceive;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.ApiManager;
@@ -55,7 +55,7 @@ public class AssortmentPresenter extends BaseFragmentPresenter<AssortmentContent
             List<RecycleObject> recycleObjectList = new ArrayList<>();
             for (AppTypeReceive appTypeReceive : appTypeReceives) {
                 recycleObjectList.add(new RecycleObject(
-                        RecycleViewType.RECYCEL_TITLE,
+                        BaseRecycleViewAdapter.RecycleViewType.RECYCLE_TITLE,
                         new RecycleTitleMoreBean(
                                 appTypeReceive.getAppType(),
                                 true,
@@ -69,11 +69,11 @@ public class AssortmentPresenter extends BaseFragmentPresenter<AssortmentContent
                             appTypeReceive.getAppTypeId());
                     if (i < 4) {
                         recommendReceiveList.add(new RecycleObject(
-                                RecycleViewType.RECYCEL_APP_TYPE,
+                                BaseRecycleViewAdapter.RecycleViewType.RECYCLE_APP_TYPE,
                                 appTypeReceive.getApps().get(i)));
                     }
                 }
-                recycleObjectList.add(new RecycleObject(RecycleViewType.RECYCEL_DATA, recommendReceiveList));
+                recycleObjectList.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA, recommendReceiveList));
             }
             if (isRefresh) {
                 mView.refreshRecycleView(recycleObjectList);

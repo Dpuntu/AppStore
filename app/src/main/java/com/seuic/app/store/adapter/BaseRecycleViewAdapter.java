@@ -11,7 +11,6 @@ import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.R;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
-import com.seuic.app.store.bean.RecycleViewType;
 
 import java.util.List;
 
@@ -25,12 +24,12 @@ import java.util.List;
  *         配置数据都为List<RecycleObject>类型 需要为RecycleObject配置类型：
  *         <p>
  *         RecycleViewType中设置的三种类型，该父类会根据诶型自动配置
- *         如果是RECYCEL_TITLE，则使用RecycleTitleMoreBean类作为数据源，只需要继承，不用再做操作
- *         如果是RECYCEL_DATA和RECYCEL_APP_TYPE，可自定义数据源，继承后，需要自己做具体的配置
+ *         如果是RECYCLE_TITLE，则使用RecycleTitleMoreBean类作为数据源，只需要继承，不用再做操作
+ *         如果是RECYCLE_DATA和RECYCLE_APP_TYPE，可自定义数据源，继承后，需要自己做具体的配置
  *         继承后需要再继承BaseTitleRecycleViewAdapter.DataViewHolder，作为数据的ViewHolder
  */
 
-public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleViewAdapter.DataViewHolder, V>
+public abstract class BaseRecycleViewAdapter<T extends BaseRecycleViewAdapter.DataViewHolder, V>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<RecycleObject> mRecycleObjectList;
     private int dataLayout;
@@ -43,7 +42,7 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
      * @param dataLayout
      *         数据源使用的布局
      */
-    public BaseTitleRecycleViewAdapter(List<RecycleObject> mRecycleObjectList, int dataLayout) {
+    public BaseRecycleViewAdapter(List<RecycleObject> mRecycleObjectList, int dataLayout) {
         this.mRecycleObjectList = mRecycleObjectList;
         this.dataLayout = dataLayout;
     }
@@ -72,13 +71,13 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
         View view;
         switch (viewType) {
             case ITEM_HEAD:
-                return new BaseTitleRecycleViewAdapter.HeadFootViewHolder(headView);
-            case RecycleViewType.RECYCEL_TITLE:
+                return new BaseRecycleViewAdapter.HeadFootViewHolder(headView);
+            case RecycleViewType.RECYCLE_TITLE:
                 view = LayoutInflater
                         .from(AppStoreApplication.getApp())
                         .inflate(R.layout.recycle_item_head, parent, false);
-                return new BaseTitleRecycleViewAdapter.TitleViewHolder(view);
-            case RecycleViewType.RECYCEL_DATA:
+                return new BaseRecycleViewAdapter.TitleViewHolder(view);
+            case RecycleViewType.RECYCLE_DATA:
                 view = LayoutInflater
                         .from(AppStoreApplication.getApp())
                         .inflate(dataLayout, parent, false);
@@ -103,11 +102,11 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
         switch (getItemViewType(position)) {
             case ITEM_HEAD:
                 break;
-            case RecycleViewType.RECYCEL_TITLE:
+            case RecycleViewType.RECYCLE_TITLE:
                 final RecycleTitleMoreBean bean = (RecycleTitleMoreBean) mRecycleObjectList.get(index).getObject();
-                ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).headText.setText(bean.getTitle());
-                ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setVisibility(bean.isShowMore() ? View.VISIBLE : View.GONE);
-                ((BaseTitleRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setOnClickListener(new View.OnClickListener() {
+                ((BaseRecycleViewAdapter.TitleViewHolder) holder).headText.setText(bean.getTitle());
+                ((BaseRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setVisibility(bean.isShowMore() ? View.VISIBLE : View.GONE);
+                ((BaseRecycleViewAdapter.TitleViewHolder) holder).moreLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mOnMoreClickListener != null) {
@@ -116,7 +115,7 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
                     }
                 });
                 break;
-            case RecycleViewType.RECYCEL_DATA:
+            case RecycleViewType.RECYCLE_DATA:
                 loadRecycleData((T) holder, (V) mRecycleObjectList.get(index).getObject());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -219,5 +218,14 @@ public abstract class BaseTitleRecycleViewAdapter<T extends BaseTitleRecycleView
      *         单项数据
      */
     protected abstract void loadRecycleData(T t, V v);
+
+
+    public static class RecycleViewType {
+        public static final int RECYCLE_TITLE = 100;
+
+        public static final int RECYCLE_DATA = 101;
+
+        public static final int RECYCLE_APP_TYPE = 102;
+    }
 }
 

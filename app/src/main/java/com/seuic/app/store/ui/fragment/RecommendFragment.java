@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.seuic.app.store.R;
-import com.seuic.app.store.adapter.BaseTitleRecycleViewAdapter;
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.adapter.RecommendAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.response.AdvertisementsReceive;
@@ -80,7 +80,7 @@ public class RecommendFragment extends BaseFragment<RecommendAdapter, RecommendP
                 MuTextViewClickUtils.clickChangeState(recommendReceive, textState);
             }
         });
-        mAdapter.setOnItemClickListener(new BaseTitleRecycleViewAdapter.OnItemClickListener<RecommendReceive>() {
+        mAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener<RecommendReceive>() {
             @Override
             public void onItemClick(View view, RecommendReceive recommendReceive) {
                 Intent intent = new Intent();

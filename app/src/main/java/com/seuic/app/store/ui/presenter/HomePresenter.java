@@ -52,7 +52,6 @@ public class HomePresenter implements HomeContact.Presenter {
             }
             if (recommendReceiveTable.getPackageName().equals(AppStoreUtils.getAppPackageName())) {
                 GreenDaoManager.getInstance().removeDownloadTaskTable(recommendReceiveTable.getAppVersionId());
-                GreenDaoManager.getInstance().removeRecommendReceiveTable(recommendReceiveTable.getAppVersionId());
                 continue;
             }
             count++;

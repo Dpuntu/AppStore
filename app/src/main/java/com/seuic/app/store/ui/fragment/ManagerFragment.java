@@ -18,8 +18,6 @@ import android.widget.TextView;
 import com.seuic.app.store.R;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleSummaryBean;
-import com.seuic.app.store.bean.RecycleViewType;
-import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.greendao.CheckUpdateAppsTable;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.listener.UpdateCountListener;
@@ -45,6 +43,11 @@ import butterknife.Unbinder;
  */
 
 public class ManagerFragment extends Fragment implements ManagerContent.View, UpdateCountListener {
+    public static final int MANAGER_APPS_UPDATE = 0;
+    public static final int MANAGER_INSTALL = 1;
+    public static final int MANAGER_AUTO_UPDATE = 2;
+    public static final int MANAGER_UPDATE_SELF = 3;
+
     private Unbinder mUnbinder;
     @BindView(R.id.manager_parent)
     LinearLayout mLinearLayout;
@@ -94,20 +97,6 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
         refreshView(this.updateSelf, updateSelf, RedPointView.RedPointType.TYPE_TEXT);
     }
 
-    @Override
-    public void updateSelf(RecommendReceive recommendReceive) {
-        if (recommendReceive != null) {
-            mManagerPresenter.updateSelf(recommendReceive);
-        } else {
-            new Thread() {
-                @Override
-                public void run() {
-                    mManagerPresenter.checkUpdate(true);
-                }
-            }.start();
-        }
-    }
-
     private View createChildView(final int bindType, RecycleSummaryBean mRecycleSummaryBean) {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_manager_item, mLinearLayout, false);
         final TextView mTitle = (TextView) view.findViewById(R.id.manager_title);
@@ -126,17 +115,17 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
         }
 
         switch (bindType) {
-            case RecycleViewType.MANAGER_APPS_UPDATE: // 应用更新
+            case MANAGER_APPS_UPDATE: // 应用更新
                 mSwitch.setVisibility(View.GONE);
                 refreshView(mRedPointView, mRecycleSummaryBean.getUpdateText(), RedPointView.RedPointType.TYPE_NUM);
                 appUpdate = mRedPointView;
                 break;
-            case RecycleViewType.MANAGER_INSTALL: // 安装管理
+            case MANAGER_INSTALL: // 安装管理
                 mSwitch.setVisibility(View.GONE);
                 mRedPointView.setTypeText(RedPointView.RedPointType.TYPE_GONE,
                                           mRecycleSummaryBean.getUpdateText());
                 break;
-            case RecycleViewType.MANAGER_AUTO_UPDATE:// 自动更新
+            case MANAGER_AUTO_UPDATE:// 自动更新
                 mSwitch.setChecked(
                         SpUtils.getInstance().getBoolean(SpUtils.SP_SWITCH_AUTO, false));
                 mImageView.setVisibility(View.GONE);
@@ -152,29 +141,28 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
                     }
                 });
                 break;
-            case RecycleViewType.MANAGER_UPDATE_SELF:// 检测新版本
+            case MANAGER_UPDATE_SELF:// 检测新版本
                 mFrameLayout.setVisibility(View.GONE);
                 refreshView(mRedPointView, mRecycleSummaryBean.getUpdateText(), RedPointView.RedPointType.TYPE_TEXT);
                 updateSelf = mRedPointView;
                 break;
         }
 
-        if (bindType != RecycleViewType.MANAGER_AUTO_UPDATE) {
+        if (bindType != MANAGER_AUTO_UPDATE) {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     switch (bindType) {
-                        case RecycleViewType.MANAGER_APPS_UPDATE:
+                        case MANAGER_APPS_UPDATE:
                             startActivity(new Intent(getActivity(), UpdateActivity.class));
                             break;
-                        case RecycleViewType.MANAGER_INSTALL:
+                        case MANAGER_INSTALL:
                             startActivity(new Intent(getActivity(), InstallActivity.class));
                             break;
-                        case RecycleViewType.MANAGER_UPDATE_SELF:
+                        case MANAGER_UPDATE_SELF:
                             if (AndroidUtils.isCanClick(updateClickTime)) {
                                 updateClickTime = System.currentTimeMillis();
                                 mManagerPresenter.checkUpdate(true);
-                                // mManagerPresenter.checkGreenDao4Self();
                             }
                             break;
                     }

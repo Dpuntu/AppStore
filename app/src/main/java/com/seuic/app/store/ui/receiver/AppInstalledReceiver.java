@@ -4,15 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.seuic.app.store.AppStoreApplication;
-import com.seuic.app.store.bean.AppInfo;
 import com.seuic.app.store.greendao.GreenDaoManager;
+import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.utils.AppsUtils;
 import com.seuic.app.store.utils.TimesBytesUtils;
 
 import org.greenrobot.eventbus.EventBus;
-
-import java.util.List;
 
 /**
  * Created on 2017/9/30.
@@ -23,22 +20,20 @@ import java.util.List;
 public class AppInstalledReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("android.intent.action.PACKAGE_ADDED")) {
-            AppStoreApplication.getApp().setAppInfos(AppsUtils.getUserAppInfos(AppStoreApplication.getApp()));
-        }
-        if (intent.getAction().equals("android.intent.action.PACKAGE_REMOVED")) {
-            String packageName = intent.getDataString();
-            List<AppInfo> appInfos = AppStoreApplication.getApp().getAppInfos();
-            for (AppInfo appInfo : appInfos) {
-                if (("package:" + appInfo.getPackageName()).equals(packageName)) {
-                    GreenDaoManager.getInstance().removeDataUsageTableDao(appInfo.getPackageName(), TimesBytesUtils.BytesType.FINAL);
-                    GreenDaoManager.getInstance().removeDataUsageTableDao(appInfo.getPackageName(), TimesBytesUtils.BytesType.ONCE);
-                    appInfos.remove(appInfo);
-                    AppStoreApplication.getApp().setAppInfos(appInfos);
-                    EventBus.getDefault().post(appInfos);
-                    break;
-                }
-            }
+        // PackageManager Exception Package manager has died
+        String packageName = intent.getDataString();
+        packageName = packageName.substring(8, packageName.length());
+        switch (intent.getAction()) {
+            case Intent.ACTION_PACKAGE_REMOVED:
+                AppsUtils.removeAppInfo(packageName);
+                GreenDaoManager.getInstance().removeDataUsageTableDao(packageName, TimesBytesUtils.BytesType.FINAL);
+                GreenDaoManager.getInstance().removeDataUsageTableDao(packageName, TimesBytesUtils.BytesType.ONCE);
+                DownloadManager.getInstance().removeAppByPN(packageName);
+                EventBus.getDefault().post(AppsUtils.getAppInfos());
+                break;
+            case Intent.ACTION_PACKAGE_ADDED:
+                AppsUtils.addAppInfo(packageName);
+                break;
         }
     }
 }

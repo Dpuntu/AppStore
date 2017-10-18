@@ -8,7 +8,6 @@ import android.widget.TextView;
 import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.R;
 import com.seuic.app.store.bean.RecycleObject;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.ScreenShotBean;
 import com.seuic.app.store.bean.response.AppDetailReceive;
 import com.seuic.app.store.bean.response.RecommendReceive;
@@ -29,7 +28,7 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class SearchAdapter extends BaseTitleRecycleViewAdapter<SearchAdapter.SearchViewHolder, AppDetailReceive> {
+public class SearchAdapter extends BaseRecycleViewAdapter<SearchAdapter.SearchViewHolder, AppDetailReceive> {
     public SearchAdapter(List<RecycleObject> mRecycleObjectList) {
         super(mRecycleObjectList, R.layout.activity_search_apps_item);
     }
@@ -69,7 +68,7 @@ public class SearchAdapter extends BaseTitleRecycleViewAdapter<SearchAdapter.Sea
         });
     }
 
-    public class SearchViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    public class SearchViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         RecyclerView mGalleryRecycle;
         ImageView mImageView;
         MultifunctionalTextView mTextBtn;
@@ -113,7 +112,7 @@ public class SearchAdapter extends BaseTitleRecycleViewAdapter<SearchAdapter.Sea
 
     private void checkScreenShotName(List<RecycleObject> screenShots, String appShot) {
         if (appShot != null && !appShot.isEmpty()) {
-            screenShots.add(new RecycleObject<>(RecycleViewType.RECYCEL_DATA, new ScreenShotBean(appShot)));
+            screenShots.add(new RecycleObject<>(RecycleViewType.RECYCLE_DATA, new ScreenShotBean(appShot)));
         }
     }
 }

@@ -30,7 +30,7 @@ public class ViewPagerIndicator extends LinearLayout {
     private static final int STYLE_TRIANGLE = 1;
 
     private int textSize;
-    private int textcolor;
+    private int textColor;
     private int count;
 
     private float mHeight;// 指示符高度
@@ -48,7 +48,7 @@ public class ViewPagerIndicator extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray array = context.obtainStyledAttributes(attrs, R.styleable.viewpagerselector, 0, 0);
-        textcolor = array.getColor(R.styleable.viewpagerselector_textcolor, 0X0000FF);
+        textColor = array.getColor(R.styleable.viewpagerselector_textcolor, 0X0000FF);
         textSize = array.getDimensionPixelSize(R.styleable.viewpagerselector_textszie, 16);
         count = array.getInt(R.styleable.viewpagerselector_count, 3);
         mStyle = array.getInt(R.styleable.viewpagerselector_style, STYLE_LINE);
@@ -150,7 +150,7 @@ public class ViewPagerIndicator extends LinearLayout {
         this.mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                onScoll(position, positionOffset);
+                onScroll(position, positionOffset);
                 mOnPageChangeListener.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
 
@@ -172,7 +172,7 @@ public class ViewPagerIndicator extends LinearLayout {
         notifyHeadSelector(position);
     }
 
-    private void onScoll(int position, float offset) {
+    private void onScroll(int position, float offset) {
         // 不断改变偏移量，invalidate
         mTranslationX = getWidth() / count * (position + offset);
         int tabWidth = (int) (getWidth() / count / 8f);
@@ -199,7 +199,7 @@ public class ViewPagerIndicator extends LinearLayout {
             if (view instanceof TextView) {
                 ((TextView) view).setTextSize(AndroidUtils.px2sp(textSize));
                 if (i == position) {
-                    ((TextView) view).setTextColor(textcolor);
+                    ((TextView) view).setTextColor(textColor);
                 } else {
                     ((TextView) view).setTextColor(ContextCompat.getColor(getContext(), R.color.titleColor));
                 }

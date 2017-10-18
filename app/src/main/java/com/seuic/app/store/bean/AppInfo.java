@@ -22,7 +22,7 @@ public class AppInfo implements Serializable {
     //是否是用户app
     private boolean isUserApp;
     //是否安装
-    private boolean isInsatll;
+    private boolean isInstall;
     //应用权限
     private String[] permissions;
     //应用进程ID
@@ -68,12 +68,12 @@ public class AppInfo implements Serializable {
         isUserApp = userApp;
     }
 
-    public boolean isInsatll() {
-        return isInsatll;
+    public boolean isInstall() {
+        return isInstall;
     }
 
-    public void setInsatll(boolean insatll) {
-        isInsatll = insatll;
+    public void setInstall(boolean isInstall) {
+        this.isInstall = isInstall;
     }
 
     public String[] getPermissions() {

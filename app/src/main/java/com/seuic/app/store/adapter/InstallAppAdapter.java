@@ -8,8 +8,6 @@ import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.R;
 import com.seuic.app.store.bean.AppInfo;
 import com.seuic.app.store.bean.RecycleObject;
-import com.seuic.app.store.utils.Loger;
-import com.seuic.app.store.utils.TimesBytesUtils;
 import com.seuic.app.store.view.MultifunctionalTextView;
 
 import java.util.List;
@@ -20,7 +18,7 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class InstallAppAdapter extends BaseTitleRecycleViewAdapter<InstallAppAdapter.InstallDataViewHolder, AppInfo> {
+public class InstallAppAdapter extends BaseRecycleViewAdapter<InstallAppAdapter.InstallDataViewHolder, AppInfo> {
 
     public InstallAppAdapter(List<RecycleObject> mRecycleObjectList) {
         super(mRecycleObjectList, R.layout.activity_install_item);
@@ -38,25 +36,25 @@ public class InstallAppAdapter extends BaseTitleRecycleViewAdapter<InstallAppAda
         holder.appImage.setImageDrawable(info.getAppIcon());
         holder.unInstall.setTextState(MultifunctionalTextView.TextViewState.UNINSTALL);
 
-        Loger.d("-----------------------------------start--------------------------------------");
-        Loger.e("流量下载->" + TimesBytesUtils.getDownloadDataUsage4G());
-        Loger.e("流量上传->" + TimesBytesUtils.getUploadDataUsage4G());
-        Loger.e("WIFI下载->" + TimesBytesUtils.getDownloadDataUsagewifi());
-        Loger.e("WIFI上传->" + TimesBytesUtils.getUploadDataUsageWifi());
-        Loger.e("总流量下载->" + TimesBytesUtils.getDownloadDataUsage());
-        Loger.e("总流量上传->" + TimesBytesUtils.getUploadDataUsage());
-        String[] bytes = TimesBytesUtils.getAppDataUsage(info.getPackageName());
-        if (bytes != null) {
-            Loger.i(info.getAppName() + " 下载->" + bytes[0]);
-            Loger.i(info.getAppName() + " 上传->" + bytes[1]);
-        }
-        String msg = TimesBytesUtils.appRunTime(info.getPackageName());
-        if (msg != null) {
-            Loger.i(msg);
-        } else {
-            Loger.i("没有运行");
-        }
-        Loger.d("----------------------------------end---------------------------------------");
+//        Loger.d("-----------------------------------start--------------------------------------");
+//        Loger.e("流量下载->" + TimesBytesUtils.getDownloadDataUsage4G());
+//        Loger.e("流量上传->" + TimesBytesUtils.getUploadDataUsage4G());
+//        Loger.e("WIFI下载->" + TimesBytesUtils.getDownloadDataUsageWifi());
+//        Loger.e("WIFI上传->" + TimesBytesUtils.getUploadDataUsageWifi());
+//        Loger.e("总流量下载->" + TimesBytesUtils.getDownloadDataUsage());
+//        Loger.e("总流量上传->" + TimesBytesUtils.getUploadDataUsage());
+//        String[] bytes = TimesBytesUtils.getAppDataUsage(info.getPackageName());
+//        if (bytes != null) {
+//            Loger.i(info.getAppName() + " 下载->" + bytes[0]);
+//            Loger.i(info.getAppName() + " 上传->" + bytes[1]);
+//        }
+//        String msg = TimesBytesUtils.appRunTime(info.getPackageName());
+//        if (msg != null) {
+//            Loger.i(msg);
+//        } else {
+//            Loger.i("没有运行");
+//        }
+//        Loger.d("----------------------------------end---------------------------------------");
 
         holder.unInstall.setTextOnClickListener(new MultifunctionalTextView.TextOnClickListener() {
             @Override
@@ -68,7 +66,7 @@ public class InstallAppAdapter extends BaseTitleRecycleViewAdapter<InstallAppAda
         });
     }
 
-    class InstallDataViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    class InstallDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         TextView titleText, summaryText;
         MultifunctionalTextView unInstall;
         ImageView appImage;

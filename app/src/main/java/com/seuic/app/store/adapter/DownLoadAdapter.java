@@ -30,7 +30,7 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class DownLoadAdapter extends BaseTitleRecycleViewAdapter<DownLoadAdapter.DownLoadDataViewHolder, DownloadingBean> {
+public class DownLoadAdapter extends BaseRecycleViewAdapter<DownLoadAdapter.DownLoadDataViewHolder, DownloadingBean> {
 
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
@@ -95,11 +95,7 @@ public class DownLoadAdapter extends BaseTitleRecycleViewAdapter<DownLoadAdapter
                 if (mOnPauseTextClickListener != null) {
                     RecommendReceiveTable recommendReceiveTable = GreenDaoManager.getInstance().queryRecommendReceive(downloadingBean.getTaskId());
                     RecommendReceive recommendReceive;
-                    if (recommendReceiveTable == null) {
-                        recommendReceive = DownloadManager.getInstance().getRecommendReceiveMap().get(downloadingBean.getTaskId());
-                    } else {
-                        recommendReceive = GreenDaoManager.getInstance().table2RecommendReceive(recommendReceiveTable);
-                    }
+                    recommendReceive = GreenDaoManager.getInstance().table2RecommendReceive(recommendReceiveTable);
                     mOnPauseTextClickListener.onPauseTextClick(downLoadDataViewHolder.mPauseText,
                                                                recommendReceive,
                                                                typeState);
@@ -108,7 +104,7 @@ public class DownLoadAdapter extends BaseTitleRecycleViewAdapter<DownLoadAdapter
         });
     }
 
-    class DownLoadDataViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    class DownLoadDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         ImageView mAppIcon;
         MultifunctionalTextView mDeleteText, mPauseText;
         TextView mTitleText, mProgressText, mSizeText;

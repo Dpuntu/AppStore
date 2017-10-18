@@ -6,7 +6,6 @@ import android.content.Context;
 import android.net.TrafficStats;
 import android.support.v4.util.SimpleArrayMap;
 
-import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.bean.AppInfo;
 import com.seuic.app.store.greendao.DataUsageTable;
 import com.seuic.app.store.greendao.GreenDaoManager;
@@ -39,8 +38,11 @@ public class TimesBytesUtils {
     /**
      * 获取某个应用的流量
      *
-     * @param permissions 应用权限
-     * @param uid         应用进程号
+     * @param permissions
+     *         应用权限
+     * @param uid
+     *         应用进程号
+     *
      * @return long[]
      * long[0] 下载的流量byte
      * long[1] 上传的流量byte
@@ -62,7 +64,7 @@ public class TimesBytesUtils {
         }
 
         // 下载的流量byte ,上传的流量byte
-        return new long[]{TrafficStats.getUidRxBytes(uid), TrafficStats.getUidTxBytes(uid)};
+        return new long[] {TrafficStats.getUidRxBytes(uid), TrafficStats.getUidTxBytes(uid)};
     }
 
     /**
@@ -120,7 +122,9 @@ public class TimesBytesUtils {
     /**
      * 返回多久间隔的运行时长
      *
-     * @param month 月数
+     * @param month
+     *         月数
+     *
      * @return SimpleArrayMap<String, String>
      * key 包名
      * value 时长
@@ -159,9 +163,11 @@ public class TimesBytesUtils {
         if (sAppTimeArrayMap == null || sAppTimeArrayMap.size() <= 0) {
             sAppTimeArrayMap = appAMonthTimes();
         }
-        if (sAppTimeArrayMap != null && sAppTimeArrayMap.containsKey(packageName)) {
+
+        if (sAppTimeArrayMap.containsKey(packageName)) {
             return sAppTimeArrayMap.get(packageName);
         }
+
         return null;
     }
 
@@ -169,30 +175,30 @@ public class TimesBytesUtils {
      * 存储本次开机的流量统计
      */
     public static void updateOnceBytes() {
-        List<AppInfo> appInfos = AppStoreApplication.getApp().getAppInfos();
+        List<AppInfo> appInfos = AppsUtils.getAppInfos();
         for (AppInfo info : appInfos) {
             long[] bytes = TimesBytesUtils.getAppBytes(info.getPermissions(), info.getUid());
             if (bytes == null) {
                 continue;
             }
             GreenDaoManager.getInstance().insertDataUsageTableDao(info.getPackageName(),
-                    bytes[0], bytes[1], BytesType.ONCE);
+                                                                  bytes[0], bytes[1], BytesType.ONCE);
         }
         SpUtils.getInstance().putLong(SpUtils.MOBILE_RX_BYTES_ONCE,
-                TimesBytesUtils.getMobileDownloadBytes());
+                                      TimesBytesUtils.getMobileDownloadBytes());
         SpUtils.getInstance().putLong(SpUtils.MOBILE_TX_BYTES_ONCE,
-                TimesBytesUtils.getMobileUploadBytes());
+                                      TimesBytesUtils.getMobileUploadBytes());
         SpUtils.getInstance().putLong(SpUtils.TOTAL_RX_BYTES_ONCE,
-                TimesBytesUtils.getTotalDownloadBytes());
+                                      TimesBytesUtils.getTotalDownloadBytes());
         SpUtils.getInstance().putLong(SpUtils.TOTAL_TX_BYTES_ONCE,
-                TimesBytesUtils.getTotalUploadBytes());
+                                      TimesBytesUtils.getTotalUploadBytes());
     }
 
     /**
      * 清理本次开机的流量统计
      */
     public static void cleanOnceBytes() {
-        List<AppInfo> appInfos = AppStoreApplication.getApp().getAppInfos();
+        List<AppInfo> appInfos = AppsUtils.getAppInfos();
         for (AppInfo info : appInfos) {
             long[] bytes = TimesBytesUtils.getAppBytes(info.getPermissions(), info.getUid());
             if (bytes == null) {
@@ -209,7 +215,9 @@ public class TimesBytesUtils {
     /**
      * 根据APP包名返回APP的流量
      *
-     * @param packageName 包名
+     * @param packageName
+     *         包名
+     *
      * @return String[]
      * String[0] 下载的流量byte
      * String[1] 上传的流量byte
@@ -223,15 +231,15 @@ public class TimesBytesUtils {
         }
 
         if (mDataUsageTableFinal != null && mDataUsageTableOnce != null) {
-            return new String[]{AndroidUtils.formatDataSize(mDataUsageTableFinal.getUidRxBytes() + mDataUsageTableOnce.getUidRxBytes()),
+            return new String[] {AndroidUtils.formatDataSize(mDataUsageTableFinal.getUidRxBytes() + mDataUsageTableOnce.getUidRxBytes()),
                     AndroidUtils.formatDataSize(mDataUsageTableFinal.getUidTxBytes() + mDataUsageTableOnce.getUidTxBytes())};
         }
 
         if (mDataUsageTableOnce != null) {
-            return new String[]{AndroidUtils.formatDataSize(mDataUsageTableOnce.getUidRxBytes()),
+            return new String[] {AndroidUtils.formatDataSize(mDataUsageTableOnce.getUidRxBytes()),
                     AndroidUtils.formatDataSize(mDataUsageTableOnce.getUidTxBytes())};
         } else {
-            return new String[]{AndroidUtils.formatDataSize(mDataUsageTableFinal.getUidRxBytes()),
+            return new String[] {AndroidUtils.formatDataSize(mDataUsageTableFinal.getUidRxBytes()),
                     AndroidUtils.formatDataSize(mDataUsageTableFinal.getUidTxBytes())};
         }
     }
@@ -270,7 +278,7 @@ public class TimesBytesUtils {
     /**
      * 返回所有无线网络下载流量
      */
-    public static String getDownloadDataUsagewifi() {
+    public static String getDownloadDataUsageWifi() {
         return AndroidUtils.formatDataSize(
                 SpUtils.getInstance().getLong(SpUtils.TOTAL_RX_BYTES, 0)
                         + SpUtils.getInstance().getLong(SpUtils.TOTAL_RX_BYTES_ONCE, 0)
@@ -297,7 +305,9 @@ public class TimesBytesUtils {
     }
 
     public static class BytesType {
-
+        /**
+         * 本次开机的流量数据
+         */
         public static final int ONCE = 0;
 
         public static final int FINAL = 1;

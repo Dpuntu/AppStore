@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -81,6 +82,7 @@ public class RedPointView extends ImageView {
                 RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
         params.setMargins(0, 0, 0, 0);
         params.addRule(RelativeLayout.CENTER_IN_PARENT);
+        mNumText.setGravity(Gravity.CENTER);
         mLayout.addView(mNumText, params);
         initUI();
     }
@@ -95,7 +97,7 @@ public class RedPointView extends ImageView {
                 mLayout.setBackgroundResource(R.drawable.red_point_new);
                 break;
         }
-        mDPoint = new BitmapDrawable(null, convertViewToBitmap(mLayout));
+        mDPoint = new BitmapDrawable(null, convertView2Bitmap(mLayout));
     }
 
     @Override
@@ -158,9 +160,9 @@ public class RedPointView extends ImageView {
         invalidate();
     }
 
-    private Bitmap convertViewToBitmap(View view) {
+    private Bitmap convertView2Bitmap(View view) {
         view.measure(MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED),
-                MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+                     MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
         view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
         view.buildDrawingCache();
         Bitmap bitmap = view.getDrawingCache();

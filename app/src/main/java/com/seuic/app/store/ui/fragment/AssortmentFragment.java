@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.view.View;
 
 import com.seuic.app.store.adapter.AssortmentAdapter;
-import com.seuic.app.store.adapter.BaseTitleRecycleViewAdapter;
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.ui.activity.AppDetailActivity;
@@ -51,7 +51,7 @@ public class AssortmentFragment extends BaseFragment<AssortmentAdapter, Assortme
                 startActivity(intent);
             }
         });
-        mAdapter.setOnMoreClickListener(new BaseTitleRecycleViewAdapter.OnMoreClickListener() {
+        mAdapter.setOnMoreClickListener(new BaseRecycleViewAdapter.OnMoreClickListener() {
             @Override
             public void OnMoreClick(View view, String assortmentId, String typeTitle) {
                 // 更多

@@ -2,7 +2,6 @@ package com.seuic.app.store.glide;
 
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.widget.ImageView;
 
@@ -14,6 +13,7 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.seuic.app.store.AppStoreApplication;
+import com.seuic.app.store.utils.AndroidUtils;
 import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.HttpHeadUtils;
 import com.seuic.app.store.utils.Loger;
@@ -35,7 +35,7 @@ public class GlideAppManager {
      */
     public static boolean clearCache() {
         try {
-            if (Looper.myLooper() == Looper.getMainLooper()) {
+            if (AndroidUtils.isMainThread()) {
                 new AsyncTask<Void, Void, Void>() {
                     @Override
                     protected Void doInBackground(Void... params) {
@@ -68,7 +68,7 @@ public class GlideAppManager {
      *         加载图片类型
      */
     public static void loadImage(String imageName, ImageView imageView, int defaultId, String imageType) {
-        String url = AppStoreUtils.APPSTORE_BASE_URL + "appstore/image?image_name=" + imageName + "&type=" + imageType;
+        String url = AppStoreUtils.getImageUrl(imageName, imageType);
         if (imageName == null || imageName.isEmpty()) {
             GlideApp.with(AppStoreApplication.getApp())
                     .load(url)
@@ -108,11 +108,11 @@ public class GlideAppManager {
     private static RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
         @Override
         public boolean onLoadFailed(@Nullable GlideException throwable, Object model, Target<Drawable> target, boolean isFirstResource) {
-            Loger.w("-----   glide error exception start   -----");
+            Loger.i("-----   glide error exception start   -----");
             Loger.w("glide: " + android.util.Log.getStackTraceString(throwable));
             Loger.w("glide: " + model);
             Loger.w("glide: " + target.getRequest().isRunning());
-            Loger.w("-----   glide error exception end   -----");
+            Loger.i("-----   glide error exception end   -----");
             return false;
         }
 

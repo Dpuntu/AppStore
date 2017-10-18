@@ -1,9 +1,9 @@
 package com.seuic.app.store.ui.presenter;
 
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleSearchBean;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.AppDetailReceive;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.greendao.SearchHistoryTable;
@@ -39,10 +39,10 @@ public class SearchPresenter implements SearchContact.Presenter {
         List<SearchHistoryTable> searchHistoryTables = GreenDaoManager.getInstance().querySearchHistory();
         recycleObjects = new ArrayList<>();
         if (searchHistoryTables != null && searchHistoryTables.size() > 0) {
-            recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE,
+            recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_TITLE,
                                                  new RecycleTitleMoreBean("搜索历史", false, "")));
             for (SearchHistoryTable historyTable : searchHistoryTables) {
-                recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA,
+                recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA,
                                                      new RecycleSearchBean(historyTable.getAppName(),
                                                                            true,
                                                                            historyTable.getSearchTime())));
@@ -66,11 +66,11 @@ public class SearchPresenter implements SearchContact.Presenter {
         @SuppressWarnings("unchecked")
         @Override
         public void onSuccess(List<String> strings) {
-            recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_TITLE,
+            recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_TITLE,
                                                  new RecycleTitleMoreBean("推荐搜索", false, "")));
             if (strings.size() > 0) {
                 for (String str : strings) {
-                    recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA,
+                    recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA,
                                                          new RecycleSearchBean(str, false,
                                                                                AndroidUtils.systemTime())));
                 }
@@ -109,7 +109,7 @@ public class SearchPresenter implements SearchContact.Presenter {
             List<RecycleObject> recycleObjects = new ArrayList<>();
             if (appDetailReceives.size() > 0) {
                 for (AppDetailReceive appDetailReceive : appDetailReceives) {
-                    recycleObjects.add(new RecycleObject(RecycleViewType.RECYCEL_DATA, appDetailReceive));
+                    recycleObjects.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA, appDetailReceive));
                 }
             }
             mView.updateSearchRecycleView(recycleObjects);

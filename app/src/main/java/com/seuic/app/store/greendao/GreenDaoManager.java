@@ -51,11 +51,11 @@ public class GreenDaoManager {
      * 插入App到APP类型数据库
      *
      * @param recommendReceive
-     *              网络APP的详细数据
+     *         网络APP的详细数据
      * @param typeName
-     *              APP分类名称
+     *         APP分类名称
      * @param typeId
-     *              APP分类的ID
+     *         APP分类的ID
      */
     public void insertTypeAppsTableDao(RecommendReceive recommendReceive, String typeName, String typeId) {
         TypeAppsTable mTypeAppsTable = new TypeAppsTable();
@@ -78,7 +78,7 @@ public class GreenDaoManager {
      * 插入下载数据到下载数据库
      *
      * @param downloadBean
-     *              下载数据
+     *         下载数据
      */
     public void insertDownloadTaskTable(DownloadBean downloadBean) {
         removeDownloadTaskTable(downloadBean.getTaskId());
@@ -96,7 +96,7 @@ public class GreenDaoManager {
      * 插入App到所有APP数据库
      *
      * @param recommendReceive
-     *              网络APP的详细数据
+     *         网络APP的详细数据
      */
     public void insertRecommendReceiveTableDao(RecommendReceive recommendReceive) {
         removeRecommendReceiveTable(recommendReceive.getAppVersionId());
@@ -118,7 +118,7 @@ public class GreenDaoManager {
      * 插入App到更新APP数据库
      *
      * @param recommendReceive
-     *              网络APP的详细数据
+     *         网络APP的详细数据
      */
     public void insertCheckUpdateAppsTableDao(RecommendReceive recommendReceive) {
         CheckUpdateAppsTable mCheckUpdateAppsTable = new CheckUpdateAppsTable();
@@ -139,7 +139,7 @@ public class GreenDaoManager {
      * 插入App集合到更新APP数据库
      *
      * @param recommendReceiveList
-     *              网络APP的详细数据的集合
+     *         网络APP的详细数据的集合
      */
     public void insertCheckUpdateAppsTableDao(List<RecommendReceive> recommendReceiveList) {
         // 添加任务前，删除之前所有的数据
@@ -153,9 +153,9 @@ public class GreenDaoManager {
      * 插入搜索数据到搜索数据库
      *
      * @param appName
-     *              搜索的名字
+     *         搜索的名字
      * @param searchTime
-     *              搜索的时间
+     *         搜索的时间
      */
     public void insertSearchHistoryTableDao(String appName, String searchTime) {
         SearchHistoryTable searchHistoryTable = new SearchHistoryTable();
@@ -172,15 +172,15 @@ public class GreenDaoManager {
      * 插入APP的流量统计
      *
      * @param packageName
-     *              app的包名
+     *         app的包名
      * @param rxBytes
-     *              app下载的流量数据大小，单位byte
+     *         app下载的流量数据大小，单位byte
      * @param txBytes
-     *              app上传的流量数据大小，单位byte
+     *         app上传的流量数据大小，单位byte
      * @param onceTime
-     *              统计类型
-     *              ONCE 本次开机数据
-     *              FINAL 永久数据
+     *         统计类型
+     *         ONCE 本次开机数据
+     *         FINAL 永久数据
      */
     public void insertDataUsageTableDao(String packageName, long rxBytes, long txBytes, int onceTime) {
         DataUsageTable mDataUsageTable = queryDataUsageTable(packageName, onceTime);
@@ -198,7 +198,7 @@ public class GreenDaoManager {
      * 更新下载数据到下载数据库
      *
      * @param downloadBean
-     *              下载数据
+     *         下载数据
      */
     public void updateDownloadTaskTable(DownloadBean downloadBean) {
         DownloadTaskTable rDownloadTaskTable = queryDownloadTask(downloadBean.getTaskId());
@@ -217,7 +217,7 @@ public class GreenDaoManager {
      * 更新App到所有APP数据库
      *
      * @param recommendReceive
-     *              网络APP的详细数据
+     *         网络APP的详细数据
      */
     public void updateRecommendReceiveTableDao(RecommendReceive recommendReceive) {
         RecommendReceiveTable rRecommendReceiveTable = queryRecommendReceive(recommendReceive.getAppVersionId());
@@ -240,7 +240,7 @@ public class GreenDaoManager {
      * 查询下载任务表
      *
      * @param taskId
-     *              任务ID
+     *         任务ID
      */
     public DownloadTaskTable queryDownloadTask(String taskId) {
         return mDownloadTaskTableDao.queryBuilder().where(DownloadTaskTableDao.Properties.TaskId.eq(taskId)).unique();
@@ -250,7 +250,7 @@ public class GreenDaoManager {
      * 查询APP
      *
      * @param taskId
-     *              任务ID
+     *         任务ID
      */
     public RecommendReceiveTable queryRecommendReceive(String taskId) {
         return mRecommendReceiveTableDao.queryBuilder().where(RecommendReceiveTableDao.Properties.AppVersionId.eq(taskId)).unique();
@@ -260,7 +260,17 @@ public class GreenDaoManager {
      * 查询APP
      *
      * @param packageName
-     *              包名
+     *         包名
+     */
+    public RecommendReceiveTable queryRecommendReceiveByPN(String packageName) {
+        return mRecommendReceiveTableDao.queryBuilder().where(RecommendReceiveTableDao.Properties.PackageName.eq(packageName)).unique();
+    }
+
+    /**
+     * 查询APP
+     *
+     * @param packageName
+     *         包名
      */
     public RecommendReceiveTable queryRecommendReceiveByPackageName(String packageName) {
         return mRecommendReceiveTableDao.queryBuilder().where(RecommendReceiveTableDao.Properties.PackageName.eq(packageName)).unique();
@@ -270,7 +280,7 @@ public class GreenDaoManager {
      * 查询更新APP
      *
      * @param taskId
-     *              任务ID
+     *         任务ID
      */
     public CheckUpdateAppsTable queryCheckUpdateApp(String taskId) {
         return mCheckUpdateAppsTableDao.queryBuilder().where(CheckUpdateAppsTableDao.Properties.AppVersionId.eq(taskId)).unique();
@@ -280,9 +290,9 @@ public class GreenDaoManager {
      * 查询某一类的APP集合
      *
      * @param typeName
-     *              分类名称
+     *         分类名称
      * @param typeId
-     *              分类ID
+     *         分类ID
      */
     public List<TypeAppsTable> queryTypeAppsTable(String typeName, String typeId) {
         return mTypeAppsTableDao.queryBuilder()
@@ -321,7 +331,7 @@ public class GreenDaoManager {
      * 查询搜索历史
      *
      * @param appName
-     *              搜索关键字
+     *         搜索关键字
      */
     public SearchHistoryTable querySearchHistory(String appName) {
         return mSearchHistoryTableDao.queryBuilder().where(SearchHistoryTableDao.Properties.AppName.eq(appName)).unique();
@@ -338,11 +348,11 @@ public class GreenDaoManager {
      * 查询某个App的某一类流量
      *
      * @param packageName
-     *              app包名
+     *         app包名
      * @param onceTime
-     *              统计类型
-     *              ONCE 本次开机数据
-     *              FINAL 永久数据
+     *         统计类型
+     *         ONCE 本次开机数据
+     *         FINAL 永久数据
      */
     public DataUsageTable queryDataUsageTable(String packageName, int onceTime) {
         return mDataUsageTableDao.queryBuilder()
@@ -354,7 +364,7 @@ public class GreenDaoManager {
      * 移除某个历史
      *
      * @param appName
-     *              搜索关键字
+     *         搜索关键字
      */
     public void removeSearchHistoryTable(String appName) {
         mSearchHistoryTableDao.delete(querySearchHistory(appName));
@@ -364,7 +374,7 @@ public class GreenDaoManager {
      * 移除某个下载任务
      *
      * @param taskId
-     *              任务ID
+     *         任务ID
      */
     public void removeDownloadTaskTable(String taskId) {
         DownloadTaskTable downloadTaskTable = queryDownloadTask(taskId);
@@ -377,7 +387,7 @@ public class GreenDaoManager {
      * 移除某个网络App
      *
      * @param taskId
-     *              任务ID
+     *         任务ID
      */
     public void removeRecommendReceiveTable(String taskId) {
         RecommendReceiveTable recommendReceiveTable = queryRecommendReceive(taskId);
@@ -390,7 +400,7 @@ public class GreenDaoManager {
      * 移除某个更新App
      *
      * @param taskId
-     *              任务ID
+     *         任务ID
      */
     public void removeCheckUpdateAppsTable(String taskId) {
         CheckUpdateAppsTable mCheckUpdateAppsTable = queryCheckUpdateApp(taskId);
@@ -403,11 +413,11 @@ public class GreenDaoManager {
      * 移除某个App的某类流量统计
      *
      * @param packageName
-     *              包名
+     *         包名
      * @param onceTime
-     *              统计类型
-     *              ONCE 本次开机数据
-     *              FINAL 永久数据
+     *         统计类型
+     *         ONCE 本次开机数据
+     *         FINAL 永久数据
      */
     public void removeDataUsageTableDao(String packageName, int onceTime) {
         DataUsageTable mDataUsageTable = queryDataUsageTable(packageName, onceTime);
@@ -450,15 +460,15 @@ public class GreenDaoManager {
     public RecommendReceive table2RecommendReceive(RecommendReceiveTable recommendReceiveTable) {
         if (recommendReceiveTable != null) {
             return new RecommendReceive(recommendReceiveTable.getAppName(),
-                    recommendReceiveTable.getPackageName(),
-                    recommendReceiveTable.getAppSize(),
-                    recommendReceiveTable.getAppVersion(),
-                    recommendReceiveTable.getAppVersionId(),
-                    recommendReceiveTable.getAppVersionDesc(),
-                    recommendReceiveTable.getAppDesc(),
-                    recommendReceiveTable.getMD5(),
-                    recommendReceiveTable.getDownloadName(),
-                    recommendReceiveTable.getAppIconName());
+                                        recommendReceiveTable.getPackageName(),
+                                        recommendReceiveTable.getAppSize(),
+                                        recommendReceiveTable.getAppVersion(),
+                                        recommendReceiveTable.getAppVersionId(),
+                                        recommendReceiveTable.getAppVersionDesc(),
+                                        recommendReceiveTable.getAppDesc(),
+                                        recommendReceiveTable.getMD5(),
+                                        recommendReceiveTable.getDownloadName(),
+                                        recommendReceiveTable.getAppIconName());
         } else {
             return null;
         }

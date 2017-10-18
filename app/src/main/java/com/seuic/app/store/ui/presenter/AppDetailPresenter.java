@@ -1,8 +1,8 @@
 package com.seuic.app.store.ui.presenter;
 
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.adapter.ScreenShotAdapter;
 import com.seuic.app.store.bean.RecycleObject;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.ScreenShotBean;
 import com.seuic.app.store.bean.response.AppDetailReceive;
 import com.seuic.app.store.net.ApiManager;
@@ -73,7 +73,7 @@ public class AppDetailPresenter implements AppDetailContact.Presenter {
 
     private void checkScreenShotName(String appShot) {
         if (appShot != null && !appShot.isEmpty()) {
-            screenShots.add(new RecycleObject<>(RecycleViewType.RECYCEL_DATA, new ScreenShotBean(appShot)));
+            screenShots.add(new RecycleObject<>(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA, new ScreenShotBean(appShot)));
         }
     }
 }

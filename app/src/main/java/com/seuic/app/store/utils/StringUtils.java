@@ -8,7 +8,6 @@ package com.seuic.app.store.utils;
 
 public class StringUtils {
 
-
     /**
      * 产生随机字符串
      *

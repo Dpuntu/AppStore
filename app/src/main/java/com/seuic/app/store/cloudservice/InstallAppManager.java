@@ -1,6 +1,5 @@
-package com.seuic.app.store.install;
+package com.seuic.app.store.cloudservice;
 
-import com.seuic.app.store.bean.request.InstallResultRequest;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.greendao.DownloadTaskTable;
 import com.seuic.app.store.greendao.GreenDaoManager;
@@ -15,6 +14,9 @@ import com.seuic.app.store.utils.RxUtils;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.seuic.app.store.net.download.DownloadState.STATE_INSTALL_FAIL;
 
@@ -50,11 +52,12 @@ public class InstallAppManager {
      * @param recommendReceive
      *         任务参数
      */
-    public synchronized void addRecommendReceiveMap(String taskId, RecommendReceive recommendReceive) {
+    public void addRecommendReceiveMap(String taskId, RecommendReceive recommendReceive) {
         if (!mRecommendReceiveMap.containsKey(taskId)) {
             mRecommendReceiveMap.put(taskId, recommendReceive);
         }
         if (!isInstallLock) {
+            isInstallLock = true;
             bindCloudService4Install(taskId);
         }
     }
@@ -94,6 +97,7 @@ public class InstallAppManager {
      *         任务ID
      */
     private void installApp(CloudServiceManager cloudServiceManager, final String taskId) {
+        Loger.e("正在安装 " + taskId);
         DownloadTaskTable downloadTaskTable = GreenDaoManager.getInstance().queryDownloadTask(taskId);
         cloudServiceManager.installApp(
                 downloadTaskTable.getSavePath() + downloadTaskTable.getFileName(),
@@ -128,15 +132,19 @@ public class InstallAppManager {
     /**
      * 安装下一个APP
      * <p>
-     * 如果任务表中还可以取到任务，说明需要继续安装任务，如果没有则解除CloudService绑定
+     * 如果任务表中还可以取到任务，说明需要继续安装任务
+     * 如果任务表中还可以取不到任务，但是下载任务列表中存在任务，则打开安装锁，方便下次进入时，直接进入安装
+     * 如果任务表中还可以取不到任务并且下载任务列表中也不存在任务，则解绑CloudService，并打开安装锁，方便下次进入时，直接进入安装
      */
     private void installNext() {
         if (mRecommendReceiveMap.size() > 0) {
             Iterator mRecommendReceiveIterator = mRecommendReceiveMap.entrySet().iterator();
             bindCloudService4Install(((Map.Entry) mRecommendReceiveIterator.next()).getKey().toString());
-        } else {
-            CloudServiceManager.getInstance().unBindCloudService();
+        } else if (DownloadManager.getInstance().getDownloaderTaskCount() > 0) {
             isInstallLock = false;
+        } else {
+            isInstallLock = false;
+            CloudServiceManager.getInstance().unBindCloudService();
         }
     }
 
@@ -175,7 +183,9 @@ public class InstallAppManager {
         RxUtils.onErrorInterceptor(
                 ApiManager.getInstance()
                         .getService()
-                        .installResult(new InstallResultRequest(packageName, taskId)))
+                        .installResult(packageName, taskId))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new InstallResponseObserver("installResult"));
     }
 
@@ -191,7 +201,7 @@ public class InstallAppManager {
 
         @Override
         public void onError(String errorMsg) {
-            Loger.e("已反馈 : " + errorMsg);
+            Loger.e("反馈失败 : " + errorMsg);
         }
     }
 }

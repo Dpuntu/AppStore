@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.seuic.app.store.R;
-import com.seuic.app.store.adapter.BaseTitleRecycleViewAdapter;
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.adapter.ScreenShotAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.response.AppDetailReceive;
@@ -112,7 +112,7 @@ public class AppDetailActivity extends DefaultBaseActivity implements AppDetailC
         CustomLinearLayoutManager layoutManager = new CustomLinearLayoutManager(this, CustomLinearLayoutManager.HORIZONTAL, false);
         mGalleryRecycle.setLayoutManager(layoutManager);
         mGalleryRecycle.setAdapter(screenShotAdapter);
-        screenShotAdapter.setOnItemClickAllListener(new BaseTitleRecycleViewAdapter.OnItemClickAllListener() {
+        screenShotAdapter.setOnItemClickAllListener(new BaseRecycleViewAdapter.OnItemClickAllListener() {
             @Override
             public void OnItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList) {
                 DialogManager.getInstance().showImageDetailDialog(position, mRecycleObjectList);

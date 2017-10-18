@@ -214,7 +214,6 @@ public class NetworkUtils {
                         netType = NETWORK_4G;
                         break;
                     default:
-
                         String subtypeName = info.getSubtypeName();
                         if (subtypeName.equalsIgnoreCase("TD-SCDMA")
                                 || subtypeName.equalsIgnoreCase("WCDMA")
@@ -302,27 +301,27 @@ public class NetworkUtils {
     /**
      * 获取网络类型
      *
-     * @return NETTYPE 类型
+     * @return NetType 类型
      */
-    public static NETTYPE getNetType() {
+    public static NetType getNetType() {
         int netWork = SpUtils.getInstance()
                 .getInt(SpUtils.SP_NET, NetworkUtils.NETWORK_UNKNOWN);
         switch (netWork) {
             case NetworkUtils.NETWORK_2G:
             case NetworkUtils.NETWORK_3G:
             case NetworkUtils.NETWORK_4G:
-                return NETTYPE.DATA_NET;
+                return NetType.DATA_NET;
             case NetworkUtils.NETWORK_WIFI:
-                return NETTYPE.WIFI_NET;
+                return NetType.WIFI_NET;
             case NetworkUtils.NETWORK_NO:
             case NetworkUtils.NETWORK_UNKNOWN:
             default:
-                return NETTYPE.NONE_NET;
+                return NetType.NONE_NET;
 
         }
     }
 
-    public enum NETTYPE {
+    public enum NetType {
         /**
          * 无线网络
          */

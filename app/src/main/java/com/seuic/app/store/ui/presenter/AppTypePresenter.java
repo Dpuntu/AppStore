@@ -1,8 +1,8 @@
 package com.seuic.app.store.ui.presenter;
 
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.adapter.TypeAppsAdapter;
 import com.seuic.app.store.bean.RecycleObject;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.greendao.TypeAppsTable;
@@ -35,7 +35,7 @@ public class AppTypePresenter implements AppTypeContact.Presenter {
             List<RecycleObject> mRecycleObjectList = new ArrayList<>();
             for (TypeAppsTable typeAppsTable : typeAppsTables) {
                 mRecycleObjectList.add(
-                        new RecycleObject(RecycleViewType.RECYCEL_DATA,
+                        new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA,
                                           new RecommendReceive(
                                                   typeAppsTable.getAppName(),
                                                   typeAppsTable.getPackageName(),

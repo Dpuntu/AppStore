@@ -1,13 +1,11 @@
 package com.seuic.app.store.utils;
 
-import android.view.View;
-
-import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.net.download.DownloadState;
-import com.seuic.app.store.ui.dialog.DialogManager;
 import com.seuic.app.store.view.MultifunctionalTextView;
+
+import static com.seuic.app.store.utils.AppsUtils.getAppInfos;
 
 /**
  * Created on 2017/9/29.
@@ -33,33 +31,17 @@ public class MuTextViewClickUtils {
             case MultifunctionalTextView.TextViewState.LOADING_PAUSE:
             case MultifunctionalTextView.TextViewState.LOADING_FAIL:
             case MultifunctionalTextView.TextViewState.INSTALL_FAIL:
-                NetworkUtils.NETTYPE netType = NetworkUtils.getNetType();
-                switch (netType) {
-                    case NONE_NET:// 没有网络
-                        ToastUtils.showToast("请检查网络链接是否正常");
-                        break;
-                    case DATA_NET:// DATA_NET
-                        DialogManager.getInstance()
-                                .showHintDialog("下载提示",
-                                                "正在使用数据连接是否继续下载？",
-                                                new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        DialogManager.getInstance().dismissHintDialog();
-                                                        DownloadManager.getInstance().start(recommendReceive.getAppVersionId());
-                                                    }
-                                                },
-                                                new View.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(View v) {
-                                                        DialogManager.getInstance().dismissHintDialog();
-                                                    }
-                                                });
-                        break;
-                    case WIFI_NET:
+                AppStoreUtils.checkDownloadNetType(new AppStoreUtils.OnDownloadListener() {
+                    @Override
+                    public void onOkDownloadClick() {
                         DownloadManager.getInstance().start(recommendReceive.getAppVersionId());
-                        break;
-                }
+                    }
+
+                    @Override
+                    public void onCancelDownloadClick() {
+                        Loger.e("拒绝下载");
+                    }
+                });
                 break;
             //  正在下载状态
             case MultifunctionalTextView.TextViewState.LOADING:
@@ -76,8 +58,8 @@ public class MuTextViewClickUtils {
                 }
                 if (openError == -1) {
                     boolean isUninstallApp = true;
-                    for (int i = 0; i < AppStoreApplication.getApp().getAppInfos().size(); i++) {
-                        if (AppStoreApplication.getApp().getAppInfos().get(i).getPackageName().equals(recommendReceive.getPackageName())) {
+                    for (int i = 0; i < getAppInfos().size(); i++) {
+                        if (AppsUtils.getAppInfos().get(i).getPackageName().equals(recommendReceive.getPackageName())) {
                             isUninstallApp = false;
                             break;
                         }

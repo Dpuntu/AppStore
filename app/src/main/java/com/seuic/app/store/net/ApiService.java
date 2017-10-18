@@ -1,7 +1,6 @@
 package com.seuic.app.store.net;
 
 import com.seuic.app.store.bean.request.AppVersionRequest;
-import com.seuic.app.store.bean.request.InstallResultRequest;
 import com.seuic.app.store.bean.response.AdvertisementsReceive;
 import com.seuic.app.store.bean.response.AppDetailReceive;
 import com.seuic.app.store.bean.response.AppTypeReceive;
@@ -99,5 +98,6 @@ public interface ApiService {
      */
     @POST("appstore/installresult")
     Observable<ResponseData<String>> installResult(
-            @Body() InstallResultRequest installResultRequest);
+            @Query("app_package_name") String appPackageName,
+            @Query("app_version_id") String appVersionId);
 }

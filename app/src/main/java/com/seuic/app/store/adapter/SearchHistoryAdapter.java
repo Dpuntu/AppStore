@@ -17,7 +17,7 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class SearchHistoryAdapter extends BaseTitleRecycleViewAdapter<SearchHistoryAdapter.SearchHistoryViewHolder, RecycleSearchBean> {
+public class SearchHistoryAdapter extends BaseRecycleViewAdapter<SearchHistoryAdapter.SearchHistoryViewHolder, RecycleSearchBean> {
 
     public SearchHistoryAdapter(List<RecycleObject> mRecycleObjectList) {
         super(mRecycleObjectList, R.layout.activity_search_history_item);
@@ -43,7 +43,7 @@ public class SearchHistoryAdapter extends BaseTitleRecycleViewAdapter<SearchHist
         });
     }
 
-    public class SearchHistoryViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    public class SearchHistoryViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         ImageView deleteImage;
         TextView nameText;
 

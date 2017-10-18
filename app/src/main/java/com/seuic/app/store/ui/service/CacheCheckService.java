@@ -3,7 +3,6 @@ package com.seuic.app.store.ui.service;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.glide.GlideAppManager;
 import com.seuic.app.store.glide.GlideParams;
 import com.seuic.app.store.net.download.DownloadManager;
@@ -35,7 +34,7 @@ public class CacheCheckService extends IntentService {
         //检查下载任务
         DownloadManager.getInstance().checkDownloadingMap();
         //清理磁盘
-        if (FileUtils.getFolderSize(FileUtils.getCachePath(AppStoreApplication.getApp()))
+        if (FileUtils.getFolderSize(FileUtils.getCachePath())
                 >= GlideParams.MEMORY_CACHE_SIZE * (4 / 5f)) {
             boolean isClear = GlideAppManager.clearCache();
             if (isClear) {

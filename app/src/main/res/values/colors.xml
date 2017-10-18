@@ -20,4 +20,5 @@
     <color name="recycleHeadColor">#F5F5F5</color>
     <color name="updateTitleColor">#000000</color>
     <color name="detailDescColor">#565555</color>
+    <color name="skipTextColor">#DD949494</color>
 </resources>

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.seuic.app.store.R;
-import com.seuic.app.store.adapter.BaseTitleRecycleViewAdapter;
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.ui.contact.FragmentBaseContent;
 import com.seuic.app.store.utils.AppStoreUtils;
@@ -28,7 +28,7 @@ import butterknife.Unbinder;
  * @author dpuntu
  */
 
-public abstract class BaseFragment<T extends BaseTitleRecycleViewAdapter, V extends FragmentBaseContent.Presenter> extends Fragment implements FragmentBaseContent.View {
+public abstract class BaseFragment<T extends BaseRecycleViewAdapter, V extends FragmentBaseContent.Presenter> extends Fragment implements FragmentBaseContent.View {
     private Unbinder mUnbinder;
     protected V mPresenter;
     protected T mAdapter;
@@ -64,13 +64,19 @@ public abstract class BaseFragment<T extends BaseTitleRecycleViewAdapter, V exte
         }
     }
 
-    protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+    protected SwipeRefreshLayout.OnRefreshListener mOnRefreshListener
+            = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            mRefreshLayout.setRefreshing(true);
-            isRefreshing();
+            refresh();
         }
     };
+
+
+    private void refresh() {
+        mRefreshLayout.setRefreshing(true);
+        isRefreshing();
+    }
 
     @Override
     public void removeRefresh() {
@@ -99,7 +105,7 @@ public abstract class BaseFragment<T extends BaseTitleRecycleViewAdapter, V exte
                     @Override
                     public void onClick(View v) {
                         showRecycle(true);
-                        isRefreshing();
+                        refresh();
                     }
                 });
             }

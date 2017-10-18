@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <!-- 实心 -->
-    <!--<solid android:color="@android:color/white"/>-->
-    <!-- 边框 -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
     <stroke
-        android:width="0.5dp"
-        android:color="@color/mainColor"/>
-    <!-- 圆角 -->
-    <corners android:radius="3dp"/>
+        android:width="0.5dip"
+        android:color="@color/skipTextColor"/>
+    <solid android:color="@color/skipTextColor"/>
+    <corners android:radius="12dip"/>
 </shape>

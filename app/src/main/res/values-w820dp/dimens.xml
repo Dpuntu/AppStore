@@ -18,7 +18,7 @@
     <dimen name="dimen_9dp">18dip</dimen>
 
     <dimen name="dialog_images_w">394dip</dimen>
-    <dimen name="dialog_images_h">684dip</dimen>
+    <dimen name="dialog_images_h">700dip</dimen>
 
     <dimen name="dialog_images_position">15sp</dimen>
 </resources>

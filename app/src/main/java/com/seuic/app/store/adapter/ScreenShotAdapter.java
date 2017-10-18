@@ -19,7 +19,7 @@ import java.util.List;
  *         屏幕快照画廊适配器
  */
 
-public class ScreenShotAdapter extends BaseTitleRecycleViewAdapter<ScreenShotAdapter.ScreenShotViewHolder, ScreenShotBean> {
+public class ScreenShotAdapter extends BaseRecycleViewAdapter<ScreenShotAdapter.ScreenShotViewHolder, ScreenShotBean> {
 
     public ScreenShotAdapter(List<RecycleObject> mRecycleObjectList) {
         super(mRecycleObjectList, R.layout.activity_screen_shot_recycle_item);
@@ -38,7 +38,7 @@ public class ScreenShotAdapter extends BaseTitleRecycleViewAdapter<ScreenShotAda
                                   AppStoreUtils.AppStoreImageType.SCREEN);
     }
 
-    class ScreenShotViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    class ScreenShotViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         ImageView screenItemImage;
 
         ScreenShotViewHolder(View itemView) {

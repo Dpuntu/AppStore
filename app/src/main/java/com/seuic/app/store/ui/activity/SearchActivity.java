@@ -4,7 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.seuic.app.store.R;
-import com.seuic.app.store.adapter.BaseTitleRecycleViewAdapter;
+import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.adapter.SearchAdapter;
 import com.seuic.app.store.adapter.SearchHistoryAdapter;
 import com.seuic.app.store.bean.RecycleObject;
@@ -134,7 +134,7 @@ public class SearchActivity extends HomeBaseActivity implements SearchContact.Vi
         RecyclerViewUtils.createVerticalRecyclerView(this, mHistoryRecyclerView, true, true);
         mHistoryRecyclerView.setAdapter(mSearchHistoryAdapter);
 
-        mSearchHistoryAdapter.setOnItemClickListener(new BaseTitleRecycleViewAdapter.OnItemClickListener<RecycleSearchBean>() {
+        mSearchHistoryAdapter.setOnItemClickListener(new BaseRecycleViewAdapter.OnItemClickListener<RecycleSearchBean>() {
             @Override
             public void onItemClick(View view, RecycleSearchBean recycleSearchBean) {
                 mSearchPresenter.searchApps(recycleSearchBean.getAppName());

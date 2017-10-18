@@ -21,7 +21,7 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class TypeAppsAdapter extends BaseTitleRecycleViewAdapter<TypeAppsAdapter.InstallDataViewHolder, RecommendReceive> {
+public class TypeAppsAdapter extends BaseRecycleViewAdapter<TypeAppsAdapter.InstallDataViewHolder, RecommendReceive> {
 
     public TypeAppsAdapter(List<RecycleObject> mRecycleObjectList) {
         super(mRecycleObjectList, R.layout.activity_install_item);
@@ -53,7 +53,7 @@ public class TypeAppsAdapter extends BaseTitleRecycleViewAdapter<TypeAppsAdapter
         });
     }
 
-    class InstallDataViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    class InstallDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         TextView titleText, summaryText;
         MultifunctionalTextView unInstall;
         ImageView appImage;

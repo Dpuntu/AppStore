@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/screen_item_image"
         android:layout_width="197dip"
-        android:layout_height="342dip"
+        android:layout_height="350dip"
         android:layout_marginBottom="21dip"
         android:layout_marginLeft="18dip"
         android:layout_marginRight="18dip"

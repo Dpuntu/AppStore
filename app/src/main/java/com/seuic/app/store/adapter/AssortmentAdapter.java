@@ -10,7 +10,6 @@ import com.chad.library.adapter.base.BaseViewHolder;
 import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.R;
 import com.seuic.app.store.bean.RecycleObject;
-import com.seuic.app.store.bean.RecycleViewType;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.glide.GlideAppManager;
 import com.seuic.app.store.net.download.DownloadManager;
@@ -26,7 +25,7 @@ import java.util.List;
  * @author dpuntu
  */
 
-public class AssortmentAdapter extends BaseTitleRecycleViewAdapter<AssortmentAdapter.AssortmentDataViewHolder, List<RecycleObject<RecommendReceive>>> {
+public class AssortmentAdapter extends BaseRecycleViewAdapter<AssortmentAdapter.AssortmentDataViewHolder, List<RecycleObject<RecommendReceive>>> {
     public AssortmentAdapter(List<RecycleObject> mRecycleObjectList) {
         super(mRecycleObjectList, R.layout.fragment_assortment_item);
     }
@@ -41,7 +40,7 @@ public class AssortmentAdapter extends BaseTitleRecycleViewAdapter<AssortmentAda
     protected void loadRecycleData(AssortmentDataViewHolder holder, List<RecycleObject<RecommendReceive>> recycleObjects) {
         final List<RecommendReceive> recommendReceives = new ArrayList<>();
         for (RecycleObject recycleObject : recycleObjects) {
-            if (recycleObject.getType() != RecycleViewType.RECYCEL_APP_TYPE) {
+            if (recycleObject.getType() != RecycleViewType.RECYCLE_APP_TYPE) {
                 continue;
             }
             recommendReceives.add((RecommendReceive) recycleObject.getObject());
@@ -59,7 +58,7 @@ public class AssortmentAdapter extends BaseTitleRecycleViewAdapter<AssortmentAda
         }
     }
 
-    class AssortmentDataViewHolder extends BaseTitleRecycleViewAdapter.DataViewHolder {
+    class AssortmentDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         RecyclerView mRecyclerView;
 
         AssortmentDataViewHolder(View itemView) {

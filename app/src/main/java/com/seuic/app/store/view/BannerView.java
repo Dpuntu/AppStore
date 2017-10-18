@@ -271,7 +271,7 @@ public class BannerView extends FrameLayout {
         viewSize = count;
         this.mDetails = mDetails;
         this.imageType = imageType;
-        Collections.sort(this.mDetails, new DetailsComprator());
+        Collections.sort(this.mDetails, new DetailsComparator());
         if (viewList != null) {
             viewList.clear();
             viewList = null;
@@ -292,7 +292,7 @@ public class BannerView extends FrameLayout {
     /**
      * 排序
      */
-    class DetailsComprator implements Comparator<AdvertisementsReceive.AdReceiveDetails> {
+    class DetailsComparator implements Comparator<AdvertisementsReceive.AdReceiveDetails> {
         @Override
         public int compare(AdvertisementsReceive.AdReceiveDetails details1, AdvertisementsReceive.AdReceiveDetails details2) {
             double details1Order = Double.parseDouble(details1.getOrder());
@@ -340,7 +340,7 @@ public class BannerView extends FrameLayout {
             }
             GlideAppManager.loadImage(mDetails.get(position % viewSize).getImageName(),
                                       imageView,
-                                      checkImageId(),
+                                      defaultImageId(),
                                       imageType);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
             container.addView(imageView);
@@ -369,17 +369,17 @@ public class BannerView extends FrameLayout {
             return view == object;
         }
 
-        public int checkImageId() {
-            int defaultImageId = R.drawable.default_banner;
+        public int defaultImageId() {
+            int defaultId = R.drawable.default_banner;
             switch (imageType) {
                 case AppStoreUtils.AppStoreImageType.AD:
-                    defaultImageId = R.drawable.default_banner;
+                    defaultId = R.drawable.default_banner;
                     break;
                 case AppStoreUtils.AppStoreImageType.SCREEN:
-                    defaultImageId = R.mipmap.screen_default;
+                    defaultId = R.mipmap.screen_default;
                     break;
             }
-            return defaultImageId;
+            return defaultId;
         }
     }
 
