@@ -43,9 +43,9 @@ public class ExceptionCrashUtils implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread thread, Throwable throwable) {
-        Loger.e("unCaughtException , " + thread.getName()
+        Logger.e("unCaughtException , " + thread.getName()
                         + " , throwable: \r\n" + android.util.Log.getStackTraceString(throwable));
-        Loger.e("AppStore异常崩溃, 正在准备重启...");
+        Logger.e("AppStore异常崩溃, 正在准备重启...");
         if (!handleException(throwable) && mDefaultHandler != null) {
             mDefaultHandler.uncaughtException(thread, throwable);
         } else {

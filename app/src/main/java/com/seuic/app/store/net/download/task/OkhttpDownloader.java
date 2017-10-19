@@ -10,7 +10,7 @@ import okhttp3.OkHttpClient;
  * @author dpuntu
  */
 
-public class OkhttpDownloader {
+public class OkHttpDownloader {
     /** 指定下载客户端 */
     private OkHttpClient mClient;
     /** 最大下载任务数 */
@@ -22,7 +22,7 @@ public class OkhttpDownloader {
     /** OkDownloader 正维持的下载 Task */
     private DownloadTask mDownloadTask;
 
-    public OkhttpDownloader() {
+    public OkHttpDownloader() {
     }
 
     public OkHttpClient getClient() {
@@ -70,7 +70,7 @@ public class OkhttpDownloader {
         private int mMaxTaskSize;
         private OkHttpClient mClient;
         private DownloadBean mDownloadBean;
-        private OkhttpDownloader mOkDownloader;
+        private OkHttpDownloader mOkDownloader;
 
         public Builder() {
         }
@@ -95,9 +95,9 @@ public class OkhttpDownloader {
             return this;
         }
 
-        public OkhttpDownloader build() {
+        public OkHttpDownloader build() {
             if (mOkDownloader == null) {
-                mOkDownloader = new OkhttpDownloader();
+                mOkDownloader = new OkHttpDownloader();
             }
             if (this.mClient == null) {
                 this.mClient = new OkHttpClient();

@@ -85,22 +85,22 @@ public class RxUtils {
         @Override
         public void onNext(@NonNull ResponseData<T> data) {
             if (data.isResult() && data.getData() != null) {
-                Loger.e(observeName + " , " + data.getMsg());
+                Logger.e(observeName + " , " + data.getMsg());
                 onSuccess(data.getData());
             } else {
-                onError(observeName + " , " + data.getMsg());
+                onError(data.isResult(), observeName + " , " + data.getMsg());
             }
         }
 
         @Override
         public void onError(@NonNull Throwable throwable) {
-            onError(android.util.Log.getStackTraceString(throwable));
+            onError(false, android.util.Log.getStackTraceString(throwable));
             onComplete();
         }
 
         @Override
         public void onComplete() {
-            Loger.d(observeName + " onComplete !");
+            Logger.d(observeName + " onComplete !");
             if (mDisposable != null) {
                 mDisposable.dispose();
             }
@@ -108,6 +108,6 @@ public class RxUtils {
 
         public abstract void onSuccess(T t);
 
-        public abstract void onError(String errorMsg);
+        public abstract void onError(boolean isResult, String errorMsg);
     }
 }

@@ -87,7 +87,6 @@ public class SearchAdapter extends BaseRecycleViewAdapter<SearchAdapter.SearchVi
 
     private void loadScreenShot(AppDetailReceive appDetailReceive, SearchViewHolder holder) {
         List<RecycleObject> screenShots = new ArrayList<>();
-
         checkScreenShotName(screenShots, appDetailReceive.getAppShot1());
         checkScreenShotName(screenShots, appDetailReceive.getAppShot2());
         checkScreenShotName(screenShots, appDetailReceive.getAppShot3());

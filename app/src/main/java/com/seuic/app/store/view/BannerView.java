@@ -51,6 +51,7 @@ public class BannerView extends FrameLayout {
     private List<ImageView> viewList;
     private List<AdvertisementsReceive.AdReceiveDetails> mDetails;
     private int viewSize;
+    private int index;
 
     private static class BannerHandler extends Handler {
         private WeakReference<BannerView> weakReference = null;
@@ -130,6 +131,7 @@ public class BannerView extends FrameLayout {
 
             @Override
             public void onPageSelected(int position) {
+                index = position;
                 updateLinearPosition();
             }
 
@@ -172,6 +174,10 @@ public class BannerView extends FrameLayout {
         layoutParams.bottomMargin = getResources().getDimensionPixelSize(R.dimen.dimen_9dp);
         mLinearPosition.setPadding(getResources().getDimensionPixelSize(R.dimen.dimen_9dp), 0, 0, 0);
         mLinearPosition.setLayoutParams(layoutParams);
+    }
+
+    public int getIndex() {
+        return index;
     }
 
     public void setAdapter(PagerAdapter adapter) {
@@ -271,6 +277,9 @@ public class BannerView extends FrameLayout {
         viewSize = count;
         this.mDetails = mDetails;
         this.imageType = imageType;
+
+        mViewPager.setAdapter(null);
+
         Collections.sort(this.mDetails, new DetailsComparator());
         if (viewList != null) {
             viewList.clear();
@@ -281,12 +290,16 @@ public class BannerView extends FrameLayout {
             ImageView mImageView = new ImageView(AppStoreApplication.getApp());
             viewList.add(mImageView);
         }
-        if (this.mViewPager.getAdapter() != null) {
-            this.mViewPager.getAdapter().notifyDataSetChanged();
-        }
+
+//        if (this.mViewPager.getAdapter() != null) {
+//            this.mViewPager.getAdapter().notifyDataSetChanged();
+//        } else {
+//            setAdapter(new BannerAdapter());
+//        }
+
+        setAdapter(new BannerAdapter());
         this.mViewPager.setOffscreenPageLimit(viewList.size());
         this.mViewPager.setCurrentItem(showCount);
-        setAdapter(new BannerAdapter());
     }
 
     /**
@@ -296,7 +309,7 @@ public class BannerView extends FrameLayout {
         @Override
         public int compare(AdvertisementsReceive.AdReceiveDetails details1, AdvertisementsReceive.AdReceiveDetails details2) {
             double details1Order = Double.parseDouble(details1.getOrder());
-            double details2Order = Double.parseDouble(details1.getOrder());
+            double details2Order = Double.parseDouble(details2.getOrder());
             return (int) (details1Order - details2Order);
         }
     }
@@ -316,7 +329,6 @@ public class BannerView extends FrameLayout {
             mBannerHandler = null;
         }
     }
-
 
     public class BannerAdapter extends PagerAdapter {
         private final int cacheCount = 3;

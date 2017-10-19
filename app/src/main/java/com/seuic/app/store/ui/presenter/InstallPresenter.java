@@ -13,8 +13,6 @@ import com.seuic.app.store.utils.AppsUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.seuic.app.store.utils.AppsUtils.getAppInfos;
-
 /**
  * Created on 2017/9/20.
  *

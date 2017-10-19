@@ -55,7 +55,7 @@ public class AndroidUtils {
             SpUtils.getInstance().putStr(SpUtils.SP_DEVICE_SN, serialNum);
             fin.close();
         } catch (Exception e) {
-            Loger.e("SN号获取失败, 正在使用备份数据");
+            Logger.e("SN号获取失败, 正在使用备份数据");
             e.printStackTrace();
             serialNum = SpUtils.getInstance().getStr(SpUtils.SP_DEVICE_SN, "0F81CE33-0733-1246-DC1D-E2881D7392FE");
         }
@@ -75,7 +75,7 @@ public class AndroidUtils {
             Object result = m.invoke(invoker, "persist.sys.seuic.customer", "seuic");
             return result.toString();
         } catch (Exception e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
             return "seuic";
         }
     }

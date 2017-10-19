@@ -3,7 +3,7 @@ package com.seuic.app.store.cloudservice;
 import android.os.ConditionVariable;
 
 import com.seuic.app.store.utils.AndroidUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.SpUtils;
 
 import io.reactivex.Observable;
@@ -74,12 +74,12 @@ public class TerminalManager {
                     @Override
                     public void onNext(@NonNull TerminalInfo info) {
                         SpUtils.getInstance().putStr(SpUtils.SP_DEVICE_SN, info.getSerialNo());
-                        Loger.e("获得数据成功！" + info.getSerialNo());
+                        Logger.e("获得数据成功！" + info.getSerialNo());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        Loger.e("获得数据失败！");
+                        Logger.e("获得数据失败！");
                     }
 
                     @Override
@@ -112,7 +112,7 @@ public class TerminalManager {
 
         @Override
         public void bindFail(String msg) {
-            Loger.e("bindFail = " + msg);
+            Logger.e("bindFail = " + msg);
             cloudServiceState = false;
             mConditionVariable.open();
         }

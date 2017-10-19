@@ -12,7 +12,7 @@ import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.download.DownloadBean;
 import com.seuic.app.store.net.download.DownloadManager;
-import com.seuic.app.store.net.download.task.OkhttpDownloader;
+import com.seuic.app.store.net.download.task.OkHttpDownloader;
 import com.seuic.app.store.ui.contact.DownLoadContact;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class DownLoadPresenter implements DownLoadContact.Presenter {
         int downLoadCount = DownloadManager.getInstance().getDownloaderTaskCount();
         if (downLoadCount > 0) {
             initDownloadCount(recycleObjects, downLoadCount);
-            SimpleArrayMap<String, OkhttpDownloader> mIsDownLoadingMap = DownloadManager.getInstance().getIsDownLoadingMap();
+            SimpleArrayMap<String, OkHttpDownloader> mIsDownLoadingMap = DownloadManager.getInstance().getIsDownLoadingMap();
             for (int i = 0; i < mIsDownLoadingMap.size(); i++) {
                 DownloadBean downloadBean = mIsDownLoadingMap.get(mIsDownLoadingMap.keyAt(i)).getDownloadBean();
                 RecommendReceive recommendReceive = GreenDaoManager.getInstance().table2RecommendReceive(

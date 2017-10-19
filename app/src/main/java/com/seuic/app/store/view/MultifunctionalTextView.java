@@ -18,7 +18,7 @@ import com.seuic.app.store.net.download.DownloadBean;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.net.download.DownloadObserver;
 import com.seuic.app.store.utils.AndroidUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 
 /**
  * Created on 2017/9/21.
@@ -153,7 +153,7 @@ public class MultifunctionalTextView extends TextView implements View.OnClickLis
                 });
                 break;
             case STATE_ERROR:
-                Loger.e(DownloadManager.getInstance().getErrorCode() + "_" + DownloadManager.getInstance().getErrorMsg());
+                Logger.e(DownloadManager.getInstance().getErrorCode() + "_" + DownloadManager.getInstance().getErrorMsg());
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {

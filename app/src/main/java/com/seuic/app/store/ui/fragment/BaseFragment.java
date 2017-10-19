@@ -28,10 +28,10 @@ import butterknife.Unbinder;
  * @author dpuntu
  */
 
-public abstract class BaseFragment<T extends BaseRecycleViewAdapter, V extends FragmentBaseContent.Presenter> extends Fragment implements FragmentBaseContent.View {
+public abstract class BaseFragment<BA extends BaseRecycleViewAdapter, P extends FragmentBaseContent.Presenter> extends Fragment implements FragmentBaseContent.View {
     private Unbinder mUnbinder;
-    protected V mPresenter;
-    protected T mAdapter;
+    protected P mPresenter;
+    protected BA mAdapter;
     @BindView(R.id.fragment_recycle)
     RecyclerView mRecyclerView;
     @BindView(R.id.fragment_refresh)

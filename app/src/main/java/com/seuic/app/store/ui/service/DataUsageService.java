@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.TimesBytesUtils;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,7 +32,7 @@ public class DataUsageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Loger.w("DataUsageService - onCreate");
+        Logger.w("DataUsageService - onCreate");
         executorService = new ScheduledThreadPoolExecutor(1);
         // 15秒记录一次数据
         executorService.scheduleWithFixedDelay(dataUsageRunnable, 3, 15, TimeUnit.SECONDS);

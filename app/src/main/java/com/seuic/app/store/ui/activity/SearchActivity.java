@@ -11,7 +11,7 @@ import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleSearchBean;
 import com.seuic.app.store.ui.contact.SearchContact;
 import com.seuic.app.store.ui.presenter.SearchPresenter;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.view.SearchBar;
 import com.seuic.app.store.view.recycleview.RecyclerViewUtils;
 
@@ -75,7 +75,7 @@ public class SearchActivity extends HomeBaseActivity implements SearchContact.Vi
             public void onSearchClick(View view, CharSequence text, int searchCode) {
                 switch (searchCode) {
                     case SearchBar.SEARCH_ERROR:
-                        Loger.e("错误提示:" + text);
+                        Logger.e("错误提示:" + text);
                         break;
                     case SearchBar.SEARCH_SUCCESS:
                         mSearchRecyclerView.setVisibility(View.VISIBLE);

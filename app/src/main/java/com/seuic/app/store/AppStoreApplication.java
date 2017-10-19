@@ -10,7 +10,7 @@ import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.AppsUtils;
 import com.seuic.app.store.utils.ExceptionCrashUtils;
 import com.seuic.app.store.utils.FileUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.NetworkUtils;
 import com.seuic.app.store.utils.SpUtils;
 
@@ -27,10 +27,10 @@ public class AppStoreApplication extends Application {
     public void onCreate() {
         super.onCreate();
         mApp = AppStoreApplication.this;
-        FileUtils.initFileLoger(mApp);
         // 启动前先检查设备的SN号
         TerminalManager.getInstance().checkTerminal();
         ExceptionCrashUtils.getInstance(mApp);
+        FileUtils.initFileLoger(mApp);
         // 初始化本地APP列表
         AppsUtils.getAppInfos();
         // 判断网络环境
@@ -40,11 +40,12 @@ public class AppStoreApplication extends Application {
         startService(new Intent(this, CacheCheckService.class));
         //检查开启次数，并开始统计流量
         addAppStoreTimes();
+
     }
 
     private void addAppStoreTimes() {
         int appTime = SpUtils.getInstance().getInt(SpUtils.SP_APP_TIME, 1);
-        Loger.i("这是第" + appTime + "次启动" + AppStoreUtils.getAppPackageName());
+        Logger.i("这是第" + appTime + "次启动" + AppStoreUtils.getAppPackageName());
         if (appTime <= 1) {
             startService(new Intent(this, DataUsageService.class));
         }

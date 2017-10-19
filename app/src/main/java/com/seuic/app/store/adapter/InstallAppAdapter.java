@@ -36,25 +36,25 @@ public class InstallAppAdapter extends BaseRecycleViewAdapter<InstallAppAdapter.
         holder.appImage.setImageDrawable(info.getAppIcon());
         holder.unInstall.setTextState(MultifunctionalTextView.TextViewState.UNINSTALL);
 
-//        Loger.d("-----------------------------------start--------------------------------------");
-//        Loger.e("流量下载->" + TimesBytesUtils.getDownloadDataUsage4G());
-//        Loger.e("流量上传->" + TimesBytesUtils.getUploadDataUsage4G());
-//        Loger.e("WIFI下载->" + TimesBytesUtils.getDownloadDataUsageWifi());
-//        Loger.e("WIFI上传->" + TimesBytesUtils.getUploadDataUsageWifi());
-//        Loger.e("总流量下载->" + TimesBytesUtils.getDownloadDataUsage());
-//        Loger.e("总流量上传->" + TimesBytesUtils.getUploadDataUsage());
+//        Logger.d("-----------------------------------start--------------------------------------");
+//        Logger.e("流量下载->" + TimesBytesUtils.getDownloadDataUsage4G());
+//        Logger.e("流量上传->" + TimesBytesUtils.getUploadDataUsage4G());
+//        Logger.e("WIFI下载->" + TimesBytesUtils.getDownloadDataUsageWifi());
+//        Logger.e("WIFI上传->" + TimesBytesUtils.getUploadDataUsageWifi());
+//        Logger.e("总流量下载->" + TimesBytesUtils.getDownloadDataUsage());
+//        Logger.e("总流量上传->" + TimesBytesUtils.getUploadDataUsage());
 //        String[] bytes = TimesBytesUtils.getAppDataUsage(info.getPackageName());
 //        if (bytes != null) {
-//            Loger.i(info.getAppName() + " 下载->" + bytes[0]);
-//            Loger.i(info.getAppName() + " 上传->" + bytes[1]);
+//            Logger.i(info.getAppName() + " 下载->" + bytes[0]);
+//            Logger.i(info.getAppName() + " 上传->" + bytes[1]);
 //        }
 //        String msg = TimesBytesUtils.appRunTime(info.getPackageName());
 //        if (msg != null) {
-//            Loger.i(msg);
+//            Logger.i(msg);
 //        } else {
-//            Loger.i("没有运行");
+//            Logger.i("没有运行");
 //        }
-//        Loger.d("----------------------------------end---------------------------------------");
+//        Logger.d("----------------------------------end---------------------------------------");
 
         holder.unInstall.setTextOnClickListener(new MultifunctionalTextView.TextOnClickListener() {
             @Override

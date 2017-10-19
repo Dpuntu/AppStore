@@ -43,7 +43,7 @@ public class BASE64Utils {
         try {
             return encrypt(data.getBytes(charset), charset);
         } catch (Exception e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
             return null;
         }
     }
@@ -52,7 +52,7 @@ public class BASE64Utils {
         try {
             return decrypt(data.getBytes(charset), charset);
         } catch (Exception e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
             return null;
         }
     }
@@ -61,7 +61,7 @@ public class BASE64Utils {
         try {
             return new String(Base64.encodeBase64(data), charset);
         } catch (Exception e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
             return null;
         }
     }
@@ -70,7 +70,7 @@ public class BASE64Utils {
         try {
             return new String(Base64.decodeBase64(data), charset);
         } catch (Exception e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
             return null;
         }
     }

@@ -39,7 +39,7 @@ public class MuTextViewClickUtils {
 
                     @Override
                     public void onCancelDownloadClick() {
-                        Loger.e("拒绝下载");
+                        Logger.e("拒绝下载");
                     }
                 });
                 break;

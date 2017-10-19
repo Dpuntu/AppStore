@@ -29,7 +29,7 @@ import java.util.List;
  *         继承后需要再继承BaseTitleRecycleViewAdapter.DataViewHolder，作为数据的ViewHolder
  */
 
-public abstract class BaseRecycleViewAdapter<T extends BaseRecycleViewAdapter.DataViewHolder, V>
+public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.DataViewHolder, E>
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<RecycleObject> mRecycleObjectList;
     private int dataLayout;
@@ -93,7 +93,7 @@ public abstract class BaseRecycleViewAdapter<T extends BaseRecycleViewAdapter.Da
      * @param view
      *         为数据源的itemView
      */
-    protected abstract T createDataViewHolder(View view);
+    protected abstract VH createDataViewHolder(View view);
 
     @SuppressWarnings("unchecked")
     @Override
@@ -116,12 +116,12 @@ public abstract class BaseRecycleViewAdapter<T extends BaseRecycleViewAdapter.Da
                 });
                 break;
             case RecycleViewType.RECYCLE_DATA:
-                loadRecycleData((T) holder, (V) mRecycleObjectList.get(index).getObject());
+                loadRecycleData((VH) holder, (E) mRecycleObjectList.get(index).getObject());
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (mOnItemClickListener != null) {
-                            mOnItemClickListener.onItemClick(view, (V) mRecycleObjectList.get(index).getObject());
+                            mOnItemClickListener.onItemClick(view, (E) mRecycleObjectList.get(index).getObject());
                         }
                         if (mOnItemClickAllListener != null) {
                             mOnItemClickAllListener.OnItemClickAll(view, index, mRecycleObjectList);
@@ -150,14 +150,14 @@ public abstract class BaseRecycleViewAdapter<T extends BaseRecycleViewAdapter.Da
     /**
      * RecycleView Item 监听器1
      */
-    private OnItemClickListener<V> mOnItemClickListener;
+    private OnItemClickListener<E> mOnItemClickListener;
 
-    public void setOnItemClickListener(OnItemClickListener<V> mOnItemClickListener) {
+    public void setOnItemClickListener(OnItemClickListener<E> mOnItemClickListener) {
         this.mOnItemClickListener = mOnItemClickListener;
     }
 
-    public interface OnItemClickListener<V> {
-        void onItemClick(View view, V v);
+    public interface OnItemClickListener<E> {
+        void onItemClick(View view, E e);
     }
 
     /**
@@ -212,12 +212,12 @@ public abstract class BaseRecycleViewAdapter<T extends BaseRecycleViewAdapter.Da
     /**
      * 实际加载dataView
      *
-     * @param t
+     * @param vh
      *         数据的ViewHolder
-     * @param v
+     * @param e
      *         单项数据
      */
-    protected abstract void loadRecycleData(T t, V v);
+    protected abstract void loadRecycleData(VH vh, E e);
 
 
     public static class RecycleViewType {

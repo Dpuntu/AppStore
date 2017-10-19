@@ -10,7 +10,7 @@ import com.seuic.app.store.greendao.SearchHistoryTable;
 import com.seuic.app.store.net.ApiManager;
 import com.seuic.app.store.ui.contact.SearchContact;
 import com.seuic.app.store.utils.AndroidUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.RxUtils;
 
 import java.util.ArrayList;
@@ -79,8 +79,8 @@ public class SearchPresenter implements SearchContact.Presenter {
         }
 
         @Override
-        public void onError(String errorMsg) {
-            Loger.e("错误提示:" + errorMsg);
+        public void onError(boolean isResult, String errorMsg) {
+            Logger.e("错误提示:" + errorMsg);
             mView.updateHistoryRecycleView(recycleObjects);
         }
     }
@@ -116,8 +116,8 @@ public class SearchPresenter implements SearchContact.Presenter {
         }
 
         @Override
-        public void onError(String errorMsg) {
-            Loger.e("错误提示:" + errorMsg);
+        public void onError(boolean isResult, String errorMsg) {
+            Logger.e("错误提示:" + errorMsg);
         }
     }
 }

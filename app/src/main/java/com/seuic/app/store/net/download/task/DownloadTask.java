@@ -7,7 +7,7 @@ import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.net.download.DownloadState;
 import com.seuic.app.store.utils.FileUtils;
 import com.seuic.app.store.utils.HttpHeadUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -61,14 +61,14 @@ public class DownloadTask implements Runnable {
             if (downloadFile.exists()
                     && downloadFile.length() < downloadTaskTable.getTotalSize()
                     && mDownloadBean.getTotalSize() == downloadTaskTable.getTotalSize()) {
-                Loger.e("文件存在，正在断点，可惜不支持断点");
+                Logger.e("文件存在，正在断点，可惜不支持断点");
 //                mDownloadBean.setLoadedLength(downloadFile.length());
 //                GreenDaoManager.getInstance().updateDownloadTaskTable(mDownloadBean);
                 FileUtils.deleteFile(downloadFile);
                 mDownloadBean.setLoadedLength(0);
                 GreenDaoManager.getInstance().updateDownloadTaskTable(mDownloadBean);
             } else {
-                Loger.e("文件存在，但是下载错误");
+                Logger.e("文件存在，但是下载错误");
                 FileUtils.deleteFile(downloadFile);
                 mDownloadBean.setLoadedLength(0);
             }
@@ -104,7 +104,7 @@ public class DownloadTask implements Runnable {
                     GreenDaoManager.getInstance().updateDownloadTaskTable(mDownloadBean);
                 }
             } catch (Exception e) {
-                Loger.e(android.util.Log.getStackTraceString(e));
+                Logger.e(android.util.Log.getStackTraceString(e));
                 if (e instanceof SocketTimeoutException) {// 连接超时
                     sendErrorState(-1, "网络连接超时");
                 } else if (e instanceof SSLException) {
@@ -120,7 +120,7 @@ public class DownloadTask implements Runnable {
                     buffer.close();
                     stream.close();
                 } catch (IOException e) {
-                    Loger.e(android.util.Log.getStackTraceString(e));
+                    Logger.e(android.util.Log.getStackTraceString(e));
                     sendErrorState(-5, "未知错误");
                 }
                 if (downloadFile.length() == mDownloadBean.getTotalSize()
@@ -130,11 +130,11 @@ public class DownloadTask implements Runnable {
                     mDownloadBean.setLoadState(DownloadState.STATE_FINISH);
                     //更新进度
                     DownloadManager.getInstance().notifyDownloadUpdate(mDownloadBean.getTaskId());
-                    Loger.d("download task is over: \r\n" + mDownloadBean.toString());
+                    Logger.d("download task is over: \r\n" + mDownloadBean.toString());
                 }
             }
         } else {
-            Loger.e("download inputStream is null: \r\n" + mDownloadBean.toString());
+            Logger.e("download inputStream is null: \r\n" + mDownloadBean.toString());
             sendErrorState(-3, "下载信息为空值,请检查下载信息");
         }
     }

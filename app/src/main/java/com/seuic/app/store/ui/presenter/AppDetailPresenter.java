@@ -7,7 +7,7 @@ import com.seuic.app.store.bean.ScreenShotBean;
 import com.seuic.app.store.bean.response.AppDetailReceive;
 import com.seuic.app.store.net.ApiManager;
 import com.seuic.app.store.ui.contact.AppDetailContact;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.RxUtils;
 
 import java.util.ArrayList;
@@ -52,8 +52,8 @@ public class AppDetailPresenter implements AppDetailContact.Presenter {
         }
 
         @Override
-        public void onError(String errorMsg) {
-            Loger.e("错误提示:" + errorMsg);
+        public void onError(boolean isResult, String errorMsg) {
+            Logger.e("错误提示:" + errorMsg);
         }
     }
 

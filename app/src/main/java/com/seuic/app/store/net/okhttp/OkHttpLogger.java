@@ -1,7 +1,7 @@
 package com.seuic.app.store.net.okhttp;
 
 import com.seuic.app.store.utils.CharsetUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 
 import okhttp3.logging.HttpLoggingInterceptor;
 
@@ -11,14 +11,14 @@ import okhttp3.logging.HttpLoggingInterceptor;
  * @author dpuntu
  */
 
-public class OkhttpLoger implements HttpLoggingInterceptor.Logger {
+public class OkHttpLogger implements HttpLoggingInterceptor.Logger {
     @Override
     public void log(String str) {
         try {
-            Loger.i("okhttp: " + CharsetUtils.unicode2Utf8(str));
+            Logger.i("okhttp: " + CharsetUtils.unicode2Utf8(str));
         } catch (Exception e) {
-            Loger.e("okhttp: OkhttpLogger error :" + e.getMessage());
-            Loger.i("okhttp: " + str);
+            Logger.e("okhttp: OkhttpLogger error :" + e.getMessage());
+            Logger.i("okhttp: " + str);
         }
     }
 }

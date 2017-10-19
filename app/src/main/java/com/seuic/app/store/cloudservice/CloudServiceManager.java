@@ -9,7 +9,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.seuic.app.store.AppStoreApplication;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.smartpos.cloudsdk.app.IAppInstallObserver;
 import com.seuic.smartpos.cloudsdk.app.IAppManager;
 import com.seuic.smartpos.cloudsdk.app.InstallParam;
@@ -54,7 +54,7 @@ public class CloudServiceManager {
      *         绑定结果回调
      */
     public void bindCloudService(BindCloudListener mBindCloudListener) {
-        Loger.d("开始 CloudService 绑定");
+        Logger.d("开始 CloudService 绑定");
         this.mBindCloudListener = mBindCloudListener;
         Intent intent = new Intent(cloudServicePackage);
         intent.setPackage(cloudSdkPackage);
@@ -75,7 +75,7 @@ public class CloudServiceManager {
      */
     public void unBindCloudService() {
         if (connected) {
-            Loger.d("解除 CloudService 绑定");
+            Logger.d("解除 CloudService 绑定");
             AppStoreApplication.getApp().unbindService(mServiceConnection);
             connected = false;
             reSetManager();
@@ -95,7 +95,7 @@ public class CloudServiceManager {
                     mSystemManager = ISystemManager.Stub.asInterface(cloudService.getManager(ManagerType.SYSTEM_MANAGER));
                     connected = true;
                 } catch (RemoteException e) {
-                    Loger.e(android.util.Log.getStackTraceString(e));
+                    Logger.e(android.util.Log.getStackTraceString(e));
                     connected = false;
                     reSetManager();
                 }
@@ -162,7 +162,7 @@ public class CloudServiceManager {
         try {
             if (mDeviceManager != null) {
                 boolean result = mDeviceManager.checkPosdServiceState();
-                Loger.e("checkCloudServiceState, state = " + result);
+                Logger.e("checkCloudServiceState, state = " + result);
                 if (result) {
                     TerminalInfo terminalInfo = new TerminalInfo();
                     Bundle bundle = mDeviceManager.getDeviceInfo();
@@ -182,10 +182,10 @@ public class CloudServiceManager {
                     TerminalManager.getInstance().setTerminalInfo(terminalInfo);
                 }
             } else {
-                Loger.e("DeviceManager is Null");
+                Logger.e("DeviceManager is Null");
             }
         } catch (RemoteException e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
         }
     }
 

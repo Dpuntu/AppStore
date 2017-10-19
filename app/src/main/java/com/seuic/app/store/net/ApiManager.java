@@ -1,7 +1,7 @@
 package com.seuic.app.store.net;
 
 import com.seuic.app.store.net.okhttp.CustomInterceptor;
-import com.seuic.app.store.net.okhttp.OkhttpLoger;
+import com.seuic.app.store.net.okhttp.OkHttpLogger;
 import com.seuic.app.store.utils.AppStoreUtils;
 
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,7 @@ public class ApiManager {
     }
 
     public ApiService getService() {
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new OkhttpLoger());
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new OkHttpLogger());
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()

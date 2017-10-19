@@ -8,7 +8,7 @@ import android.util.Log;
  * @author dpuntu
  */
 
-public class Loger {
+public class Logger {
     private final static boolean DEUBG = true;
 
     private final static String TAG = "com.seuic.app.store";

@@ -10,7 +10,7 @@ import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.ui.contact.UpdateContact;
 import com.seuic.app.store.ui.dialog.DialogManager;
 import com.seuic.app.store.utils.AppStoreUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +66,7 @@ public class UpdatePresenter implements UpdateContact.Presenter {
 
             @Override
             public void onCancelDownloadClick() {
-                Loger.e("拒绝下载");
+                Logger.e("拒绝下载");
             }
         });
     }
@@ -78,7 +78,7 @@ public class UpdatePresenter implements UpdateContact.Presenter {
                 DownloadManager.getInstance().start(recommendReceive.getAppVersionId());
             }
         } else {
-            Loger.e("没有可以更新的软件");
+            Logger.e("没有可以更新的软件");
         }
     }
 }

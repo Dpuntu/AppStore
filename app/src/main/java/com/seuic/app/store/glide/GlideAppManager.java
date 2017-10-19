@@ -16,7 +16,7 @@ import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.utils.AndroidUtils;
 import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.HttpHeadUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 
 import java.util.HashMap;
 
@@ -50,7 +50,7 @@ public class GlideAppManager {
             }
             return true;
         } catch (Exception exception) {
-            Loger.e(android.util.Log.getStackTraceString(exception));
+            Logger.e(android.util.Log.getStackTraceString(exception));
             return false;
         }
     }
@@ -108,11 +108,11 @@ public class GlideAppManager {
     private static RequestListener<Drawable> requestListener = new RequestListener<Drawable>() {
         @Override
         public boolean onLoadFailed(@Nullable GlideException throwable, Object model, Target<Drawable> target, boolean isFirstResource) {
-            Loger.i("-----   glide error exception start   -----");
-            Loger.w("glide: " + android.util.Log.getStackTraceString(throwable));
-            Loger.w("glide: " + model);
-            Loger.w("glide: " + target.getRequest().isRunning());
-            Loger.i("-----   glide error exception end   -----");
+            Logger.i("-----   glide error exception start   -----");
+            Logger.w("glide: " + android.util.Log.getStackTraceString(throwable));
+            Logger.w("glide: " + model);
+            Logger.w("glide: " + target.getRequest().isRunning());
+            Logger.i("-----   glide error exception end   -----");
             return false;
         }
 

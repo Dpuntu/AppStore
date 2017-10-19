@@ -80,7 +80,7 @@ public class ManagerPresenter implements ManagerContent.Presenter {
         }
 
         @Override
-        public void onError(String errorMsg) {
+        public void onError(boolean isResult, String errorMsg) {
             if (mRecommendReceiveList != null) {
                 mRecommendReceiveList.clear();
             }

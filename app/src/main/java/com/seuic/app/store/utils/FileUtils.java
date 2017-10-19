@@ -61,7 +61,7 @@ public class FileUtils {
         File file = new File(filePath);
         if (file.exists()) {
             if (file.delete()) {
-                Loger.i("删除" + filePath + "文件成功");
+                Logger.i("删除" + filePath + "文件成功");
             }
         }
     }
@@ -72,7 +72,7 @@ public class FileUtils {
     public static void deleteFile(File file) {
         if (file.exists()) {
             if (file.delete()) {
-                Loger.i("删除" + file.getPath() + "文件成功");
+                Logger.i("删除" + file.getPath() + "文件成功");
             }
         }
     }
@@ -97,7 +97,7 @@ public class FileUtils {
         File dic = new File(loadPath);
         if (!dic.exists()) {
             if (dic.mkdirs()) {
-                Loger.i("下载目录创建成功");
+                Logger.i("下载目录创建成功");
                 return true;
             }
             return true;
@@ -131,9 +131,9 @@ public class FileUtils {
                 return context.getExternalFilesDir(null).getPath();
                 // 获得外部存储路径,默认路径为 /storage/emulated/0/Android/data/com.xx.xx.xx/xx/xx/xx.xx
             } catch (NullPointerException e) {
-                Loger.i("获取存储路径失败");
+                Logger.i("获取存储路径失败");
                 // 获得外部存储路径,路径为 /storage/emulated/0/AppStore
-                return context.getFilesDir().getPath();
+                return Environment.getExternalStorageDirectory().getPath() + "/AppStore";
             }
         } else {
             return context.getFilesDir().getPath();
@@ -187,13 +187,13 @@ public class FileUtils {
             File file = new File(logPath + fileName);
             if (!dic.exists()) {
                 if (dic.mkdirs()) {
-                    Loger.i("目录创建成功");
+                    Logger.i("目录创建成功");
                 }
             }
 
             if (!file.exists()) {
                 if (file.createNewFile()) {
-                    Loger.i("文件创建成功");
+                    Logger.i("文件创建成功");
                 }
             }
 
@@ -204,7 +204,7 @@ public class FileUtils {
             fos.flush();
             fos.close();
         } catch (IOException e) {
-//            Loger.e(android.util.Log.getStackTraceString(e));
+//            Logger.e(android.util.Log.getStackTraceString(e));
             e.printStackTrace();
         }
     }
@@ -237,7 +237,7 @@ public class FileUtils {
 
                 if (logDate == null) {
                     if (f.delete()) {
-                        Loger.i("文件被删除");
+                        Logger.i("文件被删除");
                     }
                     continue;
                 }
@@ -261,7 +261,7 @@ public class FileUtils {
                 double dayCount = (curCal.getTimeInMillis() - logCal.getTimeInMillis()) / (1000 * 3600 * 24);// 从间隔
                 if (dayCount > MAX_DAY || dayCount < -MAX_DAY) {
                     if (f.delete()) {
-                        Loger.d(fileName + " 日志文件已删除");
+                        Logger.d(fileName + " 日志文件已删除");
                     }
                 }
             }

@@ -14,12 +14,12 @@ import com.seuic.app.store.listener.DownloadCountListener;
 import com.seuic.app.store.listener.UpdateCountListener;
 import com.seuic.app.store.net.download.task.DownloadPoolManager;
 import com.seuic.app.store.net.download.task.DownloadTask;
-import com.seuic.app.store.net.download.task.OkhttpDownloader;
+import com.seuic.app.store.net.download.task.OkHttpDownloader;
 import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.AppsUtils;
 import com.seuic.app.store.utils.FileUtils;
 import com.seuic.app.store.utils.HttpHeadUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.Md5Utils;
 
 import java.io.File;
@@ -42,11 +42,11 @@ public class DownloadManager {
     /**
      * 正在下载任务集合
      */
-    private SimpleArrayMap<String, OkhttpDownloader> mIsDownLoadingMap = new SimpleArrayMap<>();
+    private SimpleArrayMap<String, OkHttpDownloader> mIsDownLoadingMap = new SimpleArrayMap<>();
     /**
      * 任务集合
      */
-    private SimpleArrayMap<String, OkhttpDownloader> mOkHttpDownloaderMap = new SimpleArrayMap<>();
+    private SimpleArrayMap<String, OkHttpDownloader> mOkHttpDownloaderMap = new SimpleArrayMap<>();
 
     private static DownloadManager mDownloadManager = new DownloadManager();
 
@@ -85,11 +85,11 @@ public class DownloadManager {
             }
             mOkHttpDownloaderMap.get(taskId).getDownloadBean().setLoadState(state);
         } else {
-            Loger.e("DownloaderMap don't have this id = " + taskId);
+            Logger.e("DownloaderMap don't have this id = " + taskId);
         }
     }
 
-    public SimpleArrayMap<String, OkhttpDownloader> getIsDownLoadingMap() {
+    public SimpleArrayMap<String, OkHttpDownloader> getIsDownLoadingMap() {
         return mIsDownLoadingMap;
     }
 
@@ -148,7 +148,7 @@ public class DownloadManager {
                 .headMap(HttpHeadUtils.getHeadMap())
                 .build();
 
-        OkhttpDownloader mOkhttpDownloader = new OkhttpDownloader.Builder()
+        OkHttpDownloader mOkHttpDownloader = new OkHttpDownloader.Builder()
                 .addDownloadBean(mDownloadBean)
                 .client(new OkHttpClient())
                 .keepAliveTime(30)
@@ -157,7 +157,7 @@ public class DownloadManager {
         /**
          * 保存任务到mOkHttpDownloaderMap
          * */
-        mOkHttpDownloaderMap.put(mOkhttpDownloader.getDownloadBean().getTaskId(), mOkhttpDownloader);
+        mOkHttpDownloaderMap.put(mOkHttpDownloader.getDownloadBean().getTaskId(), mOkHttpDownloader);
     }
 
     /**
@@ -183,7 +183,7 @@ public class DownloadManager {
      * 开始下载
      */
     public void start(String taskId) {
-        Loger.e("开始任务 " + taskId);
+        Logger.e("开始任务 " + taskId);
         if (mIsDownLoadingMap.containsKey(taskId)) {
             startSingleTask(mIsDownLoadingMap.get(taskId));
         } else {
@@ -266,11 +266,11 @@ public class DownloadManager {
                 startSingleTask(mIsDownLoadingMap.get(mIsDownLoadingMap.keyAt(i)));
             }
         } else {
-            Loger.e("startAll don't have any task");
+            Logger.e("startAll don't have any task");
         }
     }
 
-    private void startSingleTask(OkhttpDownloader mOkhttpDownloader) {
+    private void startSingleTask(OkHttpDownloader mOkhttpDownloader) {
         DownloadBean bean = mOkhttpDownloader.getDownloadBean();
         String taskId = bean.getTaskId();
         DownloadState state = bean.getLoadState();
@@ -294,9 +294,9 @@ public class DownloadManager {
              * */
 
             GreenDaoManager.getInstance().insertDownloadTaskTable(bean);
-            Loger.d("enqueue download task into thread pool!");
+            Logger.d("enqueue download task into thread pool!");
         } else {
-            Loger.e("The state of current task is " + bean.getLoadState() + ",  can't be downloaded!");
+            Logger.e("The state of current task is " + bean.getLoadState() + ",  can't be downloaded!");
         }
     }
 
@@ -347,7 +347,7 @@ public class DownloadManager {
      */
     public void removeLoadingTask(String taskId) {
         if (!mIsDownLoadingMap.containsKey(taskId)) {
-            Loger.e("removeLoadingTask don't have " + taskId + " task");
+            Logger.e("removeLoadingTask don't have " + taskId + " task");
         } else {
             removeTask(taskId);
         }
@@ -370,7 +370,7 @@ public class DownloadManager {
      */
     public void notifyDownloadUpdate(String taskId) {
         if (!mIsDownLoadingMap.containsKey(taskId)) {
-            Loger.e("notifyDownloadUpdate don't have " + taskId + " task");
+            Logger.e("notifyDownloadUpdate don't have " + taskId + " task");
         } else {
             DownloadBean mDownloadBean = mIsDownLoadingMap.get(taskId).getDownloadBean();
             // AppStoreNotificationManager.getInstance().showDownloadNotification(mRecommendReceiveMap.get(taskId), mDownloadBean);
@@ -387,7 +387,6 @@ public class DownloadManager {
                         DownloadPoolManager.getInstance().remove(mIsDownLoadingMap.get(taskId).getDownloadTask());
                         mIsDownLoadingMap.remove(taskId);
                     }
-                    FileUtils.deleteFile(mDownloadBean.getSavePath() + mDownloadBean.getFileName());
                     break;
                 case STATE_FINISH:
                     RecommendReceiveTable mRecommendReceiveTable = GreenDaoManager.getInstance().queryRecommendReceive(taskId);
@@ -415,7 +414,6 @@ public class DownloadManager {
         }
     }
 
-
     /**
      * 注册监听器
      *
@@ -424,7 +422,7 @@ public class DownloadManager {
      */
     public void registerObserver(String taskId, DownloadObserver observer) {
         if (!mOkHttpDownloaderMap.containsKey(taskId)) {
-            Loger.e("registerObserver don't have " + taskId + " task");
+            Logger.e("registerObserver don't have " + taskId + " task");
         } else {
             mOkHttpDownloaderMap.get(taskId).getDownloadBean().registerObserver(observer);
         }
@@ -438,7 +436,7 @@ public class DownloadManager {
      */
     public void removeObserver(String taskId, DownloadObserver observer) {
         if (!mOkHttpDownloaderMap.containsKey(taskId)) {
-            Loger.e("removeObserver don't have " + taskId + " task");
+            Logger.e("removeObserver don't have " + taskId + " task");
         } else {
             mOkHttpDownloaderMap.get(taskId).getDownloadBean().removeObserver(observer);
         }

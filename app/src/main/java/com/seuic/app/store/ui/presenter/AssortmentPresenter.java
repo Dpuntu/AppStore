@@ -7,7 +7,7 @@ import com.seuic.app.store.bean.response.AppTypeReceive;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.ApiManager;
 import com.seuic.app.store.ui.contact.AssortmentContent;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.RxUtils;
 
 import java.util.ArrayList;
@@ -83,8 +83,8 @@ public class AssortmentPresenter extends BaseFragmentPresenter<AssortmentContent
         }
 
         @Override
-        public void onError(String errorMsg) {
-            Loger.e("错误提示:" + errorMsg);
+        public void onError(boolean isResult, String errorMsg) {
+            Logger.e("错误提示:" + errorMsg);
             mView.onLoadError(errorMsg);
         }
     }

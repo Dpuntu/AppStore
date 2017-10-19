@@ -30,6 +30,8 @@ import java.util.List;
 public class RecommendFragment extends BaseFragment<RecommendAdapter, RecommendPresenter> implements RecommendContent.View {
     private boolean isRefresh = false;
     private View mRecycleHead;
+    private BannerView mBannerView;
+    private int index = 0;
 
     @Override
     protected void initFragment(View view) {
@@ -41,6 +43,7 @@ public class RecommendFragment extends BaseFragment<RecommendAdapter, RecommendP
 
     @Override
     protected void isRefreshing() {
+        index = mBannerView.getIndex();
         mPresenter.isRefresh(true);
         mPresenter.getAdvertisements();
     }
@@ -48,9 +51,9 @@ public class RecommendFragment extends BaseFragment<RecommendAdapter, RecommendP
     @Override
     public void updateBannerView(String count, boolean isHidden, long intervalTime, List<AdvertisementsReceive.AdReceiveDetails> mDetailses) {
         mRecycleHead = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_recommend_head, null, false);
-        BannerView mBannerView = (BannerView) mRecycleHead.findViewById(R.id.recommend_banner);
+        mBannerView = (BannerView) mRecycleHead.findViewById(R.id.recommend_banner);
         mBannerView.setVisibility(isHidden ? View.GONE : View.VISIBLE);
-        mBannerView.setViewUrlList(mDetailses, Integer.parseInt(count), 0);
+        mBannerView.setViewUrlList(mDetailses, Integer.parseInt(count), index);
         mBannerView.setLoopTime(intervalTime);
         mBannerView.isAutoLoop(true);
         mBannerView.setOnClickListener(new BannerView.OnClickListener() {

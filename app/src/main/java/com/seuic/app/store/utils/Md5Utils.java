@@ -39,7 +39,7 @@ public class Md5Utils {
             }
             in.close();
         } catch (Exception e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
             return null;
         }
         return bytesToHexString(digest.digest());
@@ -74,7 +74,7 @@ public class Md5Utils {
             md5.update(val.getBytes("UTF-8"));
             m = md5.digest();//加密
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
         }
 
         if (m != null && m.length > 0) {

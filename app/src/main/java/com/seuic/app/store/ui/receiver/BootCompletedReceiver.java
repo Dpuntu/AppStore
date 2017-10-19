@@ -9,7 +9,7 @@ import com.seuic.app.store.greendao.DataUsageTable;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.ui.service.DataUsageService;
 import com.seuic.app.store.utils.AppsUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.SpUtils;
 import com.seuic.app.store.utils.TimesBytesUtils;
 
@@ -27,7 +27,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            Loger.e("----------开机广播----------");
+            Logger.e("----------开机广播----------");
             List<AppInfo> appInfos = AppsUtils.getAppInfos();
             for (AppInfo info : appInfos) {
                 DataUsageTable mDataUsageTableFinal = GreenDaoManager.getInstance().queryDataUsageTable(info.getPackageName(), TimesBytesUtils.BytesType.FINAL);

@@ -8,7 +8,7 @@ import com.seuic.app.store.net.download.DownloadBean;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.net.download.DownloadState;
 import com.seuic.app.store.utils.FileUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.RxUtils;
 
 import java.util.HashMap;
@@ -97,7 +97,7 @@ public class InstallAppManager {
      *         任务ID
      */
     private void installApp(CloudServiceManager cloudServiceManager, final String taskId) {
-        Loger.e("正在安装 " + taskId);
+        Logger.e("正在安装 " + taskId);
         DownloadTaskTable downloadTaskTable = GreenDaoManager.getInstance().queryDownloadTask(taskId);
         cloudServiceManager.installApp(
                 downloadTaskTable.getSavePath() + downloadTaskTable.getFileName(),
@@ -161,11 +161,11 @@ public class InstallAppManager {
     private void installAppEnd(boolean isSuccess, String taskId, String errorMsg) {
         DownloadBean mDownloadBean = DownloadManager.getInstance().getDownloadBean(taskId);
         if (isSuccess) {
-            Loger.e("安装成功");
+            Logger.e("安装成功");
             mDownloadBean.setLoadState(DownloadState.STATE_INSTALL_SUCCESS);
             installResult(mRecommendReceiveMap.get(taskId).getPackageName(), taskId);
         } else {
-            Loger.e("安装失败: " + errorMsg);
+            Logger.e("安装失败: " + errorMsg);
             mDownloadBean.setLoadState(STATE_INSTALL_FAIL);
         }
         updateInstallState(taskId, mDownloadBean);
@@ -196,12 +196,16 @@ public class InstallAppManager {
 
         @Override
         public void onSuccess(String str) {
-            Loger.e("已反馈 : " + str);
+            Logger.e("已反馈 : " + str);
         }
 
         @Override
-        public void onError(String errorMsg) {
-            Loger.e("反馈失败 : " + errorMsg);
+        public void onError(boolean isResult, String errorMsg) {
+            if (isResult) {
+                Logger.e("已反馈");
+            } else {
+                Logger.e("反馈失败 : " + errorMsg);
+            }
         }
     }
 }

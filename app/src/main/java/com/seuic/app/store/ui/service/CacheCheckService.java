@@ -7,7 +7,7 @@ import com.seuic.app.store.glide.GlideAppManager;
 import com.seuic.app.store.glide.GlideParams;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.utils.FileUtils;
-import com.seuic.app.store.utils.Loger;
+import com.seuic.app.store.utils.Logger;
 
 /**
  * Created on 2017/9/18.
@@ -38,9 +38,9 @@ public class CacheCheckService extends IntentService {
                 >= GlideParams.MEMORY_CACHE_SIZE * (4 / 5f)) {
             boolean isClear = GlideAppManager.clearCache();
             if (isClear) {
-                Loger.d("缓存清除成功");
+                Logger.d("缓存清除成功");
             } else {
-                Loger.d("自动清理缓存失败,请手动清理");
+                Logger.d("自动清理缓存失败,请手动清理");
             }
         }
     }

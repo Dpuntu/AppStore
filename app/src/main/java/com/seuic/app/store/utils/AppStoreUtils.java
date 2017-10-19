@@ -112,7 +112,7 @@ public class AppStoreUtils {
                 version = "1.0.0";
             }
         } catch (PackageManager.NameNotFoundException e) {
-            Loger.e(android.util.Log.getStackTraceString(e));
+            Logger.e(android.util.Log.getStackTraceString(e));
             version = "1.0.0";
         }
         return version;
