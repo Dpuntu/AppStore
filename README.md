@@ -1,7 +1,7 @@
 ﻿# appstore
 
 ## ScreenRecord
-![](https://github.com/Dpuntu/AppStore/imagefile/screen.gif)
+![](https://github.com/Dpuntu/AppStore/blob/master/imagefile/screen.gif)
 
 ### 导入项目如果出现该错误:
 >     Error:
