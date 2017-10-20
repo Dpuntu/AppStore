@@ -27,12 +27,7 @@ import java.util.List;
 
 public class AssortmentAdapter extends BaseRecycleViewAdapter<AssortmentAdapter.AssortmentDataViewHolder, List<RecycleObject<RecommendReceive>>> {
     public AssortmentAdapter(List<RecycleObject> mRecycleObjectList) {
-        super(mRecycleObjectList, R.layout.fragment_assortment_item);
-    }
-
-    @Override
-    protected AssortmentDataViewHolder createDataViewHolder(View view) {
-        return new AssortmentAdapter.AssortmentDataViewHolder(view);
+        super(mRecycleObjectList, AssortmentAdapter.AssortmentDataViewHolder.class, R.layout.fragment_assortment_item);
     }
 
     @SuppressWarnings("unchecked")
@@ -58,10 +53,10 @@ public class AssortmentAdapter extends BaseRecycleViewAdapter<AssortmentAdapter.
         }
     }
 
-    class AssortmentDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
+    public static class AssortmentDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         RecyclerView mRecyclerView;
 
-        AssortmentDataViewHolder(View itemView) {
+        public AssortmentDataViewHolder(View itemView) {
             super(itemView);
             mRecyclerView = (RecyclerView) itemView.findViewById(R.id.assortment_item_recycle);
         }

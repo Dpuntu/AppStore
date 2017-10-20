@@ -12,6 +12,8 @@ import com.seuic.app.store.R;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleTitleMoreBean;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -33,6 +35,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
         extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<RecycleObject> mRecycleObjectList;
     private int dataLayout;
+    private Class<VH> cls = null;
 
     private static final int ITEM_HEAD = Integer.MAX_VALUE;
 
@@ -48,19 +51,43 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
     }
 
     /**
+     * @param mRecycleObjectList
+     *         数据源
+     * @param cls
+     *         DataViewHolder 类
+     * @param dataLayout
+     *         数据源使用的布局
+     */
+    public BaseRecycleViewAdapter(List<RecycleObject> mRecycleObjectList, Class<VH> cls, int dataLayout) {
+        this(mRecycleObjectList, dataLayout);
+        this.cls = cls;
+    }
+
+    /**
      * 刷新RecycleView
      *
      * @param mRecycleObjectList
      *         新的数据源
      */
     public void refreshAdapter(List<RecycleObject> mRecycleObjectList) {
-        this.mRecycleObjectList.clear();
+        if (mRecycleObjectList != null) {
+            this.mRecycleObjectList.clear();
+        }
         this.mRecycleObjectList = mRecycleObjectList;
         notifyDataSetChanged();
     }
 
+    /**
+     * 添加的头View
+     */
     private View headView = null;
 
+    /**
+     * 添加的头部View
+     *
+     * @param headView
+     *         view
+     */
     public void addHeadView(View headView) {
         this.headView = headView;
         notifyItemInserted(0);
@@ -88,12 +115,35 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
     }
 
     /**
-     * 创建子类使用的ViewHolder
+     * 配置DataViewHolder
+     */
+    protected void setViewHolderClass(Class<VH> cls) {
+        this.cls = cls;
+    }
+
+    /**
+     * 创建子类使用的ViewHolder, 必须继承自DataViewHolder
      *
      * @param view
      *         为数据源的itemView
      */
-    protected abstract VH createDataViewHolder(View view);
+    private VH createDataViewHolder(View view) {
+        if (cls == null) {
+            throw new NullPointerException("please use setViewHolderClass function first");
+        }
+        VH vh = null;
+        try {
+            Constructor constructor = cls.getDeclaredConstructor(View.class);
+            constructor.setAccessible(true);
+            vh = (VH) constructor.newInstance(view);
+        } catch (InstantiationException
+                | IllegalAccessException
+                | NoSuchMethodException
+                | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return vh;
+    }
 
     @SuppressWarnings("unchecked")
     @Override
@@ -203,8 +253,8 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
         }
     }
 
-    class DataViewHolder extends RecyclerView.ViewHolder {
-        DataViewHolder(View itemView) {
+    public static class DataViewHolder extends RecyclerView.ViewHolder {
+        public DataViewHolder(View itemView) {
             super(itemView);
         }
     }
@@ -218,7 +268,6 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
      *         单项数据
      */
     protected abstract void loadRecycleData(VH vh, E e);
-
 
     public static class RecycleViewType {
         public static final int RECYCLE_TITLE = 100;

@@ -27,7 +27,6 @@ public final class AppStoreGlideModule extends AppGlideModule {
     @Override
     public void applyOptions(Context context, GlideBuilder builder) {
         builder.setMemoryCache(new LruResourceCache(GlideParams.MEMORY_CACHE_SIZE));
-        // 默认就是/cache/ ， 不需要额外设置
         if (FileUtils.isExternalStorage()) {
             builder.setDiskCache(
                     new DiskLruCacheFactory(

@@ -254,10 +254,6 @@ public class DownloadManager {
         if (mIsDownLoadingMap.containsKey(taskId)) {
             removeLoadingTask(taskId);
         }
-
-        if (mOkHttpDownloaderMap.containsKey(taskId)) {
-            mOkHttpDownloaderMap.remove(taskId);
-        }
     }
 
     public void startAll() {
@@ -392,10 +388,17 @@ public class DownloadManager {
                     RecommendReceiveTable mRecommendReceiveTable = GreenDaoManager.getInstance().queryRecommendReceive(taskId);
                     boolean isError;
                     if (mRecommendReceiveTable != null) {
-                        if (Md5Utils.getMd5ByFile(new File(mDownloadBean.getSavePath() + "/" + mDownloadBean.getFileName()))
+                        File downloadFile = new File(mDownloadBean.getSavePath() + "/" + mDownloadBean.getFileName());
+                        if (Md5Utils.getMd5ByFile(downloadFile)
                                 .equals(mRecommendReceiveTable.getMD5())) {
                             isError = false;
-                            InstallAppManager.getInstance().addRecommendReceiveMap(taskId, GreenDaoManager.getInstance().table2RecommendReceive(mRecommendReceiveTable));
+                            // 这里使用原生系统安装接口
+                            // AppsUtils.installApp(downloadFile);
+                            // 下面调用CloudService接口, 非专用设备不可使用cloudService
+                            InstallAppManager.getInstance()
+                                    .addRecommendReceiveMap(
+                                            taskId,
+                                            GreenDaoManager.getInstance().table2RecommendReceive(mRecommendReceiveTable));
                         } else {
                             isError = true;
                         }

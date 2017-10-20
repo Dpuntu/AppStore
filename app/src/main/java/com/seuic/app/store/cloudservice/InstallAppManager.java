@@ -186,7 +186,7 @@ public class InstallAppManager {
                         .installResult(packageName, taskId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new InstallResponseObserver("installResult"));
+                .subscribe(new InstallResponseObserver("installResult , taskId = " + taskId + " , packageName = " + packageName));
     }
 
     private class InstallResponseObserver extends RxUtils.ResponseObserver<String> {

@@ -93,6 +93,7 @@ public abstract class BaseFragment<BA extends BaseRecycleViewAdapter, P extends 
     @Override
     public void onLoadError(String errorMsg) {
         removeRefresh();
+        // 延迟加载
         mRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -115,6 +116,7 @@ public abstract class BaseFragment<BA extends BaseRecycleViewAdapter, P extends 
     @Override
     public void refreshRecycleView(final List<RecycleObject> recycleObjectList) {
         removeRefresh();
+        // 延迟加载
         mRefreshLayout.postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -30,12 +30,7 @@ import java.util.List;
 
 public class SearchAdapter extends BaseRecycleViewAdapter<SearchAdapter.SearchViewHolder, AppDetailReceive> {
     public SearchAdapter(List<RecycleObject> mRecycleObjectList) {
-        super(mRecycleObjectList, R.layout.activity_search_apps_item);
-    }
-
-    @Override
-    protected SearchViewHolder createDataViewHolder(View view) {
-        return new SearchViewHolder(view);
+        super(mRecycleObjectList,SearchViewHolder.class, R.layout.activity_search_apps_item);
     }
 
     @Override
@@ -68,13 +63,13 @@ public class SearchAdapter extends BaseRecycleViewAdapter<SearchAdapter.SearchVi
         });
     }
 
-    public class SearchViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
+    public static class SearchViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         RecyclerView mGalleryRecycle;
         ImageView mImageView;
         MultifunctionalTextView mTextBtn;
         TextView appName, appType;
 
-        SearchViewHolder(View itemView) {
+        public SearchViewHolder(View itemView) {
             super(itemView);
             mGalleryRecycle = (RecyclerView) itemView.findViewById(R.id.search_screen_gallery);
             mImageView = (ImageView) itemView.findViewById(R.id.app_detail_image);

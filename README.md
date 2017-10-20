@@ -1,5 +1,8 @@
 ﻿# appstore
 
+## ScreenRecord
+![](https://github.com/Dpuntu/AppStore/imagefile/screen.gif)
+
 ### 导入项目如果出现该错误:
 >     Error:
 >     Unable to find method 'org.gradle.api.tasks.TaskInputs.file(Ljava/lang/Object;)
@@ -46,5 +49,10 @@
 * 2017-10-11 1.0.0 优化下拉刷新，修改下载数据库逻辑，合并分类和推荐Fragment，RecycleView添加头布局，管理界面大量修改
 * 2017-10-13 1.0.0 修改分类和推荐，合并Fragment，给RecycleView添加头部布局，增加应用流量、时长统计的接口
 * 2017-10-19 1.0.0 修复了遗留问题
+
+## About me:<br>
+* QQ: 596400606
+* Email: fangmingxingdd@gmail.com
+
 ## License
 

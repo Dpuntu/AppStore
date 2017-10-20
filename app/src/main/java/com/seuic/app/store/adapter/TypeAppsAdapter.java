@@ -24,12 +24,7 @@ import java.util.List;
 public class TypeAppsAdapter extends BaseRecycleViewAdapter<TypeAppsAdapter.InstallDataViewHolder, RecommendReceive> {
 
     public TypeAppsAdapter(List<RecycleObject> mRecycleObjectList) {
-        super(mRecycleObjectList, R.layout.activity_install_item);
-    }
-
-    @Override
-    protected InstallDataViewHolder createDataViewHolder(View view) {
-        return new TypeAppsAdapter.InstallDataViewHolder(view);
+        super(mRecycleObjectList, TypeAppsAdapter.InstallDataViewHolder.class, R.layout.activity_install_item);
     }
 
     @Override
@@ -53,7 +48,7 @@ public class TypeAppsAdapter extends BaseRecycleViewAdapter<TypeAppsAdapter.Inst
         });
     }
 
-    class InstallDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
+    public static class InstallDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         TextView titleText, summaryText;
         MultifunctionalTextView unInstall;
         ImageView appImage;

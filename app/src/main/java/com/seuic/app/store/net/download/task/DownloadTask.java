@@ -5,6 +5,7 @@ import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.download.DownloadBean;
 import com.seuic.app.store.net.download.DownloadManager;
 import com.seuic.app.store.net.download.DownloadState;
+import com.seuic.app.store.net.okhttp.DownloadInterceptor;
 import com.seuic.app.store.utils.FileUtils;
 import com.seuic.app.store.utils.HttpHeadUtils;
 import com.seuic.app.store.utils.Logger;
@@ -40,7 +41,7 @@ public class DownloadTask implements Runnable {
     public DownloadTask() {
     }
 
-    public void setDownloadTask(DownloadBean mDownloadBean, OkHttpClient client ) {
+    public void setDownloadTask(DownloadBean mDownloadBean, OkHttpClient client) {
         this.mDownloadBean = mDownloadBean;
         oldTime = -1;
         oldLength = -1;
@@ -167,6 +168,7 @@ public class DownloadTask implements Runnable {
      * 初始化下载数据
      */
     private void initLengthAndStream() {
+
         if (mClient == null) {
             mClient = new OkHttpClient.Builder()
                     //连接超时为10秒
@@ -175,6 +177,7 @@ public class DownloadTask implements Runnable {
                     .readTimeout(0, TimeUnit.MILLISECONDS)
                     .build();
         }
+
         Request request = new Request.Builder()
                 .get()
                 .url(mDownloadBean.getDownloadUrl())
@@ -189,7 +192,10 @@ public class DownloadTask implements Runnable {
                     .addHeader(HttpHeadUtils.HEAD_SN, mDownloadBean.getHeadMap().get(HttpHeadUtils.HEAD_SN))
                     .addHeader(HttpHeadUtils.HEAD_TIME, mDownloadBean.getHeadMap().get(HttpHeadUtils.HEAD_TIME))
                     .build();
+        } else {
+            mClient = mClient.newBuilder().addInterceptor(new DownloadInterceptor()).build();
         }
+
         Call call = mClient.newCall(request);
         try {
             Response response = call.execute();

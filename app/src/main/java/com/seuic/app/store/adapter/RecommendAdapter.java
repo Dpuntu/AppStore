@@ -24,12 +24,7 @@ import java.util.List;
 public class RecommendAdapter extends BaseRecycleViewAdapter<RecommendAdapter.RecommendDataViewHolder, RecommendReceive> {
 
     public RecommendAdapter(List<RecycleObject> mRecycleObjectList) {
-        super(mRecycleObjectList, R.layout.fragment_recommend_item);
-    }
-
-    @Override
-    protected RecommendDataViewHolder createDataViewHolder(View view) {
-        return new RecommendAdapter.RecommendDataViewHolder(view);
+        super(mRecycleObjectList, RecommendAdapter.RecommendDataViewHolder.class, R.layout.fragment_recommend_item);
     }
 
     @Override
@@ -66,12 +61,12 @@ public class RecommendAdapter extends BaseRecycleViewAdapter<RecommendAdapter.Re
         void onTextClick(MultifunctionalTextView view, RecommendReceive recommendReceive, int textState);
     }
 
-    class RecommendDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
+    public static class RecommendDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         TextView appNameText, appVersionText, appDescText;
         MultifunctionalTextView installText;
         ImageView appImage;
 
-        RecommendDataViewHolder(View itemView) {
+        public RecommendDataViewHolder(View itemView) {
             super(itemView);
             appNameText = (TextView) itemView.findViewById(R.id.recommend_app_item_name);
             appVersionText = (TextView) itemView.findViewById(R.id.recommend_app_item_version);

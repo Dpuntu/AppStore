@@ -35,12 +35,7 @@ public class DownLoadAdapter extends BaseRecycleViewAdapter<DownLoadAdapter.Down
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     public DownLoadAdapter(List<RecycleObject> mRecycleObjectList) {
-        super(mRecycleObjectList, R.layout.activity_download_recycle_item);
-    }
-
-    @Override
-    protected DownLoadDataViewHolder createDataViewHolder(View view) {
-        return new DownLoadDataViewHolder(view);
+        super(mRecycleObjectList, DownLoadDataViewHolder.class, R.layout.activity_download_recycle_item);
     }
 
     @SuppressWarnings("unchecked")
@@ -104,13 +99,13 @@ public class DownLoadAdapter extends BaseRecycleViewAdapter<DownLoadAdapter.Down
         });
     }
 
-    class DownLoadDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
+    public static class DownLoadDataViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         ImageView mAppIcon;
         MultifunctionalTextView mDeleteText, mPauseText;
         TextView mTitleText, mProgressText, mSizeText;
         ProgressBar mProgressBar;
 
-        DownLoadDataViewHolder(View itemView) {
+        public DownLoadDataViewHolder(View itemView) {
             super(itemView);
             mAppIcon = (ImageView) itemView.findViewById(R.id.download_recycle_image);
             mDeleteText = (MultifunctionalTextView) itemView.findViewById(R.id.download_recycle_delete);

@@ -11,6 +11,7 @@ import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.bean.AppInfo;
 import com.seuic.app.store.bean.request.AppVersionRequest;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -205,6 +206,20 @@ public class AppsUtils {
         AppStoreApplication.getApp().startActivity(intent);
     }
 
+    /**
+     * 安装应用程序
+     */
+    public static void installApp(File file) {
+        if (file.exists()) {
+            Intent intent = new Intent();
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
+            AppStoreApplication.getApp().startActivity(intent);
+        } else {
+            ToastUtils.showToast("文件不存在");
+        }
+    }
 
     public static int openApp(String packageName) {
         if (packageName.equals(AppStoreUtils.getAppPackageName())) {

@@ -22,12 +22,7 @@ import java.util.List;
 public class ScreenShotAdapter extends BaseRecycleViewAdapter<ScreenShotAdapter.ScreenShotViewHolder, ScreenShotBean> {
 
     public ScreenShotAdapter(List<RecycleObject> mRecycleObjectList) {
-        super(mRecycleObjectList, R.layout.activity_screen_shot_recycle_item);
-    }
-
-    @Override
-    protected ScreenShotViewHolder createDataViewHolder(View view) {
-        return new ScreenShotViewHolder(view);
+        super(mRecycleObjectList, ScreenShotViewHolder.class, R.layout.activity_screen_shot_recycle_item);
     }
 
     @Override
@@ -38,10 +33,10 @@ public class ScreenShotAdapter extends BaseRecycleViewAdapter<ScreenShotAdapter.
                                   AppStoreUtils.AppStoreImageType.SCREEN);
     }
 
-    class ScreenShotViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
+    public static class ScreenShotViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         ImageView screenItemImage;
 
-        ScreenShotViewHolder(View itemView) {
+        public ScreenShotViewHolder(View itemView) {
             super(itemView);
             screenItemImage = (ImageView) itemView.findViewById(R.id.screen_item_image);
         }

@@ -24,13 +24,9 @@ import java.util.List;
  */
 
 public class UpdateAdapter extends BaseRecycleViewAdapter<UpdateAdapter.UpdateViewHolder, RecommendReceive> {
-    public UpdateAdapter(List<RecycleObject> mRecycleObjectList) {
-        super(mRecycleObjectList, R.layout.activity_update_recycle_item);
-    }
 
-    @Override
-    protected UpdateViewHolder createDataViewHolder(View view) {
-        return new UpdateViewHolder(view);
+    public UpdateAdapter(List<RecycleObject> mRecycleObjectList) {
+        super(mRecycleObjectList, UpdateAdapter.UpdateViewHolder.class, R.layout.activity_update_recycle_item);
     }
 
     @Override
@@ -65,13 +61,13 @@ public class UpdateAdapter extends BaseRecycleViewAdapter<UpdateAdapter.UpdateVi
         });
     }
 
-    public class UpdateViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
+    public static class UpdateViewHolder extends BaseRecycleViewAdapter.DataViewHolder {
         ImageView imageView;
         MultifunctionalTextView updateText;
         TextView appVersion, appTitle, hiddenDesc;
         RelativeLayout appDesc;
 
-        UpdateViewHolder(View itemView) {
+        public UpdateViewHolder(View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.update_app_image);
             updateText = (MultifunctionalTextView) itemView.findViewById(R.id.update_app_text);
