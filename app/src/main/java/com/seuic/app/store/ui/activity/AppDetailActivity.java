@@ -14,6 +14,7 @@ import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.response.AppDetailReceive;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.glide.GlideAppManager;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.ui.contact.AppDetailContact;
 import com.seuic.app.store.ui.dialog.DialogManager;
 import com.seuic.app.store.ui.presenter.AppDetailPresenter;
@@ -32,7 +33,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class AppDetailActivity extends DefaultBaseActivity implements AppDetailContact.View {
+public class AppDetailActivity extends DefaultBaseActivity<ActivityService> implements AppDetailContact.View {
     private AppDetailPresenter mAppDetailPresenter;
     public static final String APP_DETAIL = "app_detail";
     private RecommendReceive mRecommendReceive;
@@ -58,17 +59,12 @@ public class AppDetailActivity extends DefaultBaseActivity implements AppDetailC
     }
 
     @Override
-    protected String setNormalRightTitle() {
-        return null;
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.appDetailActivity(getNormalTitle());
     }
 
-    @Override
-    protected String setNormalLeftTitle() {
-        return getString(R.string.act_back);
-    }
-
-    @Override
-    protected String setNormalTitle() {
+    protected String getNormalTitle() {
         if (mRecommendReceive != null) {
             return mRecommendReceive.getAppName();
         } else {
@@ -80,11 +76,6 @@ public class AppDetailActivity extends DefaultBaseActivity implements AppDetailC
     protected void eventHandler() {
         mAppDetailPresenter = new AppDetailPresenter(this);
         mAppDetailPresenter.getAppDetail(mRecommendReceive.getPackageName());
-    }
-
-    @Override
-    protected int initLayout() {
-        return R.layout.activity_appdetail;
     }
 
     @Override

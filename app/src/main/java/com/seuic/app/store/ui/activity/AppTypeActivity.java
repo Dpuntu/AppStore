@@ -10,6 +10,7 @@ import com.seuic.app.store.R;
 import com.seuic.app.store.adapter.BaseRecycleViewAdapter;
 import com.seuic.app.store.adapter.TypeAppsAdapter;
 import com.seuic.app.store.bean.response.RecommendReceive;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.ui.contact.AppTypeContact;
 import com.seuic.app.store.ui.fragment.AssortmentFragment;
 import com.seuic.app.store.ui.presenter.AppTypePresenter;
@@ -25,7 +26,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class AppTypeActivity extends DefaultBaseActivity implements AppTypeContact.View {
+public class AppTypeActivity extends DefaultBaseActivity<ActivityService> implements AppTypeContact.View {
     private Intent mIntent;
     private AppTypePresenter mAppTypePresenter;
     @BindView(R.id.apptype_recycle)
@@ -38,18 +39,9 @@ public class AppTypeActivity extends DefaultBaseActivity implements AppTypeConta
     }
 
     @Override
-    protected String setNormalRightTitle() {
-        return null;
-    }
-
-    @Override
-    protected String setNormalLeftTitle() {
-        return getString(R.string.act_back);
-    }
-
-    @Override
-    protected String setNormalTitle() {
-        return mIntent.getStringExtra(AssortmentFragment.APPS_TYPE);
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.appTypeActivity(mIntent.getStringExtra(AssortmentFragment.APPS_TYPE));
     }
 
     @Override
@@ -57,11 +49,6 @@ public class AppTypeActivity extends DefaultBaseActivity implements AppTypeConta
         mAppTypePresenter = new AppTypePresenter(this);
         mAppTypePresenter.getTypeApps(mIntent.getStringExtra(AssortmentFragment.APPS_TYPE),
                                       mIntent.getStringExtra(AssortmentFragment.APPS_TYPE_ID));
-    }
-
-    @Override
-    protected int initLayout() {
-        return R.layout.activity_apptype;
     }
 
     @Override

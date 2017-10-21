@@ -9,6 +9,7 @@ import com.seuic.app.store.adapter.SearchAdapter;
 import com.seuic.app.store.adapter.SearchHistoryAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.RecycleSearchBean;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.ui.contact.SearchContact;
 import com.seuic.app.store.ui.presenter.SearchPresenter;
 import com.seuic.app.store.utils.Logger;
@@ -25,7 +26,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class SearchActivity extends HomeBaseActivity implements SearchContact.View, SearchBar.SearchBarTextWatcher {
+public class SearchActivity extends HomeBaseActivity<ActivityService> implements SearchContact.View, SearchBar.SearchBarTextWatcher {
     @BindView(R.id.search_history_recycle)
     RecyclerView mHistoryRecyclerView;
     @BindView(R.id.search_recycle)
@@ -34,6 +35,12 @@ public class SearchActivity extends HomeBaseActivity implements SearchContact.Vi
     private SearchPresenter mSearchPresenter;
     private SearchAdapter mSearchAdapter;
     private String searchBarText = null;
+
+    @Override
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.searchActivity();
+    }
 
     @Override
     protected void eventHandler() {
@@ -48,24 +55,9 @@ public class SearchActivity extends HomeBaseActivity implements SearchContact.Vi
     }
 
     @Override
-    protected int initLayout() {
-        return R.layout.activity_search;
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    @Override
-    protected boolean isSearchBarFocusable() {
-        return true;
-    }
-
-    @Override
-    protected boolean isRightLayoutShow() {
-        return false;
     }
 
     @Override

@@ -39,7 +39,7 @@ public class AssortmentAdapter extends BaseRecycleViewAdapter<AssortmentAdapter.
                 continue;
             }
             recommendReceives.add((RecommendReceive) recycleObject.getObject());
-            CustomGridLayoutManager mGridLayoutManager = new CustomGridLayoutManager(AppStoreApplication.getApp(), 4);
+            CustomGridLayoutManager mGridLayoutManager = new CustomGridLayoutManager(AppStoreApplication.getApp(), AppStoreUtils.ITEM_COUNT);
             mGridLayoutManager.setScrollEnabled(false);
             holder.mRecyclerView.setLayoutManager(mGridLayoutManager);
             AssortmentDataItemRecycleViewAdapter assortmentDataItemRecycleViewAdapter = new AssortmentDataItemRecycleViewAdapter(recommendReceives);

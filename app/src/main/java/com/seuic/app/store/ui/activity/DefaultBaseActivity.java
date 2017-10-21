@@ -3,8 +3,6 @@ package com.seuic.app.store.ui.activity;
 import android.view.View;
 import android.widget.TextView;
 
-import com.seuic.app.store.R;
-
 /**
  * Created on 2017/9/17.
  *
@@ -13,14 +11,14 @@ import com.seuic.app.store.R;
  *         带返回键的父类
  */
 
-public abstract class DefaultBaseActivity extends BaseActivity {
+public abstract class DefaultBaseActivity<T> extends BaseActivity<T> {
     @Override
     protected void initTitle() {
         normalLeft.setOnClickListener(onBackClick());
         normalRightTitle.setOnClickListener(onRightClick());
-        setTitleShow(normalTitle, setNormalTitle());
-        setTitleShow(normalLeftTitle, setNormalLeftTitle());
-        setTitleShow(normalRightTitle, setNormalRightTitle());
+        setTitleShow(normalTitle, normalTitleText);
+        setTitleShow(normalLeftTitle, leftTitleText);
+        setTitleShow(normalRightTitle, rightTitleText);
         normalTitle.setSingleLine();
     }
 
@@ -44,21 +42,5 @@ public abstract class DefaultBaseActivity extends BaseActivity {
                 finish();
             }
         };
-    }
-
-    protected abstract String setNormalRightTitle();
-
-    protected abstract String setNormalLeftTitle();
-
-    protected abstract String setNormalTitle();
-
-    @Override
-    protected boolean isHome() {
-        return false;
-    }
-
-    @Override
-    protected int setHeadBackgroundColor() {
-        return R.color.appStoreColor;
     }
 }

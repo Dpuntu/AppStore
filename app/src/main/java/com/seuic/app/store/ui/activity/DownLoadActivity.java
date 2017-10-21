@@ -7,6 +7,7 @@ import com.seuic.app.store.adapter.DownLoadAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.response.RecommendReceive;
 import com.seuic.app.store.net.download.DownloadManager;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.ui.contact.DownLoadContact;
 import com.seuic.app.store.ui.presenter.DownLoadPresenter;
 import com.seuic.app.store.utils.MuTextViewClickUtils;
@@ -23,12 +24,18 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class DownLoadActivity extends DefaultBaseActivity implements DownLoadContact.View {
+public class DownLoadActivity extends DefaultBaseActivity<ActivityService> implements DownLoadContact.View {
     private DownLoadPresenter mDownLoadPresenter;
     @BindView(R.id.download_recycle)
     RecyclerView mRecyclerView;
     private DownLoadAdapter mDownLoadAdapter;
     private boolean isRefresh = false;
+
+    @Override
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.downLoadActivity();
+    }
 
     @Override
     protected void eventHandler() {
@@ -37,29 +44,9 @@ public class DownLoadActivity extends DefaultBaseActivity implements DownLoadCon
     }
 
     @Override
-    protected int initLayout() {
-        return R.layout.activity_download;
-    }
-
-    @Override
     public void onBackPressed() {
         super.onBackPressed();
         finish();
-    }
-
-    @Override
-    protected String setNormalRightTitle() {
-        return null;
-    }
-
-    @Override
-    protected String setNormalLeftTitle() {
-        return getString(R.string.act_back);
-    }
-
-    @Override
-    protected String setNormalTitle() {
-        return getString(R.string.act_download_set);
     }
 
     @Override

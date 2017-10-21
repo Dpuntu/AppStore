@@ -2,7 +2,6 @@ package com.seuic.app.store.ui.activity;
 
 import android.view.View;
 
-import com.seuic.app.store.R;
 import com.seuic.app.store.view.RedPointView;
 import com.seuic.app.store.view.SearchBar;
 
@@ -14,21 +13,20 @@ import com.seuic.app.store.view.SearchBar;
  *         待搜索框的父类
  */
 
-public abstract class HomeBaseActivity extends BaseActivity {
+public abstract class HomeBaseActivity<T> extends BaseActivity<T> {
     @Override
     protected void initTitle() {
         homeDownImage.setOnClickListener(homeDownImageClick());
         mSearchBar.setOnClickListener(searchClick());
         mSearchBar.setOnSearchClickListener(homeSearch());
         mSearchBar.addSearchBarTextWatcher(textWatcher());
-        mSearchBar.setFocusable(isSearchBarFocusable());
-        mRightLayout.setVisibility(isRightLayoutShow() ? View.VISIBLE : View.GONE);
+        mSearchBar.setFocusable(isSearchBarFocusable);
+        mRightLayout.setVisibility(isRightLayoutShow ? View.VISIBLE : View.GONE);
     }
 
     protected SearchBar.SearchBarTextWatcher textWatcher() {
         return null;
     }
-
 
     protected void resetRedPoint(final RedPointView.RedPointType type, final String contentText) {
         mHandler.post(new Runnable() {
@@ -38,10 +36,6 @@ public abstract class HomeBaseActivity extends BaseActivity {
             }
         });
     }
-
-    protected abstract boolean isSearchBarFocusable();
-
-    protected abstract boolean isRightLayoutShow();
 
     protected View.OnClickListener homeDownImageClick() {
         return null;
@@ -57,13 +51,5 @@ public abstract class HomeBaseActivity extends BaseActivity {
 
     protected void reSetSearchBar() {
         mSearchBar.setText(mSearchBar.getText());
-    }
-
-    protected boolean isHome() {
-        return true;
-    }
-
-    protected int setHeadBackgroundColor() {
-        return R.color.appStoreColor;
     }
 }

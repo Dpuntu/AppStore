@@ -8,6 +8,7 @@ import android.view.View;
 import com.seuic.app.store.R;
 import com.seuic.app.store.listener.DownloadCountListener;
 import com.seuic.app.store.net.download.DownloadManager;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.ui.contact.HomeContact;
 import com.seuic.app.store.ui.presenter.HomePresenter;
 import com.seuic.app.store.utils.ToastUtils;
@@ -21,7 +22,7 @@ import butterknife.BindView;
  *
  * @author dpuntu
  */
-public class HomeActivity extends HomeBaseActivity implements HomeContact.View, DownloadCountListener {
+public class HomeActivity extends HomeBaseActivity<ActivityService> implements HomeContact.View, DownloadCountListener {
     private HomePresenter mPresenter;
 
     @BindView(R.id.home_viewpager_head)
@@ -31,6 +32,12 @@ public class HomeActivity extends HomeBaseActivity implements HomeContact.View, 
 
     private long backTime = 0;
     private static final long TIME_SPACE = 2000;
+
+    @Override
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.homeActivity();
+    }
 
     @Override
     protected void eventHandler() {
@@ -49,11 +56,6 @@ public class HomeActivity extends HomeBaseActivity implements HomeContact.View, 
         } else {
             resetRedPoint(RedPointView.RedPointType.TYPE_NUM, count + "");
         }
-    }
-
-    @Override
-    protected int initLayout() {
-        return R.layout.activity_home;
     }
 
     @Override
@@ -77,16 +79,6 @@ public class HomeActivity extends HomeBaseActivity implements HomeContact.View, 
 
         }
     };
-
-    @Override
-    protected boolean isSearchBarFocusable() {
-        return false;
-    }
-
-    @Override
-    protected boolean isRightLayoutShow() {
-        return true;
-    }
 
     @Override
     protected View.OnClickListener homeDownImageClick() {

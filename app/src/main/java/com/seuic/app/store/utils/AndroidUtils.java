@@ -235,4 +235,8 @@ public class AndroidUtils {
         }
         return flag;
     }
+
+    public static String getStringById(int resId) {
+        return AppStoreApplication.getApp().getString(resId);
+    }
 }

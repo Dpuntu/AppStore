@@ -7,6 +7,7 @@ import com.seuic.app.store.R;
 import com.seuic.app.store.adapter.UpdateAdapter;
 import com.seuic.app.store.bean.RecycleObject;
 import com.seuic.app.store.bean.response.RecommendReceive;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.ui.contact.UpdateContact;
 import com.seuic.app.store.ui.presenter.UpdatePresenter;
 import com.seuic.app.store.view.recycleview.RecyclerViewUtils;
@@ -21,7 +22,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class UpdateActivity extends DefaultBaseActivity implements UpdateContact.View {
+public class UpdateActivity extends DefaultBaseActivity<ActivityService> implements UpdateContact.View {
     @BindView(R.id.update_recycle)
     RecyclerView mRecyclerView;
     private List<RecommendReceive> recommendReceives;
@@ -38,29 +39,15 @@ public class UpdateActivity extends DefaultBaseActivity implements UpdateContact
     }
 
     @Override
-    protected String setNormalRightTitle() {
-        return getString(R.string.act_update_all);
-    }
-
-    @Override
-    protected String setNormalLeftTitle() {
-        return getString(R.string.act_back);
-    }
-
-    @Override
-    protected String setNormalTitle() {
-        return getString(R.string.act_update_title);
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.updateActivity();
     }
 
     @Override
     protected void eventHandler() {
         mUpdatePresenter = new UpdatePresenter(this);
         mUpdatePresenter.checkUpdateApps();
-    }
-
-    @Override
-    protected int initLayout() {
-        return R.layout.activity_update;
     }
 
     @Override

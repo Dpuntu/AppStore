@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import com.seuic.app.store.R;
 import com.seuic.app.store.adapter.InstallAppAdapter;
 import com.seuic.app.store.bean.AppInfo;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.ui.contact.InstallContact;
 import com.seuic.app.store.ui.presenter.InstallPresenter;
 import com.seuic.app.store.utils.AppsUtils;
@@ -24,25 +25,16 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class InstallActivity extends DefaultBaseActivity implements InstallContact.View {
+public class InstallActivity extends DefaultBaseActivity<ActivityService> implements InstallContact.View {
     private InstallPresenter mInstallPresenter;
     private boolean isRefresh = false;
     @BindView(R.id.install_recycle)
     RecyclerView mRecyclerView;
 
     @Override
-    protected String setNormalRightTitle() {
-        return null;
-    }
-
-    @Override
-    protected String setNormalLeftTitle() {
-        return getString(R.string.act_back);
-    }
-
-    @Override
-    protected String setNormalTitle() {
-        return getString(R.string.act_install_set);
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.installActivity();
     }
 
     @Override
@@ -62,11 +54,6 @@ public class InstallActivity extends DefaultBaseActivity implements InstallConta
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onRegisterSuccess(List<AppInfo> appInfos) {
         mInstallPresenter.initInstallApps(appInfos);
-    }
-
-    @Override
-    protected int initLayout() {
-        return R.layout.activity_install;
     }
 
     @Override

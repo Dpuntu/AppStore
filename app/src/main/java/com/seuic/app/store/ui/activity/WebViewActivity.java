@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 
 import com.seuic.app.store.AppStoreApplication;
 import com.seuic.app.store.R;
+import com.seuic.app.store.ui.agent.ActivityService;
 import com.seuic.app.store.utils.FileUtils;
 import com.seuic.app.store.utils.HttpHeadUtils;
 
@@ -33,7 +34,7 @@ import butterknife.BindView;
  *         webview安全类
  */
 
-public class WebViewActivity extends DefaultBaseActivity {
+public class WebViewActivity extends DefaultBaseActivity<ActivityService> {
     private Intent mIntent;
     @BindView(R.id.web_view_layout)
     FrameLayout mFrameLayout;
@@ -50,18 +51,9 @@ public class WebViewActivity extends DefaultBaseActivity {
     }
 
     @Override
-    protected String setNormalRightTitle() {
-        return null;
-    }
-
-    @Override
-    protected String setNormalLeftTitle() {
-        return null;
-    }
-
-    @Override
-    protected String setNormalTitle() {
-        return mIntent.getStringExtra(WEB_URL);
+    protected void initService() {
+        ActivityService mActivityService = createService(ActivityService.class);
+        mActivityService.webViewActivity(mIntent.getStringExtra(WEB_URL));
     }
 
     @Override
@@ -136,11 +128,6 @@ public class WebViewActivity extends DefaultBaseActivity {
             });
 
         }
-    }
-
-    @Override
-    protected int initLayout() {
-        return R.layout.activity_webview;
     }
 
     @Override

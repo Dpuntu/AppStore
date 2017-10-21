@@ -7,6 +7,7 @@ import com.seuic.app.store.bean.response.AppTypeReceive;
 import com.seuic.app.store.greendao.GreenDaoManager;
 import com.seuic.app.store.net.ApiManager;
 import com.seuic.app.store.ui.contact.AssortmentContent;
+import com.seuic.app.store.utils.AppStoreUtils;
 import com.seuic.app.store.utils.Logger;
 import com.seuic.app.store.utils.RxUtils;
 
@@ -67,13 +68,14 @@ public class AssortmentPresenter extends BaseFragmentPresenter<AssortmentContent
                             appTypeReceive.getApps().get(i),
                             appTypeReceive.getAppType(),
                             appTypeReceive.getAppTypeId());
-                    if (i < 4) {
+                    if (i < AppStoreUtils.ITEM_COUNT) {
                         recommendReceiveList.add(new RecycleObject(
                                 BaseRecycleViewAdapter.RecycleViewType.RECYCLE_APP_TYPE,
                                 appTypeReceive.getApps().get(i)));
                     }
                 }
-                recycleObjectList.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA, recommendReceiveList));
+                recycleObjectList.add(new RecycleObject(BaseRecycleViewAdapter.RecycleViewType.RECYCLE_DATA,
+                                                        recommendReceiveList));
             }
             if (isRefresh) {
                 mView.refreshRecycleView(recycleObjectList);

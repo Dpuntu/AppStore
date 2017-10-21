@@ -17,6 +17,11 @@ import com.seuic.app.store.ui.dialog.DialogManager;
 public class AppStoreUtils {
 
     /**
+     * 分类页每个类别显示的数量 , 默认是4个
+     */
+    public static final int ITEM_COUNT = 4;
+
+    /**
      * AppStore 获取图片的类型
      */
     public static class AppStoreImageType { // 0表示图标 1表示截图 2表示广告图片

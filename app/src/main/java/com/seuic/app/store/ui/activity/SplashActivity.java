@@ -20,7 +20,7 @@ import butterknife.Unbinder;
  */
 
 public class SplashActivity extends AbsStatusBarActivity {
-    private Unbinder mUnbinder;
+    private Unbinder mUnBinder;
     private boolean flag = false;
     private Runnable mRunnable;
 
@@ -32,7 +32,7 @@ public class SplashActivity extends AbsStatusBarActivity {
         super.onCreate(savedInstanceState);
         AndroidUtils.initStatusBar(SplashActivity.this);
         setContentView(R.layout.activity_splash);
-        mUnbinder = ButterKnife.bind(SplashActivity.this);
+        mUnBinder = ButterKnife.bind(SplashActivity.this);
     }
 
     @Override
@@ -70,8 +70,8 @@ public class SplashActivity extends AbsStatusBarActivity {
         if (mRunnable != null) {
             skipText.removeCallbacks(mRunnable);
         }
-        if (mUnbinder != null) {
-            mUnbinder.unbind();
+        if (mUnBinder != null) {
+            mUnBinder.unbind();
         }
     }
 
