@@ -53,7 +53,7 @@ public class AssortmentFragment extends BaseFragment<AssortmentAdapter, Assortme
         });
         mAdapter.setOnMoreClickListener(new BaseRecycleViewAdapter.OnMoreClickListener() {
             @Override
-            public void OnMoreClick(View view, String assortmentId, String typeTitle) {
+            public void onMoreClick(View view, String assortmentId, String typeTitle) {
                 // 更多
                 Intent intent = new Intent();
                 intent.setClass(getActivity(), AppTypeActivity.class);

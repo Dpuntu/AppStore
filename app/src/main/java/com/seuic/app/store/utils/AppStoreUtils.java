@@ -33,7 +33,7 @@ public class AppStoreUtils {
     /**
      * AppStore RecycleView 刷新时拉下颜色
      */
-    public static final int[] refreshColors = new int[] {R.color.searchColor, R.color.homeTitleColor, R.color.mainColor};
+    public static final int[] REFRESH_COLORS = new int[] {R.color.searchColor, R.color.homeTitleColor, R.color.mainColor};
 
     /**
      * AppStore 请求头CHANNEL
@@ -45,20 +45,7 @@ public class AppStoreUtils {
      */
     public static final String MD5_KEY = "pkh6pvqaw0l1ryrvnikan38iecxkdfew";
 
-    /**
-     * UE
-     * http://www.pmdaniu.com/rp/view?id=AyAHZlQ5VWYDMQQ7AChVBQ
-     * UI
-     * https://www.chainco.cn/run/GGBrkno4KgfUqdgE
-     * 接口
-     * http://192.168.10.177:9010/
-     * AppStore 请求地址
-     * http://192.168.119.71:8766/apk/
-     * http://192.168.10.179:8766/apk/
-     * AppStore 管理地址
-     * http://192.168.10.179:9666/index.html#/Login
-     * root@root.com   123456
-     */
+ 
     public static final String APPSTORE_BASE_URL = "http://192.168.10.179:8766/apk/";
 
     /**
@@ -158,6 +145,9 @@ public class AppStoreUtils {
                 break;
             case WIFI_NET:
                 listener.onOkDownloadClick();
+                break;
+            default:
+                ToastUtils.showToast("请检查网络链接是否正常");
                 break;
         }
     }

@@ -13,7 +13,7 @@ import com.seuic.app.store.view.SearchBar;
  *         待搜索框的父类
  */
 
-public abstract class HomeBaseActivity<T> extends BaseActivity<T> {
+public abstract class HomeBaseActivity extends BaseActivity {
     @Override
     protected void initTitle() {
         homeDownImage.setOnClickListener(homeDownImageClick());

@@ -22,7 +22,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class UpdateActivity extends DefaultBaseActivity<ActivityService> implements UpdateContact.View {
+public class UpdateActivity extends DefaultBaseActivity implements UpdateContact.View {
     @BindView(R.id.update_recycle)
     RecyclerView mRecyclerView;
     private List<RecommendReceive> recommendReceives;
@@ -40,8 +40,7 @@ public class UpdateActivity extends DefaultBaseActivity<ActivityService> impleme
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.updateActivity();
+        createService(ActivityService.class).updateActivity();
     }
 
     @Override

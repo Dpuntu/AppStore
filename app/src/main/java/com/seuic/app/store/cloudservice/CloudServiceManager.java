@@ -26,8 +26,8 @@ import com.seuic.smartpos.cloudsdk.system.ISystemManager;
  */
 
 public class CloudServiceManager {
-    private final static String cloudServicePackage = "com.seuic.service.CLOUD_MANAGER";
-    private final static String cloudSdkPackage = "com.seuic.smartpos.service";
+    private final static String COM_SEUIC_SERVICE_CLOUD_MANAGER = "com.seuic.service.CLOUD_MANAGER";
+    private final static String COM_SEUIC_SMARTPOS_SERVICE = "com.seuic.smartpos.service";
 
     private static CloudServiceManager mCloudServiceManager = new CloudServiceManager();
 
@@ -56,8 +56,8 @@ public class CloudServiceManager {
     public void bindCloudService(BindCloudListener mBindCloudListener) {
         Logger.d("开始 CloudService 绑定");
         this.mBindCloudListener = mBindCloudListener;
-        Intent intent = new Intent(cloudServicePackage);
-        intent.setPackage(cloudSdkPackage);
+        Intent intent = new Intent(COM_SEUIC_SERVICE_CLOUD_MANAGER);
+        intent.setPackage(COM_SEUIC_SMARTPOS_SERVICE);
         boolean result = AppStoreApplication.getApp().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
         if (!result) {
             mBindCloudListener.bindFail("绑定 CloudService 失败");

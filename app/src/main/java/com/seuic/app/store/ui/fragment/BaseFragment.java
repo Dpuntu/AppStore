@@ -44,7 +44,7 @@ public abstract class BaseFragment<BA extends BaseRecycleViewAdapter, P extends 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_base_layout, container, false);
         mUnbinder = ButterKnife.bind(this, rootView);
-        mRefreshLayout.setColorSchemeResources(AppStoreUtils.refreshColors);
+        mRefreshLayout.setColorSchemeResources(AppStoreUtils.REFRESH_COLORS);
         mRefreshLayout.setOnRefreshListener(mOnRefreshListener);
         initFragment(rootView);
         return rootView;

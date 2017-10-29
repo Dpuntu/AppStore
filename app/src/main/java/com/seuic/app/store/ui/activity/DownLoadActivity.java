@@ -24,7 +24,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class DownLoadActivity extends DefaultBaseActivity<ActivityService> implements DownLoadContact.View {
+public class DownLoadActivity extends DefaultBaseActivity implements DownLoadContact.View {
     private DownLoadPresenter mDownLoadPresenter;
     @BindView(R.id.download_recycle)
     RecyclerView mRecyclerView;
@@ -33,8 +33,7 @@ public class DownLoadActivity extends DefaultBaseActivity<ActivityService> imple
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.downLoadActivity();
+        createService(ActivityService.class).downLoadActivity();
     }
 
     @Override

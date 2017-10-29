@@ -22,7 +22,7 @@ import butterknife.BindView;
  *
  * @author dpuntu
  */
-public class HomeActivity extends HomeBaseActivity<ActivityService> implements HomeContact.View, DownloadCountListener {
+public class HomeActivity extends HomeBaseActivity implements HomeContact.View, DownloadCountListener {
     private HomePresenter mPresenter;
 
     @BindView(R.id.home_viewpager_head)
@@ -35,8 +35,7 @@ public class HomeActivity extends HomeBaseActivity<ActivityService> implements H
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.homeActivity();
+        createService(ActivityService.class).homeActivity();
     }
 
     @Override

@@ -31,7 +31,7 @@ public class HintDialog extends Dialog {
     public HintDialog(Context context, int themeResId, ButtonStyle style) {
         super(context, themeResId);
         View dialogView = getLayoutInflater().inflate(R.layout.dialog_hint, null, false);
-        View btnView ;
+        View btnView;
         setContentView(dialogView);
         setCanceledOnTouchOutside(false);
         content = (FrameLayout) dialogView.findViewById(R.id.dialog_content);
@@ -43,6 +43,7 @@ public class HintDialog extends Dialog {
                 content.addView(btnView);
                 break;
             case TWO:
+            default:
                 btnView = getLayoutInflater().inflate(R.layout.dialog_two_btn, null, false);
                 celBtn = (TextView) btnView.findViewById(R.id.dialog_button1);
                 okBtn = (TextView) btnView.findViewById(R.id.dialog_button2);

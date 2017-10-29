@@ -98,6 +98,9 @@ public class MultifunctionalTextView extends TextView implements View.OnClickLis
             case TextViewState.UPDATE:
                 setText("更新");
                 break;
+            default:
+                setText("安装");
+                break;
         }
     }
 
@@ -141,14 +144,6 @@ public class MultifunctionalTextView extends TextView implements View.OnClickLis
                     @Override
                     public void run() {
                         setTextState(TextViewState.WAIT);
-                    }
-                });
-                break;
-            case STATE_NORMAL:
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setTextState(TextViewState.NORMAL);
                     }
                 });
                 break;
@@ -203,6 +198,15 @@ public class MultifunctionalTextView extends TextView implements View.OnClickLis
                     @Override
                     public void run() {
                         setTextState(TextViewState.INSTALL_FAIL);
+                    }
+                });
+                break;
+            case STATE_NORMAL:
+            default:
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        setTextState(TextViewState.NORMAL);
                     }
                 });
                 break;
@@ -263,6 +267,7 @@ public class MultifunctionalTextView extends TextView implements View.OnClickLis
                 case TextViewState.INSTALL_FINISH:
                 case TextViewState.NORMAL:
                 case TextViewState.WAIT:
+                default:
                     mPaint.setColor(ContextCompat.getColor(getContext(), R.color.installNormalColor));
                     setTextColor(ContextCompat.getColor(getContext(), R.color.installNormalColor));
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

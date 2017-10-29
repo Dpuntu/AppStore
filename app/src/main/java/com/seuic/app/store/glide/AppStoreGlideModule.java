@@ -30,7 +30,7 @@ public final class AppStoreGlideModule extends AppGlideModule {
         if (FileUtils.isExternalStorage()) {
             builder.setDiskCache(
                     new DiskLruCacheFactory(
-                            FileUtils.getCachePath(),
+                            FileUtils.getCachePath(AppStoreApplication.getApp()),
                             GlideParams.DISK_CACHE_SIZE));
         } else {
             builder.setDiskCache(

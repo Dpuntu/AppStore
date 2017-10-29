@@ -25,7 +25,7 @@ import static com.seuic.app.store.AppStoreApplication.getApp;
  */
 
 public class TimesBytesUtils {
-
+    private static final String INTERNET = "android.permission.INTERNET";
     private static SimpleArrayMap<String, String> sAppTimeArrayMap;
 
     /**
@@ -53,7 +53,7 @@ public class TimesBytesUtils {
         }
         boolean isInternetApp = false;
         for (String permission : permissions) {
-            if (permission.equals("android.permission.INTERNET")) {
+            if (permission.equals(INTERNET)) {
                 isInternetApp = true;
                 break;
             }

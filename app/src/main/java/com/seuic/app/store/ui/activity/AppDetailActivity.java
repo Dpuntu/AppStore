@@ -33,7 +33,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class AppDetailActivity extends DefaultBaseActivity<ActivityService> implements AppDetailContact.View {
+public class AppDetailActivity extends DefaultBaseActivity implements AppDetailContact.View {
     private AppDetailPresenter mAppDetailPresenter;
     public static final String APP_DETAIL = "app_detail";
     private RecommendReceive mRecommendReceive;
@@ -60,8 +60,7 @@ public class AppDetailActivity extends DefaultBaseActivity<ActivityService> impl
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.appDetailActivity(getNormalTitle());
+        createService(ActivityService.class).appDetailActivity(getNormalTitle());
     }
 
     protected String getNormalTitle() {
@@ -105,7 +104,7 @@ public class AppDetailActivity extends DefaultBaseActivity<ActivityService> impl
         mGalleryRecycle.setAdapter(screenShotAdapter);
         screenShotAdapter.setOnItemClickAllListener(new BaseRecycleViewAdapter.OnItemClickAllListener() {
             @Override
-            public void OnItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList) {
+            public void onItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList) {
                 DialogManager.getInstance().showImageDetailDialog(position, mRecycleObjectList);
             }
         });

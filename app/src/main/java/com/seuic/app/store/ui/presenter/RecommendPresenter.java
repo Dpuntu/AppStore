@@ -26,6 +26,7 @@ public class RecommendPresenter extends BaseFragmentPresenter<RecommendContent.V
         implements RecommendContent.Presenter {
     private List<AdvertisementsReceive.AdReceiveDetails> mDetailses;
     private boolean isRefresh = false;
+    private static String IS_HIDDEN = "1";
 
     public RecommendPresenter(RecommendContent.View view) {
         super(view);
@@ -69,7 +70,7 @@ public class RecommendPresenter extends BaseFragmentPresenter<RecommendContent.V
         public void onSuccess(AdvertisementsReceive advertisementsReceive) {
             String count = advertisementsReceive.getCount();
             // 0-否 1-是
-            boolean isHidden = advertisementsReceive.getIsHidden().equals("1");
+            boolean isHidden = advertisementsReceive.getIsHidden().equals(IS_HIDDEN);
             long intervalTime = Long.parseLong(advertisementsReceive.getIntervalTime()) * 1000;
             if (Integer.parseInt(count) <= 0) {
                 count = "1";

@@ -11,7 +11,7 @@ import android.widget.TextView;
  *         带返回键的父类
  */
 
-public abstract class DefaultBaseActivity<T> extends BaseActivity<T> {
+public abstract class DefaultBaseActivity extends BaseActivity {
     @Override
     protected void initTitle() {
         normalLeft.setOnClickListener(onBackClick());

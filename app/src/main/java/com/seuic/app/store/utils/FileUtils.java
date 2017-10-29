@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class FileUtils {
     private static String logPath = null;
-    // log 日志存放最大天数
+    /** log 日志存放最大天数 */
     private static final int MAX_DAY = 7;
 
     /**
@@ -32,14 +32,13 @@ public class FileUtils {
         return getFilePath(context) + "/download/";
     }
 
-
     /**
      * 图片缓存路径
      *
      * @return 文件路径
      */
-    public static String getCachePath() {
-        return Environment.getExternalStorageDirectory().getPath() + "/AppStore/cache";
+    public static String getCachePath(Context context) {
+        return getFilePath(context) + "/cache";
     }
 
     /**
@@ -87,7 +86,7 @@ public class FileUtils {
     /**
      * 初始化log日志保存路径
      */
-    public static void initFileLoger(Context context) {
+    public static void initFileLogger(Context context) {
         logPath = getFilePath(context) + "/log/";
         deleteLogFile();
         createDownloadPath(getDownloadPath(context));
@@ -127,17 +126,11 @@ public class FileUtils {
      */
     private static String getFilePath(Context context) {
         if (isExternalStorage()) {
-            try {
-                return context.getExternalFilesDir(null).getPath();
-                // 获得外部存储路径,默认路径为 /storage/emulated/0/Android/data/com.xx.xx.xx/xx/xx/xx.xx
-            } catch (NullPointerException e) {
-                Logger.i("获取存储路径失败");
-                // 获得外部存储路径,路径为 /storage/emulated/0/AppStore
-                return Environment.getExternalStorageDirectory().getPath() + "/AppStore";
-            }
+            /**以前是context.getExternalFilesDir(null).getPath();*/
+            return Environment.getExternalStorageDirectory().getPath() + "/AppStore";
         } else {
+            // 直接存在/data/data里，非root手机是看不到的
             return context.getFilesDir().getPath();
-            //直接存在/data/data里，非root手机是看不到的
         }
     }
 
@@ -181,7 +174,8 @@ public class FileUtils {
 
         try {
             File dic = new File(logPath);
-            Date curDate = new Date(System.currentTimeMillis());//获取当前时间
+            // 获取当前时间
+            Date curDate = new Date(System.currentTimeMillis());
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
             String fileName = dateFormat.format(curDate) + ".txt";
             File file = new File(logPath + fileName);
@@ -204,7 +198,6 @@ public class FileUtils {
             fos.flush();
             fos.close();
         } catch (IOException e) {
-//            Logger.e(android.util.Log.getStackTraceString(e));
             e.printStackTrace();
         }
     }
@@ -219,7 +212,7 @@ public class FileUtils {
         }
 
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd", Locale.CHINA);
-        Date curDate = new Date(System.currentTimeMillis());// 获取当前时间
+        Date curDate = new Date(System.currentTimeMillis());
         String currentTime = formatter.format(curDate);
         File dic = new File(logPath);
         if (dic.exists() && dic.isDirectory()) {

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.seuic.app.store.R;
 import com.seuic.app.store.ui.agent.ActivityParams;
+import com.seuic.app.store.ui.agent.MethodException;
 import com.seuic.app.store.ui.agent.ParamsBody;
 import com.seuic.app.store.ui.agent.ParamsType;
 import com.seuic.app.store.view.RedPointView;
@@ -22,6 +23,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.lang.reflect.Type;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -32,8 +34,8 @@ import butterknife.Unbinder;
  * @author dpuntu
  */
 
-public abstract class BaseActivity<T> extends AbsStatusBarActivity {
-    private Unbinder mUnBinder;
+public abstract class BaseActivity extends AbsStatusBarActivity {
+    private Unbinder mBodyUnBinder;
     protected RelativeLayout normalLeft;
     protected TextView normalTitle, normalLeftTitle, normalRightTitle;
     protected ImageView normalImage;
@@ -59,7 +61,7 @@ public abstract class BaseActivity<T> extends AbsStatusBarActivity {
         headLayout.addView(headView);
         View bodyView = LayoutInflater.from(BaseActivity.this).inflate(layoutId, bodyLayout, false);
         bodyLayout.addView(bodyView);
-        mUnBinder = ButterKnife.bind(this, bodyView);
+        mBodyUnBinder = ButterKnife.bind(this, bodyView);
         initHeadView(headView);
     }
 
@@ -85,19 +87,43 @@ public abstract class BaseActivity<T> extends AbsStatusBarActivity {
     }
 
     /**
-     * 创建代理实例，并获得数据
+     * 获得数据
      */
     @SuppressWarnings("unchecked")
-    protected T createService(Class<T> cls) {
-        T se;
-        if (cls == null) {
-            throw new NullPointerException("the Class is Null");
+    protected <T> T createService(Class<T> service) {
+        T t;
+        validateServiceInterface(service);
+        t = (T) Proxy.newProxyInstance(service.getClassLoader(), new Class<?>[] {service}, mInvocationHandler);
+        return t;
+    }
+
+    private <T> void validateServiceInterface(Class<T> service) {
+        if (service == null) {
+            throw new NullPointerException("API service is null");
         }
-        se = (T) Proxy.newProxyInstance(cls.getClassLoader(), new Class<?>[] {cls}, new InvocationHandler() {
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        if (!service.isInterface()) {
+            throw new IllegalArgumentException("API declarations must be interfaces.");
+        }
+        if (service.getInterfaces().length > 0) {
+            throw new IllegalArgumentException("API interfaces must not extend other interfaces.");
+        }
+    }
+
+    private InvocationHandler mInvocationHandler = new InvocationHandler() {
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+            Type returnType = method.getGenericReturnType();
+            if (returnType == void.class) {
+                throw new MethodException("Service methods cannot return void.");
+            }
+            if (!method.isAnnotationPresent(ActivityParams.class)) {
+                throw new NullPointerException("You should set ActivityParams for " + method.getName());
+            } else {
                 ActivityParams mActivityParams = method.getAnnotation(ActivityParams.class);
                 layoutId = mActivityParams.layoutId();
+                if (layoutId <= 0) {
+                    throw new IllegalArgumentException("layoutId is less than 0");
+                }
                 isHome = mActivityParams.isHome();
                 headBackgroundColor = mActivityParams.headBgColor();
                 isSearchBarFocusable = mActivityParams.isSearchBarFocusable();
@@ -105,39 +131,44 @@ public abstract class BaseActivity<T> extends AbsStatusBarActivity {
                 normalTitleText = checkTitleText(mActivityParams.normalTitle(), mActivityParams.normalTitleId());
                 leftTitleText = checkTitleText(mActivityParams.leftTitle(), mActivityParams.leftTitleId());
                 rightTitleText = checkTitleText(mActivityParams.rightTitle(), mActivityParams.rightTitleId());
-                BaseActivity.this.invoke(method, args);
-                return null;
+                BaseActivity.this.otherResource(method, args);
+                return true;
             }
-        });
-        return se;
-    }
+        }
+    };
 
     /**
-     * 检查参数配置
+     * 检查其他额外的配置
      */
-    private void invoke(Method method, Object[] args) {
+    private void otherResource(Method method, Object[] args) {
         Annotation[][] mAnnotations = method.getParameterAnnotations();
-        if (mAnnotations.length > 0) {
-            for (int i = 0; i < mAnnotations.length; i++) {
-                for (int j = 0; j < mAnnotations[i].length; j++) {
-                    ParamsBody mParamsBody = (ParamsBody) mAnnotations[i][j];
-                    switch (mParamsBody.value()) {
-                        case ParamsType.NORMAL_TITLE:
-                            normalTitleText = args[i].toString();
-                            break;
-                        case ParamsType.LEFT_TITLE:
-                            leftTitleText = args[i].toString();
-                            break;
-                        case ParamsType.RIGHT_TITLE:
-                            rightTitleText = args[i].toString();
-                            break;
-                        case ParamsType.RIGHT_LAYOUT_SHOW:
-                            isRightLayoutShow = (boolean) args[i];
-                            break;
-                        case ParamsType.SEARCH_BAR_FOCUS:
-                            isSearchBarFocusable = (boolean) args[i];
-                            break;
-                    }
+        if (mAnnotations.length <= 0) {
+            return;
+        }
+        for (int i = 0; i < mAnnotations.length; i++) {
+            for (int j = 0; j < mAnnotations[i].length; j++) {
+                ParamsBody mParamsBody = (ParamsBody) mAnnotations[i][j];
+                if (mParamsBody == null) {
+                    continue;
+                }
+                switch (mParamsBody.value()) {
+                    case ParamsType.NORMAL_TITLE:
+                        normalTitleText = args[i].toString();
+                        break;
+                    case ParamsType.LEFT_TITLE:
+                        leftTitleText = args[i].toString();
+                        break;
+                    case ParamsType.RIGHT_TITLE:
+                        rightTitleText = args[i].toString();
+                        break;
+                    case ParamsType.RIGHT_LAYOUT_SHOW:
+                        isRightLayoutShow = (boolean) args[i];
+                        break;
+                    case ParamsType.SEARCH_BAR_FOCUS:
+                        isSearchBarFocusable = (boolean) args[i];
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -167,8 +198,8 @@ public abstract class BaseActivity<T> extends AbsStatusBarActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mUnBinder != null) {
-            mUnBinder.unbind();
+        if (mBodyUnBinder != null) {
+            mBodyUnBinder.unbind();
         }
     }
 }

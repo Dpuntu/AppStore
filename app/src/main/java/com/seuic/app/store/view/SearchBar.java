@@ -27,7 +27,7 @@ import java.util.regex.Pattern;
 
 public class SearchBar extends EditText implements
         View.OnFocusChangeListener, TextWatcher, TextView.OnEditorActionListener {
-
+    private static Pattern mPattern = Pattern.compile("\\s+");
     private boolean isLeft = false;
     private boolean pressSearch = false;
     private boolean isNull = true;
@@ -99,7 +99,7 @@ public class SearchBar extends EditText implements
         isNull = (text == null
                 || lengthAfter <= 0
                 || text.toString().isEmpty()
-                || Pattern.compile("\\s+").matcher(text.toString()).matches());
+                || mPattern.matcher(text.toString()).matches());
         if (searchBarTextWatcher != null) {
             searchBarTextWatcher.searchBarTextChange(text.toString());
         }
@@ -108,7 +108,8 @@ public class SearchBar extends EditText implements
     @Override
     public boolean onEditorAction(TextView view, int actionId, KeyEvent event) {
         pressSearch = (event.getKeyCode() == KeyEvent.KEYCODE_ENTER);
-        if (isNull) { // 禁止输入回车换行
+        // 禁止输入回车换行
+        if (isNull) {
             switch (event.getAction()) {
                 case KeyEvent.ACTION_DOWN:
                     break;
@@ -117,6 +118,8 @@ public class SearchBar extends EditText implements
                     if (listener != null) {
                         listener.onSearchClick(view, "未输入任何有效字符", SEARCH_ERROR);
                     }
+                    break;
+                default:
                     break;
             }
             return isNull;
@@ -133,6 +136,8 @@ public class SearchBar extends EditText implements
                     if (listener != null) {
                         listener.onSearchClick(view, getText(), SEARCH_SUCCESS);
                     }
+                    break;
+                default:
                     break;
             }
             return pressSearch;

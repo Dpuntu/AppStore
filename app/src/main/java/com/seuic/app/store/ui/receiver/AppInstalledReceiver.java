@@ -34,6 +34,8 @@ public class AppInstalledReceiver extends BroadcastReceiver {
             case Intent.ACTION_PACKAGE_ADDED:
                 AppsUtils.addAppInfo(packageName);
                 break;
+            default:
+                break;
         }
     }
 }

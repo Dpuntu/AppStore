@@ -34,7 +34,7 @@ import butterknife.BindView;
  *         webview安全类
  */
 
-public class WebViewActivity extends DefaultBaseActivity<ActivityService> {
+public class WebViewActivity extends DefaultBaseActivity {
     private Intent mIntent;
     @BindView(R.id.web_view_layout)
     FrameLayout mFrameLayout;
@@ -52,8 +52,7 @@ public class WebViewActivity extends DefaultBaseActivity<ActivityService> {
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.webViewActivity(mIntent.getStringExtra(WEB_URL));
+        createService(ActivityService.class).webViewActivity(mIntent.getStringExtra(WEB_URL));
     }
 
     @Override

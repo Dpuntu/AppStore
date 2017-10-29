@@ -30,7 +30,7 @@ public class AppStoreApplication extends Application {
         // 启动前先检查设备的SN号
         TerminalManager.getInstance().checkTerminal();
         ExceptionCrashUtils.getInstance(mApp);
-        FileUtils.initFileLoger(mApp);
+        FileUtils.initFileLogger(mApp);
         // 初始化本地APP列表
         AppsUtils.getAppInfos();
         // 判断网络环境

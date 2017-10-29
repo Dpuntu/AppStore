@@ -98,7 +98,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
         View view;
         switch (viewType) {
             case ITEM_HEAD:
-                return new BaseRecycleViewAdapter.HeadFootViewHolder(headView);
+                return new BaseRecycleViewAdapter.HeadViewHolder(headView);
             case RecycleViewType.RECYCLE_TITLE:
                 view = LayoutInflater
                         .from(AppStoreApplication.getApp())
@@ -127,6 +127,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
      * @param view
      *         为数据源的itemView
      */
+    @SuppressWarnings("unchecked")
     private VH createDataViewHolder(View view) {
         if (cls == null) {
             throw new NullPointerException("please use setViewHolderClass function first");
@@ -160,7 +161,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
                     @Override
                     public void onClick(View view) {
                         if (mOnMoreClickListener != null) {
-                            mOnMoreClickListener.OnMoreClick(view, bean.getAssortmentId(), bean.getTitle());
+                            mOnMoreClickListener.onMoreClick(view, bean.getAssortmentId(), bean.getTitle());
                         }
                     }
                 });
@@ -174,7 +175,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
                             mOnItemClickListener.onItemClick(view, (E) mRecycleObjectList.get(index).getObject());
                         }
                         if (mOnItemClickAllListener != null) {
-                            mOnItemClickAllListener.OnItemClickAll(view, index, mRecycleObjectList);
+                            mOnItemClickAllListener.onItemClickAll(view, index, mRecycleObjectList);
                         }
                     }
                 });
@@ -190,7 +191,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
     private OnMoreClickListener mOnMoreClickListener;
 
     public interface OnMoreClickListener {
-        void OnMoreClick(View view, String assortmentId, String typeTitle);
+        void onMoreClick(View view, String assortmentId, String typeTitle);
     }
 
     public void setOnMoreClickListener(OnMoreClickListener mOnMoreClickListener) {
@@ -220,7 +221,7 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
     }
 
     public interface OnItemClickAllListener {
-        void OnItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList);
+        void onItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList);
     }
 
     @Override
@@ -247,8 +248,8 @@ public abstract class BaseRecycleViewAdapter<VH extends BaseRecycleViewAdapter.D
         }
     }
 
-    private class HeadFootViewHolder extends RecyclerView.ViewHolder {
-        HeadFootViewHolder(View itemView) {
+    private class HeadViewHolder extends RecyclerView.ViewHolder {
+        HeadViewHolder(View itemView) {
             super(itemView);
         }
     }

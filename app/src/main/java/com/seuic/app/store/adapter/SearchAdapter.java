@@ -98,7 +98,7 @@ public class SearchAdapter extends BaseRecycleViewAdapter<SearchAdapter.SearchVi
         holder.mGalleryRecycle.setAdapter(screenShotAdapter);
         screenShotAdapter.setOnItemClickAllListener(new OnItemClickAllListener() {
             @Override
-            public void OnItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList) {
+            public void onItemClickAll(View view, int position, List<RecycleObject> mRecycleObjectList) {
                 DialogManager.getInstance().showImageDetailDialog(position, mRecycleObjectList);
             }
         });

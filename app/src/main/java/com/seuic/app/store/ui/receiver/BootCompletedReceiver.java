@@ -24,9 +24,12 @@ import java.util.List;
  */
 
 public class BootCompletedReceiver extends BroadcastReceiver {
+
+    private static final String BOOT_COMPLETED = "android.intent.action.BOOT_COMPLETED";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+        if (intent.getAction().equals(BOOT_COMPLETED)) {
             Logger.e("----------开机广播----------");
             List<AppInfo> appInfos = AppsUtils.getAppInfos();
             for (AppInfo info : appInfos) {

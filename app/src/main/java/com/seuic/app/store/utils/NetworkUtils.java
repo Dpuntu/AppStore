@@ -31,6 +31,9 @@ public class NetworkUtils {
     private static final int NETWORK_TYPE_TD_SCDMA = 17;
     private static final int NETWORK_TYPE_IWLAN = 18;
 
+    private static final String TD_SCDMA = "TD-SCDMA";
+    private static final String WCDMA = "WCDMA";
+    private static final String CDMA2000 = "CDMA2000";
     /**
      * 打开网络设置界面
      * <p>3.0以下打开设置界面</p>
@@ -215,9 +218,9 @@ public class NetworkUtils {
                         break;
                     default:
                         String subtypeName = info.getSubtypeName();
-                        if (subtypeName.equalsIgnoreCase("TD-SCDMA")
-                                || subtypeName.equalsIgnoreCase("WCDMA")
-                                || subtypeName.equalsIgnoreCase("CDMA2000")) {
+                        if (subtypeName.equalsIgnoreCase(TD_SCDMA)
+                                || subtypeName.equalsIgnoreCase(WCDMA)
+                                || subtypeName.equalsIgnoreCase(CDMA2000)) {
                             netType = NETWORK_3G;
                         } else {
                             netType = NETWORK_UNKNOWN;

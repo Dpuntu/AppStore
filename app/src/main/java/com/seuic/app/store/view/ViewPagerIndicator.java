@@ -90,6 +90,8 @@ public class ViewPagerIndicator extends LinearLayout {
                 mHeight = h / 5f;
                 mTranslationX = 0;
                 break;
+            default:
+                break;
         }
         setItemClickEvent();
         notifyHeadSelector(position);
@@ -131,6 +133,8 @@ public class ViewPagerIndicator extends LinearLayout {
                 mPath.lineTo((getWidth() / count + mWidth) / 2f, getHeight() + 1);
                 mPath.close();
                 canvas.drawPath(mPath, mPaint);
+                break;
+            default:
                 break;
         }
         canvas.restore();

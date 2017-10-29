@@ -115,17 +115,32 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
         }
 
         switch (bindType) {
-            case MANAGER_APPS_UPDATE: // 应用更新
+            // 应用更新
+            case MANAGER_APPS_UPDATE:
                 mSwitch.setVisibility(View.GONE);
                 refreshView(mRedPointView, mRecycleSummaryBean.getUpdateText(), RedPointView.RedPointType.TYPE_NUM);
                 appUpdate = mRedPointView;
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), UpdateActivity.class));
+                    }
+                });
                 break;
-            case MANAGER_INSTALL: // 安装管理
+            // 安装管理
+            case MANAGER_INSTALL:
                 mSwitch.setVisibility(View.GONE);
                 mRedPointView.setTypeText(RedPointView.RedPointType.TYPE_GONE,
                                           mRecycleSummaryBean.getUpdateText());
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        startActivity(new Intent(getActivity(), InstallActivity.class));
+                    }
+                });
                 break;
-            case MANAGER_AUTO_UPDATE:// 自动更新
+            // 自动更新
+            case MANAGER_AUTO_UPDATE:
                 mSwitch.setChecked(
                         SpUtils.getInstance().getBoolean(SpUtils.SP_SWITCH_AUTO, false));
                 mImageView.setVisibility(View.GONE);
@@ -141,33 +156,23 @@ public class ManagerFragment extends Fragment implements ManagerContent.View, Up
                     }
                 });
                 break;
-            case MANAGER_UPDATE_SELF:// 检测新版本
+            // 检测新版本
+            case MANAGER_UPDATE_SELF:
                 mFrameLayout.setVisibility(View.GONE);
                 refreshView(mRedPointView, mRecycleSummaryBean.getUpdateText(), RedPointView.RedPointType.TYPE_TEXT);
                 updateSelf = mRedPointView;
-                break;
-        }
-
-        if (bindType != MANAGER_AUTO_UPDATE) {
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    switch (bindType) {
-                        case MANAGER_APPS_UPDATE:
-                            startActivity(new Intent(getActivity(), UpdateActivity.class));
-                            break;
-                        case MANAGER_INSTALL:
-                            startActivity(new Intent(getActivity(), InstallActivity.class));
-                            break;
-                        case MANAGER_UPDATE_SELF:
-                            if (AndroidUtils.isCanClick(updateClickTime)) {
-                                updateClickTime = System.currentTimeMillis();
-                                mManagerPresenter.checkUpdate(true);
-                            }
-                            break;
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (AndroidUtils.isCanClick(updateClickTime)) {
+                            updateClickTime = System.currentTimeMillis();
+                            mManagerPresenter.checkUpdate(true);
+                        }
                     }
-                }
-            });
+                });
+                break;
+            default:
+                break;
         }
         return view;
     }

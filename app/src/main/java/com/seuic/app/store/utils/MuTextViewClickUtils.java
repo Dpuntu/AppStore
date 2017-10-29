@@ -75,6 +75,8 @@ public class MuTextViewClickUtils {
                     ToastUtils.showToast("应用市场已经打开了");
                 }
                 break;
+            default:
+                break;
         }
     }
 }

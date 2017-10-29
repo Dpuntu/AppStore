@@ -26,7 +26,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class SearchActivity extends HomeBaseActivity<ActivityService> implements SearchContact.View, SearchBar.SearchBarTextWatcher {
+public class SearchActivity extends HomeBaseActivity implements SearchContact.View, SearchBar.SearchBarTextWatcher {
     @BindView(R.id.search_history_recycle)
     RecyclerView mHistoryRecyclerView;
     @BindView(R.id.search_recycle)
@@ -38,8 +38,7 @@ public class SearchActivity extends HomeBaseActivity<ActivityService> implements
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.searchActivity();
+        createService(ActivityService.class).searchActivity();
     }
 
     @Override
@@ -73,6 +72,8 @@ public class SearchActivity extends HomeBaseActivity<ActivityService> implements
                         mSearchRecyclerView.setVisibility(View.VISIBLE);
                         mHistoryRecyclerView.setVisibility(View.GONE);
                         mSearchPresenter.searchApps(text.toString());
+                        break;
+                    default:
                         break;
                 }
             }

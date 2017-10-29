@@ -26,7 +26,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class AppTypeActivity extends DefaultBaseActivity<ActivityService> implements AppTypeContact.View {
+public class AppTypeActivity extends DefaultBaseActivity implements AppTypeContact.View {
     private Intent mIntent;
     private AppTypePresenter mAppTypePresenter;
     @BindView(R.id.apptype_recycle)
@@ -40,8 +40,7 @@ public class AppTypeActivity extends DefaultBaseActivity<ActivityService> implem
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.appTypeActivity(mIntent.getStringExtra(AssortmentFragment.APPS_TYPE));
+        createService(ActivityService.class).appTypeActivity(mIntent.getStringExtra(AssortmentFragment.APPS_TYPE));
     }
 
     @Override

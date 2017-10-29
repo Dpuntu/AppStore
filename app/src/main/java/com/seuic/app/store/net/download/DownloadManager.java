@@ -250,9 +250,18 @@ public class DownloadManager {
         }
 
         String taskId = mRecommendReceiveTable.getAppVersionId();
+        // 先提示改变状态
+        getDownloadBean(taskId).setLoadState(DownloadState.STATE_NORMAL);
+        notifyDownloadUpdate(taskId);
+        // 再移除数据
+        removeDownloaderById(taskId);
+    }
 
+    private void removeDownloaderById(String taskId) {
+        GreenDaoManager.getInstance().removeDownloadTaskTable(taskId);
         if (mIsDownLoadingMap.containsKey(taskId)) {
-            removeLoadingTask(taskId);
+            DownloadPoolManager.getInstance().remove(mIsDownLoadingMap.get(taskId).getDownloadTask());
+            mIsDownLoadingMap.remove(taskId);
         }
     }
 
@@ -378,37 +387,35 @@ public class DownloadManager {
                         mUpdateCountListener.onUpdateCountChange();
                     }
                 case STATE_INSTALL_FAIL:
-                    GreenDaoManager.getInstance().removeDownloadTaskTable(taskId);
-                    if (mIsDownLoadingMap.containsKey(taskId)) {
-                        DownloadPoolManager.getInstance().remove(mIsDownLoadingMap.get(taskId).getDownloadTask());
-                        mIsDownLoadingMap.remove(taskId);
-                    }
+                    removeDownloaderById(taskId);
                     break;
                 case STATE_FINISH:
                     RecommendReceiveTable mRecommendReceiveTable = GreenDaoManager.getInstance().queryRecommendReceive(taskId);
                     boolean isError;
                     if (mRecommendReceiveTable != null) {
                         File downloadFile = new File(mDownloadBean.getSavePath() + "/" + mDownloadBean.getFileName());
-                        if (Md5Utils.getMd5ByFile(downloadFile)
-                                .equals(mRecommendReceiveTable.getMD5())) {
+                        if (Md5Utils.getMd5ByFile(downloadFile).equals(mRecommendReceiveTable.getMD5())) {
                             isError = false;
-                            // 这里使用原生系统安装接口
-                            // AppsUtils.installApp(downloadFile);
-                            // 下面调用CloudService接口, 非专用设备不可使用cloudService
-                            InstallAppManager.getInstance()
-                                    .addRecommendReceiveMap(
-                                            taskId,
-                                            GreenDaoManager.getInstance().table2RecommendReceive(mRecommendReceiveTable));
+							// 这里使用原生系统安装接口
+                            AppsUtils.installApp(downloadFile);
+                            // 下面调用CloudService接口, 非专用设备无法使用cloudService
+                            //  InstallAppManager.getInstance()
+                            //          .addRecommendReceiveMap(
+                            //                 taskId,
+                            //                 GreenDaoManager.getInstance().table2RecommendReceive(mRecommendReceiveTable));
                         } else {
                             isError = true;
                         }
                     } else {
                         isError = true;
                     }
+
                     if (isError) {
                         mDownloadBean.setLoadState(STATE_INSTALL_FAIL);
                         notifyDownloadUpdate(taskId);
                     }
+                    break;
+                default:
                     break;
             }
             if (mDownloadCountListener != null) {

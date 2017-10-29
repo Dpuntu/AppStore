@@ -25,7 +25,7 @@ import butterknife.BindView;
  * @author dpuntu
  */
 
-public class InstallActivity extends DefaultBaseActivity<ActivityService> implements InstallContact.View {
+public class InstallActivity extends DefaultBaseActivity implements InstallContact.View {
     private InstallPresenter mInstallPresenter;
     private boolean isRefresh = false;
     @BindView(R.id.install_recycle)
@@ -33,8 +33,7 @@ public class InstallActivity extends DefaultBaseActivity<ActivityService> implem
 
     @Override
     protected void initService() {
-        ActivityService mActivityService = createService(ActivityService.class);
-        mActivityService.installActivity();
+        createService(ActivityService.class).installActivity();
     }
 
     @Override

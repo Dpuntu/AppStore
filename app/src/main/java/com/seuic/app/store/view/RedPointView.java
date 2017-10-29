@@ -96,6 +96,8 @@ public class RedPointView extends ImageView {
             case TYPE_TEXT:
                 mLayout.setBackgroundResource(R.drawable.red_point_new);
                 break;
+            default:
+                break;
         }
         mDPoint = new BitmapDrawable(null, convertView2Bitmap(mLayout));
     }
@@ -117,6 +119,8 @@ public class RedPointView extends ImageView {
             case TYPE_TEXT:
                 width = getResources().getDimensionPixelOffset(R.dimen.dimen_25dp);
                 height = getResources().getDimensionPixelOffset(R.dimen.dimen_14dp);
+                break;
+            default:
                 break;
         }
         mRect.set(0, 0, width, height);

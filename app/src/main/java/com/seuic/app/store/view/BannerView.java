@@ -44,6 +44,7 @@ import java.util.List;
 public class BannerView extends FrameLayout {
     private static final int MSG_LOOP = 1000;
     private static long LOOP_TIME = 5000;
+    private static String IS_ADD_HEADER = "1";
     private LinearLayout mLinearPosition = null;
     private ViewPager mViewPager = null;
     private BannerHandler mBannerHandler = null;
@@ -257,6 +258,8 @@ public class BannerView extends FrameLayout {
                     ((TextView) mLinearPosition.getChildAt(0)).setText((curPos + 1) + "/" + viewSize);
                 }
                 break;
+            default:
+                break;
         }
     }
 
@@ -290,13 +293,6 @@ public class BannerView extends FrameLayout {
             ImageView mImageView = new ImageView(AppStoreApplication.getApp());
             viewList.add(mImageView);
         }
-
-//        if (this.mViewPager.getAdapter() != null) {
-//            this.mViewPager.getAdapter().notifyDataSetChanged();
-//        } else {
-//            setAdapter(new BannerAdapter());
-//        }
-
         setAdapter(new BannerAdapter());
         this.mViewPager.setOffscreenPageLimit(viewList.size());
         this.mViewPager.setCurrentItem(showCount);
@@ -363,7 +359,7 @@ public class BannerView extends FrameLayout {
                     if (mOnClickListener != null && skipUrl != null && !skipUrl.isEmpty()) {
                         mOnClickListener.onClick(view,
                                                  skipUrl,
-                                                 mDetails.get(position % viewSize).getIsAddHeader().equals("1"),
+                                                 mDetails.get(position % viewSize).getIsAddHeader().equals(IS_ADD_HEADER),
                                                  position % viewSize);
                     }
                 }
@@ -389,6 +385,8 @@ public class BannerView extends FrameLayout {
                     break;
                 case AppStoreUtils.AppStoreImageType.SCREEN:
                     defaultId = R.mipmap.screen_default;
+                    break;
+                default:
                     break;
             }
             return defaultId;
